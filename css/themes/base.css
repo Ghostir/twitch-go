@@ -1,0 +1,124 @@
+body {
+  width: 500px;
+  height: 386px;
+}
+
+.center-screen {
+text-align: center;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+.navbar {
+border-bottom: 1px solid #9147ff6e;
+}
+
+.nav-link {
+  border-radius: 0 !important;
+}
+
+.nav-pills {
+width: 42px !important;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+color: #fff !important;
+background-color: #772ce8 !important;
+}
+
+.nav-link {
+width: 42px !important;
+padding: 0.5rem 0 !important;
+color: #772ce8 !important;
+}
+
+.nav-link:focus, .nav-link:hover {
+  color: #ffffff !important;
+  background-color: #5d1cbf !important;
+}
+
+.tab-content {
+  width: 452px !important;
+}
+
+.viewer-color {
+color: #f17a85!important;
+}
+
+.twitch-border-bottom {
+border-bottom: 1px solid #9147ff85!important;
+}
+
+.pagination-wrapper {
+position: sticky;
+top: 0px;
+z-index: 1050;
+padding: 5px;
+background-color: #1e1e1ec2;
+text-align: right;
+padding-right: 10px;
+}
+
+.more-section {
+background-color: #1e1e1e;
+color: white;
+text-align: center;
+font-weight: 700;
+padding-top: 15px;
+padding-bottom: 15px;
+}
+
+.twitch-input {
+background-color: #9f8dbb59 !important;
+border: 1px solid #9147ff82 !important;
+color: white !important;
+font-weight: 600 !important;
+}
+
+.twitch-input:focus {
+box-shadow: 0 0 0 0.25rem rgb(145 71 255 / 31%) !important;
+}
+
+.twitch-button {
+  font-weight: 600 !important;
+  padding-left: 5px !important;
+  padding-right: 5px !important;
+  padding-bottom: 2px !important;
+  padding-top: 2px !important;
+  background-color: #9147ff !important;
+  color: #fff !important;
+  border: 0 !important;
+}
+
+.twitch-button:hover {
+  background-color: #772ce8 !important;
+}
+
+.twitch-button:focus {
+  box-shadow: 0 0 0 0.25rem rgb(145 71 255 / 31%) !important;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #9d86bf;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #756391;
+}
+
+::-webkit-scrollbar-track {
+  background: #929292;
+}

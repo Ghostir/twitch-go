@@ -1,0 +1,26 @@
+{
+    "name": "Twitch Go",
+    "description": "Using the Twitch API for a more Compact and Quick view of your Following, Top Streams/Games.",
+    "version": "1.3.0",
+    "manifest_version": 3,
+    "icons": {
+        "16": "./img/obj-16x16.png",
+        "32": "./img/obj-32x32.png",
+        "48": "./img/obj-48x48.png",
+        "128": "./img/obj-128x128.png"
+    },
+    "action": {
+        "default_popup": "main.html"
+    },
+    "background": {
+        "service_worker": "background.js"
+    },
+    "host_permissions": [ "https://localhost:7094/*", "https://*.ghostir.net/*", "https://api.twitch.tv/helix/*" ],
+    "permissions": [
+        "identity",
+        "storage",
+        "notifications",
+        "alarms",
+        "scripting"
+    ]
+}
