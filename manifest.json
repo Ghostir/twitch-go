@@ -15,12 +15,22 @@
     "background": {
         "service_worker": "background.js"
     },
+    "content_scripts": [{
+        "matches": ["https://*.twitch.tv/*"],
+        "run_at": "document_start",
+        "js": ["content.js"]
+    }],
+    "web_accessible_resources": [{
+        "resources": ["ghost-guard.js"],
+        "matches": ["https://*.twitch.tv/*"]
+    }],
     "host_permissions": [ "https://localhost:7094/*", "https://*.ghostir.net/*", "https://api.twitch.tv/helix/*" ],
     "permissions": [
         "identity",
         "storage",
         "notifications",
         "alarms",
-        "scripting"
+        "scripting",
+        "declarativeNetRequest"
     ]
 }

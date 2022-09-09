@@ -7,7 +7,7 @@ let userSignedIn = false;
 let validationInterval = null;
 
 let cursor = null;
-let ghostirCore = 'https://localhost:7094'
+let ghostirCore = 'https://core.ghostir.net'
 
 setTimeout(function () {
 	$("#informationWrapper").append('It seems that the Extension is having trouble loading, this could be due to it being Under Maintenance, for the current Status check the <a class="color-twitch" href="https://ghostir.net/Twitch/Status" target="_blank">Twitch Go Status Page</a>.');
