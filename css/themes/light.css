@@ -24,6 +24,7 @@ label, .tab-pane, .twitch-input {
     background-color: #9147ff !important;
     color: #fff !important;
     font-size: 1.3rem !important;
+    border: 0 !important;
 }
 
 .btn-twitch:hover {

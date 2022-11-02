@@ -1,70 +1,92 @@
-var userId = null
-var accessToken = null;
-var clientId = null;
-var twitchEndpoint = null;
+let userId = null;
+let accessToken = null;
+let clientId = null;
+let twitchEndpoint = null;
 
 let userSignedIn = false;
 let validationInterval = null;
 
-let cursor = null;
-let ghostirCore = 'https://core.ghostir.net'
+let ghostirCore = 'https://localhost:7094'
 
-setTimeout(function () {
-	$("#informationWrapper").append('It seems that the Extension is having trouble loading, this could be due to it being Under Maintenance, for the current Status check the <a class="color-twitch" href="https://ghostir.net/Twitch/Status" target="_blank">Twitch Go Status Page</a>.');
-}, 5000);
+let favoriteList = [];
+let notifyList = [];
 
-chrome.storage.sync.get(['userSignedIn'], async function(result) {
+let followedStreamReturnAmount = 100;
+let topGamesReturnAmount = 100;
+let topStreamsReturnAmount = 100;
+
+chrome.storage.sync.get('userSignedIn', async function(result) {
 	userSignedIn = result.userSignedIn
-	await validationInformation();
-
-	if (userSignedIn) {
-		chrome.storage.sync.get(['accessToken'], async function(result) {
-			accessToken = result.accessToken;
-			
-			await getApplicationHtml();
-		});
+	
+	const validationResponse = await validationInformation();
+	if (validationResponse) {
+		if (userSignedIn) {
+			chrome.storage.sync.get('accessToken', async function (result) {
+				accessToken = result.accessToken;
+				await initApplication();
+			});
+		} else {
+			await signOut();
+		}
 	} else {
-		await signOut();
+		$("#defaultWrapper").hide();
+		$("#loginWrapper").hide();
+		$("#applicationWrapper").hide();
+		$("#underMaintenanceWrapper").show();
 	}
 });
 
 async function validationInformation() {
-	var fetchPromise = await fetch(ghostirCore + '/Twitch/GetValidationInformation');
-	var returnedData = await fetchPromise.json();
-
-	twitchEndpoint = returnedData.TwitchEndpoint;
-	clientId = encodeURIComponent(returnedData.TwitchId);
-}
-
-async function getApplicationHtml() {
-	var fetchPromise = await fetch(ghostirCore + '/Twitch/GetTwitchHtml');
-	var returnedData = await fetchPromise.text();
-	
-	$("#applicationWrapper").html(returnedData);
-
-	var darkMode = $('#darkMode_Checkbox').is(":checked");
-	chrome.storage.sync.get(['darkMode'], async function(result) {
-		if(result != undefined) {
-			darkMode = result.darkMode;
-		}
-
-		if(darkMode) {
-			$('#darkMode_Checkbox').prop('checked', true);
-			$('#styleTheme').attr('href','./css/themes/dark.css');
-		} else {
-			$('#darkMode_Checkbox').prop('checked', false);
-			$('#styleTheme').attr('href','./css/themes/light.css');
+	return $.ajax({
+		type: "GET",
+		url: `${ghostirCore}/Twitch/GetValidationInformation`,
+		success: async function(response){
+			const returnedData = JSON.parse(response);
+			twitchEndpoint = returnedData.TwitchEndpoint;
+			clientId = encodeURIComponent(returnedData.TwitchId);
+			return true;
+		},
+		error: function() {
+			// Ghostir API is Down (This will most likely be the case if this Failed)
+			// This usually occurs when the Hosting Server is Down for Maintenance
+			return false;
 		}
 	});
-	
-	$('#darkMode_Checkbox').on('change', () => {
-		var darkMode = $('#darkMode_Checkbox').is(":checked");
-		chrome.storage.sync.set({ 'darkMode': darkMode });
-		if(darkMode) {
-			$('#styleTheme').attr('href','./css/themes/dark.css');
-		} else {
-			$('#styleTheme').attr('href','./css/themes/light.css');
+}
+
+async function initApplication() {
+	$("#defaultWrapper").hide();
+	$("#loginWrapper").hide();
+	$("#applicationWrapper").show();
+
+	await this.initializeSettings();
+	await this.initializeSettingsChange();
+
+	$('.nav-link').on('shown.bs.tab', async () => {
+		await this.initializeSettings();
+		const currentTab = $(".section-button.active")[0];
+		const tabCode = $(currentTab).data('section-code');
+
+		switch (tabCode) {
+			case 'FollowingStreams':
+				$("#followingListPlaceholder_Wrapper").show();
+				$("#followingList_Wrapper").hide();
+				await getFollowingList();
+				break;
+			case 'TopGames':
+				$("#topGameListPlaceholder_Wrapper").show();
+				$("#topGameList_Wrapper").hide();
+				$("#topGameStreamList_Wrapper").hide();
+				await getTopGameList();
+				break;
+			case 'TopStreams':
+				$("#topStreamListPlaceholder_Wrapper").show();
+				$("#topStreamList_Wrapper").hide();
+				await getTopStreamList();
+				break;
 		}
+		
+		$('.tab-content').scrollTop(0);
 	});
 
 	await mainFunction();
@@ -81,17 +103,17 @@ async function getApplicationHtml() {
 
 async function signOut() {
 	// Removes the Twitch Access Token and sets the userSignedIn variable to False
-	chrome.storage.sync.set({ 'accessToken': null });
-	chrome.storage.sync.set({ 'userSignedIn': false });
+	await chrome.storage.sync.set({ 'accessToken': null });
+	await chrome.storage.sync.set({ 'userSignedIn': false });
 
 	accessToken = null;
 	userSignedIn = false;
 
-	var fetchPromise = await fetch(ghostirCore + '/Twitch/GetTwitchLoginHtml');
-	var returnedData = await fetchPromise.text();
-
-	$("#applicationWrapper").html(returnedData);
-
+	$("#applicationWrapper").hide();
+	$("#underMaintenanceWrapper").hide();
+	$("#defaultWrapper").hide();
+	$("#loginWrapper").show();
+	
 	// Setting the Sign In/Out Button Events
 	$('#signIn').on('click', () => {
 		$('#signIn_Icon').attr("class", "fa fa-circle-notch fa-spin");
@@ -109,7 +131,6 @@ async function signOut() {
 
 async function signIn() {
 	if (userSignedIn) {
-		console.log('User already Signed In.');
 		$('#signIn_Icon').attr("class", "fa fa-check-circle");
 	} else {
 		chrome.identity.launchWebAuthFlow({
@@ -118,11 +139,11 @@ async function signIn() {
 		}, async function (redirect_url) {
 			if (chrome.runtime.lastError) {
 				$('#signIn_Icon').attr("class", "fa fa-check-circle");
-				$('#authError_Wrapper').html('There was an Issue Authenticating with Twitch, view the Extension Status at <a class="color-twitch" href="https://ghostir.net/Twitch/Status" target="_blank">Twitch Go Status Page</a>.');
+				$('#authError_Wrapper').html('There was an Issue Authenticating with Twitch.');
 			} else {
 				if (redirect_url === undefined || redirect_url.includes('error=access_denied') || redirect_url.includes('error=redirect_mismatch')) {
 					$('#signIn_Icon').attr("class", "fa fa-check-circle");
-					$('#authError_Wrapper').html('There was an Issue Authenticating with Twitch, view the Extension Status at <a class="color-twitch" href="https://ghostir.net/Twitch/Status" target="_blank">Twitch Go Status Page</a>.');
+					$('#authError_Wrapper').html('There was an Issue Authenticating with Twitch.');
 				} else {
 					$('#signIn_Icon').attr("class", "fa fa-check-circle");
 					let tokenId = redirect_url.substring(redirect_url.indexOf('id_token=') + 9);
@@ -149,11 +170,11 @@ async function signIn() {
 						}, 3600000);
 						
 						// Successful Authentication
-						chrome.storage.sync.set({ 'accessToken': accessToken });
-						chrome.storage.sync.set({ 'userSignedIn': userSignedIn });
+						await chrome.storage.sync.set({ 'accessToken': accessToken });
+						await chrome.storage.sync.set({ 'userSignedIn': userSignedIn });
 
-						await getApplicationHtml();
-						mainFunction();
+						await initApplication();
+						await mainFunction();
 					}
 				}
 			}
@@ -169,85 +190,369 @@ async function mainFunction() {
 	await getSearchList();
 
 	initTabSearch();
+	await initRefresh();
+}
+
+async function initializeSettings() {
+	return new Promise((resolve) => {
+		chrome.storage.sync.get(['darkMode', 'favoriteList', 'notifyList', 'followedStreamReturnAmount', 'topGamesReturnAmount', 'topStreamsReturnAmount'], function (result) {
+			const darkModeCheckbox = $('#darkMode_Checkbox');
+			let darkMode = darkModeCheckbox.is(":checked");
+			if(result.darkMode !== undefined) {
+				darkMode = result.darkMode;
+			}
+
+			if(darkMode) {
+				darkModeCheckbox.prop('checked', true);
+				$('#styleTheme').attr('href','./css/themes/dark.css');
+			} else {
+				darkModeCheckbox.prop('checked', false);
+				$('#styleTheme').attr('href','./css/themes/light.css');
+			}
+			
+			if(result.favoriteList !== undefined) {
+				favoriteList = result.favoriteList.split(',');
+			}
+
+			if(result.notifyList !== undefined) {
+				notifyList = result.notifyList.split(',');
+			}
+
+			if(result.followedStreamReturnAmount !== undefined) {
+				followedStreamReturnAmount = parseInt(result.followedStreamReturnAmount ?? 100);
+				$('#followedStreamReturnAmount_Input').val(followedStreamReturnAmount);
+			}
+
+			if(result.topGamesReturnAmount !== undefined) {
+				topGamesReturnAmount = parseInt(result.topGamesReturnAmount ?? 100);
+				$('#topGamesReturnAmount_Input').val(topGamesReturnAmount);
+			}
+
+			if(result.topStreamsReturnAmount !== undefined) {
+				topStreamsReturnAmount = parseInt(result.topStreamsReturnAmount ?? 100);
+				$('#topStreamsReturnAmount_Input').val(topStreamsReturnAmount);
+			}
+			
+			resolve();
+		});
+	});
+}
+
+async function initializeSettingsChange() {
+	const darkModeCheckbox = $('#darkMode_Checkbox');
+	darkModeCheckbox.on('change', () => {
+		const darkMode = $('#darkMode_Checkbox').is(":checked");
+		chrome.storage.sync.set({ 'darkMode': darkMode });
+		if(darkMode) {
+			$('#styleTheme').attr('href','./css/themes/dark.css');
+		} else {
+			$('#styleTheme').attr('href','./css/themes/light.css');
+		}
+	});
+
+	$('#followedStreamReturnAmount_Input').on('change', () => {
+		const followedStreamReturnAmount = $('#followedStreamReturnAmount_Input').val();
+		chrome.storage.sync.set({ 'followedStreamReturnAmount': followedStreamReturnAmount });
+	});
+
+	$('#topGamesReturnAmount_Input').on('change', () => {
+		const topGamesReturnAmount = $('#topGamesReturnAmount_Input').val();
+		chrome.storage.sync.set({ 'topGamesReturnAmount': topGamesReturnAmount });
+	});
+
+	$('#topStreamsReturnAmount_Input').on('change', () => {
+		const topStreamsReturnAmount = $('#topStreamsReturnAmount_Input').val();
+		chrome.storage.sync.set({ 'topStreamsReturnAmount': topStreamsReturnAmount });
+	});
 }
 
 async function getCurrentUserId() {
-    var fetchPromise = await fetch('https://api.twitch.tv/helix/users', {
-        headers: {
-            'Authorization': 'Bearer ' + accessToken,
-            'Client-Id': clientId
-        }
-    });
+	const fetchPromise = await fetch('https://api.twitch.tv/helix/users', {
+		headers: {
+			'Authorization': 'Bearer ' + accessToken,
+			'Client-Id': clientId
+		}
+	});
 
 	if (fetchPromise.status === 200) {
-		var returnedData = await fetchPromise.json();
+		const returnedData = await fetchPromise.json();
 		return await returnedData.data[0].id;
 	} else {
 		await signOut();
 	}
 }
 
-function isHidden(el) {
-    var style = window.getComputedStyle(el);
-    return ((style.display === 'none') || (style.visibility === 'hidden'))
+async function getFollowingList() {
+	let cursor = null;
+
+	const placeHolderWrapper = $("#followingListPlaceholder_Wrapper");
+	const followingList = $("#followingList_Wrapper");
+
+	return $.ajax({
+		type: "GET",
+		url: `${ghostirCore}/Twitch/GetFollowedStreamList?authToken=${accessToken}&returnAmount=${followedStreamReturnAmount}&favoriteList=${favoriteList.join(',')}&notifyList=${notifyList.join(',')}&parameterList={"userId":"${userId}"}`,
+		success: async function(response){
+			const returnedData = JSON.parse(response);
+
+			followingList.html(returnedData.ReturnHtml);
+			placeHolderWrapper.hide();
+			followingList.show();
+
+			$(".favorite-stream, .favorited-stream").click(async (event) => {
+				const isFavorited = $(event.currentTarget).hasClass("favorited-stream");
+				const streamId = $(event.currentTarget).data("streamid");
+
+				if (isFavorited) {
+					$(event.currentTarget).removeClass('favorited-stream');
+					$(event.currentTarget).addClass('favorite-stream');
+
+					favoriteList.remove(streamId);
+					await chrome.storage.sync.set({ 'favoriteList': favoriteList.join(',') });
+				} else {
+					$(event.currentTarget).removeClass('favorite-stream');
+					$(event.currentTarget).addClass('favorited-stream');
+
+					if (favoriteList.length > 0 && streamId !== undefined) {
+						favoriteList.push(streamId);
+						const favoriteListFormatted = favoriteList.join(',');
+						await chrome.storage.sync.set({ 'favoriteList': favoriteListFormatted });
+					} else {
+						const favoriteStreamList = [];
+						favoriteStreamList.push(streamId);
+						favoriteList = favoriteStreamList.join(',');
+						await chrome.storage.sync.set({ 'favoriteList': favoriteList });
+					}
+				}
+			});
+
+			$(".notification-option-stream, .notification-selected-stream").click(async (event) => {
+				const isNotify = $(event.currentTarget).hasClass("notification-selected-stream");
+				const streamId = $(event.currentTarget).data("streamid");
+
+				if (isNotify) {
+					$(event.currentTarget).removeClass('notification-selected-stream');
+					$(event.currentTarget).addClass('notification-option-stream');
+
+					notifyList.remove(streamId);
+					await chrome.storage.sync.set({ 'notifyList': notifyList.join(',') });
+				} else {
+					$(event.currentTarget).removeClass('notification-option-stream');
+					$(event.currentTarget).addClass('notification-selected-stream');
+
+					if (notifyList.length > 0 && streamId !== undefined) {
+						notifyList.push(streamId);
+						const notifyListFormatted = notifyList.join(',');
+						await chrome.storage.sync.set({ 'notifyList': notifyListFormatted });
+					} else {
+						const notifyStreamList = [];
+						notifyStreamList.push(streamId);
+						notifyList = notifyStreamList.join(',');
+						await chrome.storage.sync.set({ 'notifyList': notifyList });
+					}
+				}
+			});
+			
+			if (returnedData.Cursor != null) {
+				cursor = returnedData.Cursor;
+
+				const onScrollToBottom = followingList.find('.more-section')[0];
+				const onIntersection = async ([{isIntersecting}]) => {
+					if (isIntersecting) {
+						const fetchPromise = await fetch(`${ghostirCore}/Twitch/GetFollowedStreamList?authToken=${accessToken}&returnAmount=${followedStreamReturnAmount}&favoriteList=${favoriteList.join(',')}&parameterList={"userId":"${userId}", "cursor":"${cursor}"}`);
+						const returnedData = await fetchPromise.json();
+
+						if(returnedData.Count > 0) {
+							followingList.find('.list-group').append(returnedData.ReturnHtml);
+							cursor = returnedData.Cursor;
+
+							if(cursor == null){
+								followingList.find('.more-section').remove();
+							}
+						} else {
+							followingList.find('.more-section').remove();
+						}
+					}
+				}
+
+				const io = new IntersectionObserver(onIntersection, {threshold: 1})
+				io.observe(onScrollToBottom)
+			}
+		},
+		error: function() {
+			return false;
+		}
+	});
 }
 
+async function getTopGameList() {
+	let cursor = null;
+
+	const placeHolderWrapper = $("#topGameListPlaceholder_Wrapper");
+	const topGameList = $("#topGameList_Wrapper");
+	const topGameStreamList = $("#topGameStreamList_Wrapper");
+	const fetchPromise = await fetch(`${ghostirCore}/Twitch/GetTopGameList?authToken=${accessToken}&returnAmount=${topStreamsReturnAmount}`);
+	const returnedData = await fetchPromise.json();
+
+	topGameList.html(returnedData.ReturnHtml);
+	placeHolderWrapper.hide();
+	topGameList.show();
+
+	const gameButton = $('.gameButton');
+	const backGames = $('#backGames');
+
+	gameButton.on('click', async (event) => {
+		let gameId = $(event.currentTarget).data('gameid');
+
+		const fetchPromise = await fetch(`${ghostirCore}/Twitch/GetTopStreamList?authToken=${accessToken}&returnAmount=${topStreamsReturnAmount}&parameterList={"game":"${gameId}"}`);
+		const returnedData = await fetchPromise.json();
+
+		topGameStreamList.html(returnedData.ReturnHtml);
+
+		backGames.on('click', () => {
+			$('.tab-content').scrollTop(0);
+			topGameStreamList.scrollTop(0);
+
+			backGames.hide();
+			topGameList.show();
+			topGameStreamList.hide();
+			topGameStreamList.html("");
+		});
+
+		backGames.show();
+		topGameList.hide();
+		topGameStreamList.show();
+	});
+	
+	if (returnedData.Cursor != null) {
+		cursor = returnedData.Cursor;
+
+		const onScrollToBottom = topGameList.find('.more-section')[0];
+		const onIntersection = async ([{isIntersecting}]) => {
+			if (isIntersecting) {
+				const fetchPromise = await fetch(`${ghostirCore}/Twitch/GetTopGameList?authToken=${accessToken}&returnAmount=${topStreamsReturnAmount}&cursor=${cursor}`);
+				const returnedData = await fetchPromise.json();
+
+				if(returnedData.Count > 0) {
+					topGameList.find('.list-group').append(returnedData.ReturnHtml);
+					cursor = returnedData.Cursor;
+
+					if(cursor == null){
+						topGameList.find('.more-section').remove();
+					}
+				} else {
+					topGameList.find('.more-section').remove();
+				}
+			}
+		}
+
+		const io = new IntersectionObserver(onIntersection, {threshold: 1})
+		io.observe(onScrollToBottom)
+	}
+}
+
+async function getTopStreamList() {
+	let cursor = null;
+
+	const placeHolderWrapper = $("#topStreamListPlaceholder_Wrapper");
+	const topStreamList = $("#topStreamList_Wrapper");
+	const fetchPromise = await fetch(`${ghostirCore}/Twitch/GetTopStreamList?authToken=${accessToken}&returnAmount=${topStreamsReturnAmount}&notifyList=${notifyList.join(',')}`);
+	const returnedData = await fetchPromise.json();
+
+	topStreamList.html(returnedData.ReturnHtml);
+	placeHolderWrapper.hide();
+	topStreamList.show();
+
+	if (returnedData.Cursor != null) {
+		cursor = returnedData.Cursor;
+
+		const onScrollToBottom = topStreamList.find('.more-section')[0];
+		const onIntersection = async ([{isIntersecting}]) => {
+			if (isIntersecting) {
+				const fetchPromise = await fetch(`${ghostirCore}/Twitch/GetTopStreamList?authToken=${accessToken}&returnAmount=${topStreamsReturnAmount}&notifyList=${notifyList.join(',')}&parameterList={"cursor":"${cursor}"}`);
+				const returnedData = await fetchPromise.json();
+
+				if(returnedData.Count > 0) {
+					topStreamList.find('.list-group').append(returnedData.ReturnHtml);
+					cursor = returnedData.Cursor;
+
+					if(cursor == null){
+						topStreamList.find('.more-section').remove();
+					}
+				} else {
+					topStreamList.find('.more-section').remove();
+				}
+			}
+		}
+
+		const io = new IntersectionObserver(onIntersection, {threshold: 1})
+		io.observe(onScrollToBottom)
+	}
+}
+
+async function getSearchList() {
+	const searchInput = $('#searchTab');
+
+	let typingTimer;
+	const doneTypingInterval = 1000;
+
+	searchInput.on('keyup', function () {
+		const currentTab = $(".section-button.active")[0];
+		const tabCode = $(currentTab).data('section-code');
+
+		const currentPane = $('#searchResult_Wrapper .tab-pane.active')[0];
+		const paneCode = $(currentPane).data('type');
+		
+		if (tabCode === 'Search') {
+			clearTimeout(typingTimer);
+			typingTimer = setTimeout(async function() {
+				let filter = searchInput.val().toUpperCase();
+
+				switch (paneCode) {
+					case 'Stream':
+						$('#searchStreamResult_Wrapper').html('<div class="text-center p-3"><h1 class="fw-light"><i class="fas fa-circle-notch fa-spin" style="color: #772ce8;font-size: 40px;"></i></h1></div>');
+						
+						if(filter.length === 0) {
+							$('#searchStreamResult_Wrapper').html('<div class="text-center p-3"><small><i>Begin Searching for Stream or Games/Categories...</i></small></div>');
+						} else {
+							const fetchPromise = await fetch(`${ghostirCore}/Twitch/GetSearchList?authToken=${accessToken}&searchType=${paneCode}&parameterList={"search":"${filter}"}`);
+							const returnedData = await fetchPromise.json();
+							$('#searchStreamResult_Wrapper').html(returnedData.ReturnHtml);
+						}
+						break;
+					case 'Category':
+						$('#searchCategoryResult_Wrapper').html('<div class="text-center p-3"><h1 class="fw-light"><i class="fas fa-circle-notch fa-spin" style="color: #772ce8;font-size: 40px;"></i></h1></div>');
+						
+						if(filter.length === 0) {
+							$('#searchCategoryResult_Wrapper').html('<div class="text-center p-3"><small><i>Begin Searching for Stream or Games/Categories...</i></small></div>');
+						} else {
+							const fetchPromise = await fetch(`${ghostirCore}/Twitch/GetSearchList?authToken=${accessToken}&searchType=${paneCode}&parameterList={"search":"${filter}"}`);
+							const returnedData = await fetchPromise.json();
+							$('#searchCategoryResult_Wrapper').html(returnedData.ReturnHtml);
+						}
+						break;
+				}
+				
+				
+			}, doneTypingInterval);
+		}
+	});
+
+	searchInput.on('keydown', function () {
+		clearTimeout(typingTimer);
+	});
+}
 
 function initTabSearch() {
 	const selectElement = $('#searchTab');
-
-	$('.nav-link').on('shown.bs.tab', () => {
-		var  filter, ul, li, a, i, txtValue;
-		selectElement.val('');
-		filter = selectElement.val().toUpperCase();
-
-		var currentTab = $(".tab-pane.active")[0];
-		$('#backGames').hide();
-		$('.tab-content').scrollTop(0);
-
-		// ul = $(currentTab).find('.list-group');
-		// li = ul.find("a");
-		// for (i = 0; i < li.length; i++) {
-		// 	var currentListItem = li[i];
-		// 	a = $(currentListItem).find(".fw-bold")[0];
-		// 	txtValue = a.textContent || a.innerText;
-
-		// 	if (txtValue.toUpperCase().indexOf(filter) > -1) {
-		// 		$(currentListItem).show();
-		// 	} else {
-		// 		$(currentListItem).hide();
-		// 	}
-		// }
-
-		// var countVisible = 0;
-		// for (var i = 0, max = li.length; i < max; i++) {
-		// 	if (!isHidden(li[i]))
-		// 	{
-		// 		countVisible++;
-		// 	}
-		// }
-
-		// if($(currentTab).find('.more-section')) {
-		// 	if (countVisible <= 6) {
-		// 		$(currentTab).find('.more-section').removeClass("d-block");
-		// 		$(currentTab).find('.more-section').addClass("d-none");
-		// 	} else {
-		// 		$(currentTab).find('.more-section').removeClass("d-none");
-		// 		$(currentTab).find('.more-section').addClass("d-block");
-		// 	}
-		// }
-	});
-
 	selectElement.on('keyup', () => {
-		var  filter, ul, li, a, i, txtValue;
+		let filter, li, a, i, txtValue;
 		filter = selectElement.val().toUpperCase();
 
-		var currentTab = $(".tab-pane.active")[0];
+		const currentTab = $(".tab-pane.active")[0];
 
-		ul = $(currentTab).find('.list-group');
-		li = ul.find("a");
+		li = $(currentTab).find('.tab-body .list-group-item');
 		for (i = 0; i < li.length; i++) {
-			var currentListItem = li[i];
+			const currentListItem = li[i];
 			a = $(currentListItem).find(".fw-bold")[0];
 			txtValue = a.textContent || a.innerText;
 
@@ -258,8 +563,10 @@ function initTabSearch() {
 			}
 		}
 
-		var countVisible = 0;
-		for (var i = 0, max = li.length; i < max; i++) {
+		let countVisible = 0;
+		i = 0;
+		const max = li.length;
+		for (; i < max; i++) {
 			if (!isHidden(li[i]))
 			{
 				countVisible++;
@@ -278,656 +585,44 @@ function initTabSearch() {
 	});
 }
 
-async function getFollowingList() {
-	var cursor = null;
-	var fetchPromise = await fetch(ghostirCore + '/Twitch/GetFollowedStreams?authToken=' + accessToken + '&parameterList={"userId":' + '"' + userId + '"}' );
-	var returnedData = await fetchPromise.json();
+async function initRefresh() {
+	$('#refresh').on('click', async () => {
+		const currentTab = $(".section-button.active")[0];
+		const tabCode = $(currentTab).data('section-code');
 
-	$("#followingList").html(returnedData.ReturnHtml);
-	cursor = returnedData.Cursor;
+		switch (tabCode) {
+			case 'FollowingStreams':
+				$("#followingListPlaceholder_Wrapper").show();
+				$("#followingList_Wrapper").hide();
+				await getFollowingList();
+				break;
+			case 'TopGames':
+				$("#topGameListPlaceholder_Wrapper").show();
+				$("#topGameList_Wrapper").hide();
+				await getTopGameList();
+				break;
+			case 'TopStreams':
+				$("#topStreamListPlaceholder_Wrapper").show();
+				$("#topStreamList_Wrapper").hide();
+				await getTopStreamList();
+				break;
+		}
+	});
+}
 
-	// Hides/Shows the More Loading
-	var ul = $("#followingList").find('.list-group');
-	var li = ul.find("a");
-	var countVisible = 0;
-	for (var i = 0, max = li.length; i < max; i++) {
-		if (!isHidden(li[i]))
-		{
-			countVisible++;
+
+// Useful Functions
+function isHidden(el) {
+	const style = window.getComputedStyle(el);
+	return ((style.display === 'none') || (style.visibility === 'hidden'))
+}
+
+// Used to remove Items from an Array
+Array.prototype.remove = function(x) {
+	let i;
+	for(i in this){
+		if(this[i].toString() === x.toString()){
+			this.splice(i,1)
 		}
 	}
-
-	if (countVisible <= 6) {
-		$("#followingList").find('.more-section').hide();
-	} else {
-		$("#followingList").find('.more-section').show();
-	}
-
-    const onScrollToBottom = $("#followingList").find('.more-section')[0];
-    const onIntersection = async ([{isIntersecting}]) => {
-        if (isIntersecting && countVisible > 6) {
-			if (cursor != undefined) {
-				var fetchPromise = await fetch(ghostirCore + '/Twitch/GetFollowedStreams?authToken=' + accessToken + '&parameterList={"userId":"' + userId + '", "cursor":"' + cursor + '"}' );
-				var returnedData = await fetchPromise.json();
-
-				if(returnedData.Count > 0) {
-					$("#followingList").find('.list-group').append(returnedData.ReturnHtml);
-					cursor = returnedData.Cursor;
-
-					if(cursor == null){
-						$("#followingList").find('.more-section').remove();
-					}
-				} else {
-					$("#followingList").find('.more-section').remove();
-				}
-			} else {
-				$("#followingList").find('.more-section').remove();
-			}
-        }
-    }
-
-    const io = new IntersectionObserver(onIntersection, {threshold: 1})
-    io.observe(onScrollToBottom)
 }
-
-async function getTopGameList() {
-	var cursor = null;
-	var fetchPromise = await fetch(ghostirCore + '/Twitch/GetTopGameList?authToken=' + accessToken);
-	var returnedData = await fetchPromise.json();
-
-	$("#topGames").html(returnedData.ReturnHtml);
-	cursor = returnedData.Cursor;
-
-	// Hides/Shows the More Loading
-	var ul = $("#topGames").find('.list-group');
-	var li = ul.find("a");
-	var countVisible = 0;
-	for (var i = 0, max = li.length; i < max; i++) {
-		if (!isHidden(li[i]))
-		{
-			countVisible++;
-		}
-	}
-
-	if (countVisible <= 6) {
-		$("#topGames").find('.more-section').hide();
-	} else {
-		$("#topGames").find('.more-section').show();
-	}
-
-    const onScrollToBottom = $("#topGames").find('.more-section')[0];
-    const onIntersection = async ([{isIntersecting}]) => {
-        if (isIntersecting && countVisible > 6) {
-			if (cursor != undefined) {
-				var fetchPromise = await fetch(ghostirCore + '/Twitch/GetTopGameList?authToken=' + accessToken + '&cursor=' + cursor);
-				var returnedData = await fetchPromise.json();
-
-				if(returnedData.Count > 0) {
-					$("#topGames").find('.list-group').append(returnedData.ReturnHtml);
-					cursor = returnedData.Cursor;
-
-					if(cursor == null){
-						$("#topGames").find('.more-section').remove();
-					}
-				} else {
-					$("#topGames").find('.more-section').remove();
-				}
-			} else {
-				$("#topGames").find('.more-section').remove();
-			}
-        }
-    }
-
-    const io = new IntersectionObserver(onIntersection, {threshold: 1})
-    io.observe(onScrollToBottom)
-}
-
-async function getTopStreamList() {
-	var cursor = null;
-	var fetchPromise = await fetch(ghostirCore + '/Twitch/GetStreamList?authToken=' + accessToken);
-	var returnedData = await fetchPromise.json();
-
-	$("#topStreams").html(returnedData.ReturnHtml);
-	cursor = returnedData.Cursor;
-
-	// Hides/Shows the More Loading
-	var ul = $("#topStreams").find('.list-group');
-	var li = ul.find("a");
-	var countVisible = 0;
-	for (var i = 0, max = li.length; i < max; i++) {
-		if (!isHidden(li[i]))
-		{
-			countVisible++;
-		}
-	}
-
-	if (countVisible <= 6) {
-		$("#topStreams").find('.more-section').hide();
-	} else {
-		$("#topStreams").find('.more-section').show();
-	}
-
-	var gameButton = $('.gameButton');
-	gameButton.on('click', async (event) => {
-		let gameId = $(event.currentTarget).data('gameid');
-
-		var fetchPromise = await fetch(ghostirCore + '/Twitch/GetStreamList?authToken=' + accessToken + '&parameterList={"game":' + '"' + gameId + '"}');
-		var returnedData = await fetchPromise.json();
-
-		$("#topGamesInner").html(returnedData.ReturnHtml);
-
-		$('#backGames').on('click', () => {
-			$("#backGames").hide();
-
-			$('.tab-content').scrollTop(0);
-			$('#topGamesInner').scrollTop(0);
-
-			$("#topGames").addClass("show");
-			$("#topGames").addClass("active");
-			
-			$("#topGamesInner").removeClass("show");
-			$("#topGamesInner").removeClass("active");
-
-			$("#topGamesInner").html(""); 
-		});
-
-		$("#backGames").show();
-
-		$("#topGames").removeClass("show");
-		$("#topGames").removeClass("active");
-		
-		$("#topGamesInner").addClass("show");
-		$("#topGamesInner").addClass("active");
-	});
-
-    const onScrollToBottom = $("#topStreams").find('.more-section')[0];
-    const onIntersection = async ([{isIntersecting}]) => {
-        if (isIntersecting && countVisible > 6) {
-			if (cursor != undefined) {
-				var fetchPromise = await fetch(ghostirCore + '/Twitch/GetStreamList?authToken=' + accessToken + '&parameterList={"cursor":' + '"' + cursor + '"}');
-				var returnedData = await fetchPromise.json();
-
-				if(returnedData.Count > 0) {
-					$("#topStreams").find('.list-group').append(returnedData.ReturnHtml);
-					cursor = returnedData.Cursor;
-
-					if(cursor == null){
-						$("#topStreams").find('.more-section').remove();
-					}
-				} else {
-					$("#topStreams").find('.more-section').remove();
-				}
-			} else {
-				$("#topStreams").find('.more-section').remove();
-			}
-        }
-    }
-
-    const io = new IntersectionObserver(onIntersection, {threshold: 1})
-    io.observe(onScrollToBottom)
-}
-
-async function getSearchList() {
-	var searchValue = $('#searchTab').val();
-	if(searchValue.length === 0) {
-		$('#searchList').html('<div class="text-center p-3"><small><i>Begin Searching for Stream or Games/Categories...</i></small></div>');
-	} else {
-		var fetchPromise = await fetch(ghostirCore + '/Twitch/GetSearchList?authToken=' + accessToken + '&parameterList={"search":' + '"' + searchValue + '"}');
-		var returnedData = await fetchPromise.json();
-	
-		$('#searchList').html(returnedData.ReturnHtml);
-	}
-
-	var typingTimer;
-	var doneTypingInterval = 1000;
-
-	$('#searchTab').on('keyup', function () {
-		$('#searchList').html('<div class="text-center p-3"><h1 class="fw-light"><i class="fas fa-circle-notch fa-spin" style="color: #772ce8;font-size: 40px;"></i></h1></div>');
-		clearTimeout(typingTimer);
-		typingTimer = setTimeout(doneTyping, doneTypingInterval);
-	});
-
-	$('#searchTab').on('keydown', function () {
-		clearTimeout(typingTimer);
-	});
-	
-}
-
-async function doneTyping () {
-	var filter;
-	filter = $('#searchTab').val().toUpperCase();
-	if(filter.length === 0) {
-		$('#searchList').html('<div class="text-center p-3"><small><i>Begin Searching for Stream or Games/Categories...</i></small></div>');
-	} else {
-		var fetchPromise = await fetch(ghostirCore + '/Twitch/GetSearchList?authToken=' + accessToken + '&parameterList={"search":' + '"' + filter + '"}');
-		var returnedData = await fetchPromise.json();
-
-		$('#searchList').html(returnedData.ReturnHtml);
-	}
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// async function getTopGameList() {
-// 	var cursor = null;
-
-//     var followingList = await twitchCall('games/top?first=100');
-// 	cursor = followingList.pagination.cursor;
-
-// 	var innerHtml = '<div id="topGameList" class="list-group list-group-flush scrollarea ps-1 pt-1">';
-// 	followingList.data.forEach(element => {
-// 		var thumbnailImage = '<div class="col-3" style="width: 10% !important"><img src="' + element.box_art_url.replace('{width}', '35').replace('{height}', '50') + '" height="50" width="35" alt="Thumbnail"></div>';
-// 		innerHtml += '<a href="#" data-gameId="' + element.id + '" class="gameButton list-group-item list-group-item-action p-0">' + 
-// 			'<div class="d-flex align-items-center justify-content-between">' +
-// 				thumbnailImage +
-// 				'<div class="col-9" style="width: 90% !important">' +
-// 					'<div class="fw-bold" style="margin-bottom: 5px;">' + element.name + '</div>' +
-// 				'</div>' +
-// 			'</div>' +
-// 		'</a>'
-// 	});
-
-// 	innerHtml += '</div><section id="topGameListBottom" class="more-section"><i class="fa-solid fa-circle-notch fa-spin"></i> More</section>';
-// 	document.getElementById("topGames").innerHTML = innerHtml
-
-// 	const selectElement = document.querySelector('#searchTab');
-// 	selectElement.addEventListener('keyup', (event) => {
-// 		var  filter, ul, li, a, i, txtValue;
-// 		filter = event.target.value.toUpperCase();
-// 		ul = document.getElementById("topGameList");
-// 		li = ul.getElementsByTagName("a");
-// 		for (i = 0; i < li.length; i++) {
-// 			a = li[i].getElementsByClassName("fw-bold")[0];
-// 			txtValue = a.textContent || a.innerText;
-
-// 			if (txtValue.toUpperCase().indexOf(filter) > -1) {
-// 				li[i].style.display = "";
-// 			} else {
-// 				li[i].style.display = "none";
-// 			}
-// 		}
-
-// 		var countVisible = 0;
-// 		for (var i = 0, max = li.length; i < max; i++) {
-// 			if (!isHidden(li[i]))
-// 			{
-// 				countVisible++;
-// 			}
-// 		}
-
-// 		if(document.querySelector('#topGameListBottom')) {
-// 			if (countVisible <= 6) {
-// 				document.querySelector('#topGameListBottom').classList.remove("d-block");
-// 				document.querySelector('#topGameListBottom').classList.add("d-none");
-// 			} else {
-// 				document.querySelector('#topGameListBottom').classList.remove("d-none");
-// 				document.querySelector('#topGameListBottom').classList.add("d-block");
-// 			}
-// 		}
-// 	});
-
-	// document.querySelectorAll('.gameButton').forEach(item => {
-	// 	item.addEventListener('click', event => {
-	// 		let gameId = event.currentTarget.dataset.gameid;
-
-	// 		fetch('https://api.twitch.tv/helix/streams?game_id=' + gameId + '&first=100', {
-	// 			headers: {
-	// 				'Authorization': 'Bearer ' + accessToken,
-	// 				'Client-Id': clientId
-	// 			}
-	// 		}).then(res => {
-	// 			res.json().then(body => {
-	// 				topGamesInner = body;
-	// 				var innerHtml = '<div class="list-group list-group-flush scrollarea">';
-	// 				topGamesInner.data.forEach(element => {
-	// 					var thumbnailImage = '<div class="col-3" style="width: 22% !important"><img src="' + element.thumbnail_url.replace('{width}', '90').replace('{height}', '50') + '" height="50" width="90" alt="Thumbnail"></div>';
-	// 					innerHtml += '<a href="https://www.twitch.tv/' + element.user_login + '" target="_blank" class="list-group-item list-group-item-action p-0" style="padding-left: 3px !important;">' + 
-	// 						'<div class="d-flex align-items-center justify-content-between">' +
-	// 							thumbnailImage +
-	// 							'<div class="col-9" style="width: 78% !important">' +
-	// 								'<div class="fw-bold" style="margin-bottom: 5px;">' + element.user_name + '</div>' +
-	// 								'<div class="small" style="margin-top: -10px;"><small>' + element.game_name + ' <span class="badge bg-danger">' + element.viewer_count + ' viewers</span></small></div>' +
-	// 								'<div class="text-truncate small" style="margin-top: -5px;"><small>' + element.title + '</small></div>' +
-	// 							'</div>' +
-	// 						'</div>' +
-	// 					'</a>'
-	// 				});
-	// 				innerHtml += '</div>'
-	// 				document.getElementById("topGamesInner").innerHTML = innerHtml
-
-	// 				document.querySelector('#backGames').addEventListener('click', event => {
-						
-
-	// 					document.getElementById("backGames").classList.remove("d-block");
-	// 					document.getElementById("backGames").classList.add("d-none");
-
-	// 					document.getElementById("topGames").classList.add("show");
-	// 					document.getElementById("topGames").classList.add("active");
-						
-	// 					document.getElementById("topGamesInner").classList.remove("show");
-	// 					document.getElementById("topGamesInner").classList.remove("active");
-
-	// 					document.getElementById("topGamesInner").innerHTML = ''; 
-	// 				});
-	// 			});
-				
-	// 			if (res.status === 401) {
-	// 				user_signed_in = false;
-	// 			}
-	// 		}).catch(err => console.log(err));
-
-	// 		document.getElementById("backGames").classList.remove("d-none");
-	// 		document.getElementById("backGames").classList.add("d-block");
-
-	// 		document.getElementById("topGames").classList.remove("show");
-	// 		document.getElementById("topGames").classList.remove("active");
-			
-	// 		document.getElementById("topGamesInner").classList.add("show");
-	// 		document.getElementById("topGamesInner").classList.add("active");
-	// 	});
-	// });
-
-// 	const onScrollToBottom = document.querySelector('#topGameListBottom');
-//     const onIntersection = async ([{isIntersecting}]) => {
-//         if (isIntersecting) {
-// 			if (cursor != undefined) {
-// 				var innerFollowingList = await twitchCall('games/top?first=100' + '&after=' + cursor);
-// 				if(innerFollowingList.data.length > 0) {
-// 					cursor = innerFollowingList.pagination.cursor;
-				
-// 					let innerHtml = '';
-				
-// 					innerFollowingList.data.forEach(element => {
-// 						var thumbnailImage = '<div class="col-3" style="width: 10% !important"><img src="' + element.box_art_url.replace('{width}', '35').replace('{height}', '50') + '" height="50" width="35" alt="Thumbnail"></div>';
-// 						innerHtml += '<a href="#" data-gameId="' + element.id + '" class="gameButton list-group-item list-group-item-action p-0">' + 
-// 							'<div class="d-flex align-items-center justify-content-between">' +
-// 								thumbnailImage +
-// 								'<div class="col-9" style="width: 90% !important">' +
-// 									'<div class="fw-bold" style="margin-bottom: 5px;">' + element.name + '</div>' +
-// 								'</div>' +
-// 							'</div>' +
-// 						'</a>'
-// 					});
-					
-// 					var container = document.getElementById("topGameList");
-// 					container.innerHTML += innerHtml;
-// 				} else {
-// 					document.querySelector('#topGameListBottom').remove();
-// 				}
-// 			} else {
-// 				document.querySelector('#topGameListBottom').remove();
-// 			}
-//         }
-//     }
-
-//     const io = new IntersectionObserver(onIntersection, {threshold: 1})
-//     io.observe(onScrollToBottom)
-// }
-
-
-
-
-
-
-
-
-// chrome.storage.sync.get(['accessToken'], function(result) {
-//     console.log(result.accessToken);
-//     accessToken = result.accessToken;
-//     chrome.storage.sync.get(['clientId'], function(result) {
-//         console.log(result.clientId);
-//         clientId = result.clientId;
-
-
-//         fetch('https://api.twitch.tv/helix/users', {
-//     headers: {
-//         'Authorization': 'Bearer ' + accessToken,
-//         'Client-Id': clientId
-//     }
-// }).then(res => {
-//     res.json().then(body => {
-//         userId = body.data[0].id;
-        
-//         fetch('https://api.twitch.tv/helix/streams/followed?user_id=' + userId + '&first=2', {
-//             headers: {
-//                 'Authorization': 'Bearer ' + accessToken,
-//                 'Client-Id': clientId
-//             }
-//         }).then(res => {
-//             res.json().then(body => {
-//                 followingList = body;
-//                 // var paginationWrapper = '<div class="pagination-wrapper">'
-//                 // paginationWrapper += '<button class="btn btn-primary twitch-button me-2"><i class="fa fa-arrow-left"></i> Back</button>'
-//                 // paginationWrapper += '<button class="btn btn-primary twitch-button">Next <i class="fa fa-arrow-right"></i></button>'
-//                 // paginationWrapper += '</div>';
-//                 var innerHtml = '<div class="list-group list-group-flush scrollarea">';
-//                 followingList.data.forEach(element => {
-//                     var thumbnailImage = '<div class="col-3" style="width: 22% !important"><img src="' + element.thumbnail_url.replace('{width}', '90').replace('{height}', '50') + '" height="50" width="90" alt="Thumbnail"></div>';
-//                     innerHtml += '<a href="https://www.twitch.tv/' + element.user_login + '" target="_blank" class="list-group-item list-group-item-action p-0" style="padding-left: 3px !important;">' + 
-//                         '<div class="d-flex align-items-center justify-content-between">' +
-//                             thumbnailImage +
-//                             '<div class="col-9" style="width: 78% !important">' +
-//                                 '<div class="fw-bold" style="margin-bottom: 5px;">' + element.user_name + '</div>' +
-//                                 '<div class="small" style="margin-top: -10px;"><small>' + '<span class="me-2">' + element.game_name + '</span>' + ' <span class="viewer-color">' + '<i class="fa fa-user"></i> ' + '<strong>' + element.viewer_count + '</strong>' + '</span></small></div>' +
-//                                 '<div class="text-truncate small" style="margin-top: -5px;"><small>' + element.title + '</small></div>' +
-//                             '</div>' +
-//                         '</div>' +
-//                     '</a>'
-//                 });
-//                 innerHtml += '</div><section id="on-scroll-to-bottom">On Scroll to Bottom</section>'
-//                 document.getElementById("followingList").innerHTML = innerHtml
-
-//                 console.log(body)
-
-//                 const onScrollToBottom = document.getElementById('on-scroll-to-bottom')
-
-//                 const onIntersection = ([{isIntersecting, target}]) => {
-//                     isIntersecting && (target.style.backgroundColor = 'green');
-
-//                     fetch('https://api.twitch.tv/helix/streams/followed?user_id=' + userId + '&first=100' + '&after=' + followingList.pagination.cursor, {
-//                         headers: {
-//                             'Authorization': 'Bearer ' + accessToken,
-//                             'Client-Id': clientId
-//                         }
-//                     }).then(res => {
-//                         res.json().then(body => {
-//                             followingList = body;
-//                             // var paginationWrapper = '<div class="pagination-wrapper">'
-//                             // paginationWrapper += '<button class="btn btn-primary twitch-button me-2"><i class="fa fa-arrow-left"></i> Back</button>'
-//                             // paginationWrapper += '<button class="btn btn-primary twitch-button">Next <i class="fa fa-arrow-right"></i></button>'
-//                             // paginationWrapper += '</div>';
-//                             var innerHtml = '<div class="list-group list-group-flush scrollarea">';
-//                             followingList.data.forEach(element => {
-//                                 var thumbnailImage = '<div class="col-3" style="width: 22% !important"><img src="' + element.thumbnail_url.replace('{width}', '90').replace('{height}', '50') + '" height="50" width="90" alt="Thumbnail"></div>';
-//                                 innerHtml += '<a href="https://www.twitch.tv/' + element.user_login + '" target="_blank" class="list-group-item list-group-item-action p-0" style="padding-left: 3px !important;">' + 
-//                                     '<div class="d-flex align-items-center justify-content-between">' +
-//                                         thumbnailImage +
-//                                         '<div class="col-9" style="width: 78% !important">' +
-//                                             '<div class="fw-bold" style="margin-bottom: 5px;">1' + element.user_name + '</div>' +
-//                                             '<div class="small" style="margin-top: -10px;"><small>' + '<span class="me-2">' + element.game_name + '</span>' + ' <span class="viewer-color">' + '<i class="fa fa-user"></i> ' + '<strong>' + element.viewer_count + '</strong>' + '</span></small></div>' +
-//                                             '<div class="text-truncate small" style="margin-top: -5px;"><small>' + element.title + '</small></div>' +
-//                                         '</div>' +
-//                                     '</div>' +
-//                                 '</a>'
-//                             });
-//                             innerHtml += '</div><section id="on-scroll-to-bottom">On Scroll to Bottom</section>'
-//                             document.getElementById("followingList").innerHTML += innerHtml
-//                         });
-                        
-//                         if (res.status === 401) {
-//                             user_signed_in = false;
-//                         }
-//                     }).catch(err => console.log(err))
-//                 }
-                
-//                 const io = new IntersectionObserver(onIntersection, {threshold: 1})
-
-//                 io.observe(onScrollToBottom)
-//             });
-            
-//             if (res.status === 401) {
-//                 user_signed_in = false;
-//             }
-//         }).catch(err => console.log(err))
-//     });
-// }).catch(err => console.log(err))
-
-// fetch('https://api.twitch.tv/helix/games/top?first=100', {
-//     headers: {
-//         'Authorization': 'Bearer ' + accessToken,
-//         'Client-Id': clientId
-//     }
-// }).then(res => {
-//     res.json().then(body => {
-//         topGames = body;
-//         var innerHtml = '<div class="list-group list-group-flush scrollarea ps-1 pt-1">';
-//         topGames.data.forEach(element => {
-//             var thumbnailImage = '<div class="col-3" style="width: 10% !important"><img src="' + element.box_art_url.replace('{width}', '35').replace('{height}', '50') + '" height="50" width="35" alt="Thumbnail"></div>';
-//             innerHtml += '<a href="#" data-gameId="' + element.id + '" class="gameButton list-group-item list-group-item-action p-0">' + 
-//                 '<div class="d-flex align-items-center justify-content-between">' +
-//                     thumbnailImage +
-//                     '<div class="col-9" style="width: 90% !important">' +
-//                         '<div class="fw-bold" style="margin-bottom: 5px;">' + element.name + '</div>' +
-//                     '</div>' +
-//                 '</div>' +
-//             '</a>'
-//         });
-//         innerHtml += '</div>'
-//         document.getElementById("topGames").innerHTML = innerHtml
-//         document.querySelectorAll('.gameButton').forEach(item => {
-//             item.addEventListener('click', event => {
-//                 let gameId = event.currentTarget.dataset.gameid;
-
-//                 fetch('https://api.twitch.tv/helix/streams?game_id=' + gameId + '&first=100', {
-//                     headers: {
-//                         'Authorization': 'Bearer ' + accessToken,
-//                         'Client-Id': clientId
-//                     }
-//                 }).then(res => {
-//                     res.json().then(body => {
-//                         topGamesInner = body;
-//                         var innerHtml = '<div class="list-group list-group-flush scrollarea">';
-//                         topGamesInner.data.forEach(element => {
-//                             var thumbnailImage = '<div class="col-3" style="width: 22% !important"><img src="' + element.thumbnail_url.replace('{width}', '90').replace('{height}', '50') + '" height="50" width="90" alt="Thumbnail"></div>';
-//                             innerHtml += '<a href="https://www.twitch.tv/' + element.user_login + '" target="_blank" class="list-group-item list-group-item-action p-0" style="padding-left: 3px !important;">' + 
-//                                 '<div class="d-flex align-items-center justify-content-between">' +
-//                                     thumbnailImage +
-//                                     '<div class="col-9" style="width: 78% !important">' +
-//                                         '<div class="fw-bold" style="margin-bottom: 5px;">' + element.user_name + '</div>' +
-//                                         '<div class="small" style="margin-top: -10px;"><small>' + element.game_name + ' <span class="badge bg-danger">' + element.viewer_count + ' viewers</span></small></div>' +
-//                                         '<div class="text-truncate small" style="margin-top: -5px;"><small>' + element.title + '</small></div>' +
-//                                     '</div>' +
-//                                 '</div>' +
-//                             '</a>'
-//                         });
-//                         innerHtml += '</div>'
-//                         document.getElementById("topGamesInner").innerHTML = innerHtml
-
-//                         document.querySelector('#backGames').addEventListener('click', event => {
-//                             document.getElementById("backGames").classList.remove("d-block");
-//                             document.getElementById("backGames").classList.add("d-none");
-
-//                             document.getElementById("topGames").classList.add("show");
-//                             document.getElementById("topGames").classList.add("active");
-                            
-//                             document.getElementById("topGamesInner").classList.remove("show");
-//                             document.getElementById("topGamesInner").classList.remove("active");
-
-//                             document.getElementById("topGamesInner").innerHTML = ''; 
-//                         });
-//                     });
-                    
-//                     if (res.status === 401) {
-//                         user_signed_in = false;
-//                     }
-//                 }).catch(err => console.log(err));
-
-//                 document.getElementById("backGames").classList.remove("d-none");
-//                 document.getElementById("backGames").classList.add("d-block");
-
-//                 document.getElementById("topGames").classList.remove("show");
-//                 document.getElementById("topGames").classList.remove("active");
-                
-//                 document.getElementById("topGamesInner").classList.add("show");
-//                 document.getElementById("topGamesInner").classList.add("active");
-//             });
-//         })
-//     });
-    
-//     if (res.status === 401) {
-//         user_signed_in = false;
-//     }
-// }).catch(err => console.log(err))
-
-// fetch('https://api.twitch.tv/helix/streams?first=100', {
-//     headers: {
-//         'Authorization': 'Bearer ' + accessToken,
-//         'Client-Id': clientId
-//     }
-// }).then(res => {
-//     res.json().then(body => {
-//         topStreams = body;
-//         var innerHtml = '<div class="list-group list-group-flush scrollarea">';
-//         topStreams.data.forEach(element => {
-//             var thumbnailImage = '<div class="col-3" style="width: 22% !important"><img src="' + element.thumbnail_url.replace('{width}', '90').replace('{height}', '50') + '" height="50" width="90" alt="Thumbnail"></div>';
-//             innerHtml += '<a href="https://www.twitch.tv/' + element.user_login + '" target="_blank" class="list-group-item list-group-item-action p-0" style="padding-left: 3px !important;">' + 
-//                 '<div class="d-flex align-items-center justify-content-between">' +
-//                     thumbnailImage +
-//                     '<div class="col-9" style="width: 78% !important">' +
-//                         '<div class="fw-bold" style="margin-bottom: 5px;">' + element.user_name + '</div>' +
-//                         '<div class="small" style="margin-top: -10px;"><small>' + element.game_name + ' <span class="badge bg-danger">' + element.viewer_count + ' viewers</span></small></div>' +
-//                         '<div class="text-truncate small" style="margin-top: -5px;"><small>' + element.title + '</small></div>' +
-//                     '</div>' +
-//                 '</div>' +
-//             '</a>'
-//         });
-//         innerHtml += '</div>'
-//         document.getElementById("topStreams").innerHTML = innerHtml
-//     });
-    
-//     if (res.status === 401) {
-//         user_signed_in = false;
-//     }
-// }).catch(err => console.log(err))
-//     });
-// });
-
-
-
-
-
-
