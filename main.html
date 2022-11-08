@@ -14,14 +14,20 @@
 	
 	<body class="bg-ghostir">
 		<div id="defaultWrapper" class="application-size">
-			<div class="center-screen">
-				<section class="py-5 px-3">
-					<div class="row py-lg-5">
-						<div class="float-area col-lg-6 col-md-8 mx-auto">
-							<img class="floating-img" src="img/logo.png" width="100" height="100" alt="Ghostir Logo">
+			<div class="center-screen h-100">
+				<div class="row">
+					<div class="col-12">
+						<img class="loading-logo" src="img/logo.png" alt="Ghostir Logo">
+					</div>
+					<div class="col-12">
+						<div class="ghostir-loading">
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
 						</div>
 					</div>
-				</section>
+				</div>
 			</div>
 		</div>
 		
@@ -94,45 +100,47 @@
 				</div>
 			</nav>
 			<div class="d-flex application-body">
-				<div class="nav flex-column nav-pills ghostir-side-nav h-100 bg-ghostir" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-					<button class="nav-link toolTip section-button active" 
+				<div class="nav flex-column nav-pills ghostir-side-navigation h-100 bg-ghostir" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+					<button class="nav-link toolTip section-button active ghostir-side-navigation-item" 
 							id="followingList_Tab"
 							data-tippy-content="Followed Streams" data-bs-toggle="pill" data-section-code="FollowingStreams"
 							data-bs-target="#followingList" type="button" role="tab"
 							aria-controls="followingList" aria-selected="true">
 						<i class="fa fa-heart"></i>
 					</button>
-					<button class="nav-link toolTip section-button" 
+					<button class="nav-link toolTip section-button ghostir-side-navigation-item" 
 							id="topGames_Tab" 
 							data-tippy-content="Top Games" data-bs-toggle="pill" data-section-code="TopGames" 
 							data-bs-target="#topGames" type="button" role="tab"
 							aria-controls="topGames" aria-selected="false">
 						<i class="fa fa-trophy"></i>
 					</button>
-					<button class="nav-link toolTip section-button" 
+					<button class="nav-link toolTip section-button ghostir-side-navigation-item" 
 							id="topStreams_Tab"
 							data-tippy-content="Top Streams" data-bs-toggle="pill" data-section-code="TopStreams" 
 							data-bs-target="#topStreams" type="button" role="tab" 
 							aria-controls="topStreams" aria-selected="false">
 						<i class="fa fa-star"></i>
 					</button>
-					<button class="nav-link toolTip section-button"
+					<button class="nav-link toolTip section-button ghostir-side-navigation-item"
 							id="searchList_Tab"
 							data-tippy-content="Search" data-bs-toggle="pill" data-section-code="Search" 
 							data-bs-target="#searchList" type="button" role="tab"
 							aria-controls="searchList" aria-selected="false">
 						<i class="fa fa-search"></i>
 					</button>
-					<button class="nav-link toolTip section-button"
+					<button class="nav-link toolTip section-button ghostir-side-navigation-item"
 							id="settings_Tab"
 							data-tippy-content="Settings" data-bs-toggle="pill" data-section-code="Settings" 
 							data-bs-target="#settings" type="button" role="tab"
 							aria-controls="settings" aria-selected="false">
 						<i class="fa fa-cog"></i>
 					</button>
-					<button class="nav-link toolTip section-button" id="info_Tab" data-section-target="info"
-							data-tippy-content="Info" data-bs-toggle="pill" data-bs-target="#info" type="button"
-							role="tab" aria-controls="info" aria-selected="false">
+					<button class="nav-link toolTip section-button ghostir-side-navigation-item" 
+							id="info_Tab" 
+							data-tippy-content="Info" data-bs-toggle="pill" data-section-code="Info"
+							data-bs-target="#info" type="button" role="tab"
+							aria-controls="info" aria-selected="false">
 						<i class="fa fa-info"></i>
 					</button>
 				</div>
@@ -584,22 +592,229 @@
 						</div>
 					</div>
 					<div id="searchList" class="tab-pane fade" role="tabpanel" aria-labelledby="searchList-tab">
-						<ul class="nav nav-pills nav-fill m-1 ghostir-search-navigation" id="myTab" role="tablist">
-							<li class="nav-item" role="presentation">
-								<button class="nav-link left active" id="searchStreamResult_Button" data-bs-toggle="tab" data-bs-target="#searchStreamResult_Wrapper" type="button" role="tab" aria-controls="searchStreamResult_Wrapper" aria-selected="true">Stream</button>
-							</li>
-							<li class="nav-item divider"></li>
-							<li class="nav-item" role="presentation">
-								<button class="nav-link right" id="searchCategoryResult_Button" data-bs-toggle="tab" data-bs-target="#searchCategoryResult_Wrapper" type="button" role="tab" aria-controls="searchCategoryResult_Wrapper" aria-selected="false">Game</button>
-							</li>
-						</ul>
-						<div class="tab-content m-1" id="searchResult_Wrapper">
-							<div id="searchStreamResult_Wrapper" data-type="Stream" class="tab-pane fade show active" role="tabpanel" aria-labelledby="searchStreamResult_Button" tabindex="0">
-								
-							</div>
-							<div id="searchCategoryResult_Wrapper" data-type="Category" class="tab-pane fade row" role="tabpanel" aria-labelledby="searchCategoryResult_Button" tabindex="0">
-								<div class="row">
+						<div class="ghostir-search-navigation">
+							<ul class="nav nav-pills nav-fill h-100 p-1" id="search_Navigation" role="tablist">
+								<li class="nav-item" role="presentation">
+									<button class="nav-link left active ghostir-search-navigation-item" id="searchStreamResult_Button" data-bs-toggle="tab" data-bs-target="#searchStreamResult_Tab" type="button" role="tab" aria-controls="searchStreamResult_Wrapper" aria-selected="true">Stream</button>
+								</li>
+								<li class="nav-item divider"></li>
+								<li class="nav-item" role="presentation">
+									<button class="nav-link right ghostir-search-navigation-item" id="searchCategoryResult_Button" data-bs-toggle="tab" data-bs-target="#searchCategoryResult_Tab" type="button" role="tab" aria-controls="searchCategoryResult_Wrapper" aria-selected="false">Game</button>
+								</li>
+							</ul>
+						</div>
+						<div class="tab-content" id="searchResult_Wrapper">
+							<div id="searchStreamResult_Tab" data-type="Stream" class="tab-pane fade show active" role="tabpanel" aria-labelledby="searchStreamResult_Button" tabindex="0">
+								<div id="searchStreamResultPlaceholder_Wrapper" style="display: none;">
+									<div class="list-group-item list-group-item-action following-list-group twitch-border-bottom placeholder-glow">
+										<div class="d-flex align-items-center justify-content-between">
+											<div class="col-3 preview-section">
+												<div class="placeholder placeholder-stream-image">Placeholder Image</div>
+											</div>
+											<div class="col-9 pe-2 information-section">
+												<div class="text-truncate small placeholder-font-size">
+													<small class="placeholder">Placeholder Name</small>
+												</div>
+												<div class="small placeholder-font-size">
+													<small>
+														<span class="me-2 placeholder">Placeholder Category</span>
+													</small>
+												</div>
+												<div class="text-truncate small placeholder-font-size">
+													<small class="placeholder">This is a Placeholder Title for the Stream</small>
+												</div>
+											</div>
+										</div>
+									</div>
 									
+									<div class="list-group-item list-group-item-action following-list-group twitch-border-bottom placeholder-glow">
+										<div class="d-flex align-items-center justify-content-between">
+											<div class="col-3 preview-section">
+												<div class="placeholder placeholder-stream-image">Placeholder Image</div>
+											</div>
+											<div class="col-9 pe-2 information-section">
+												<div class="text-truncate small placeholder-font-size">
+													<small class="placeholder">Placeholder</small>
+												</div>
+												<div class="small placeholder-font-size">
+													<small>
+														<span class="me-2 placeholder">Placeholder Place</span>
+													</small>
+												</div>
+												<div class="text-truncate small placeholder-font-size">
+													<small class="placeholder">This is a smaller Title for a Stream</small>
+												</div>
+											</div>
+										</div>
+									</div>
+									
+									<div class="list-group-item list-group-item-action following-list-group twitch-border-bottom placeholder-glow">
+										<div class="d-flex align-items-center justify-content-between">
+											<div class="col-3 preview-section">
+												<div class="placeholder placeholder-stream-image">Placeholder Image</div>
+											</div>
+											<div class="col-9 pe-2 information-section">
+												<div class="text-truncate small placeholder-font-size">
+													<small class="placeholder">Placeholder</small>
+												</div>
+												<div class="small placeholder-font-size">
+													<small>
+														<span class="me-2 placeholder">Placeholder Place Place</span>
+													</small>
+												</div>
+												<div class="text-truncate small placeholder-font-size">
+													<small class="placeholder">This is a longer title for the Stream Section Placeholder</small>
+												</div>
+											</div>
+										</div>
+									</div>
+									
+									<div class="list-group-item list-group-item-action following-list-group twitch-border-bottom placeholder-glow">
+										<div class="d-flex align-items-center justify-content-between">
+											<div class="col-3 preview-section">
+												<div class="placeholder placeholder-stream-image">Placeholder Image</div>
+											</div>
+											<div class="col-9 pe-2 information-section">
+												<div class="text-truncate small placeholder-font-size">
+													<small class="placeholder">Placeholder</small>
+												</div>
+												<div class="small placeholder-font-size">
+													<small>
+														<span class="me-2 placeholder">Placeholder Place</span>
+													</small>
+												</div>
+												<div class="text-truncate small placeholder-font-size">
+													<small class="placeholder">This is a how a longer Placeholder looks when the Title of the Stream is long</small>
+												</div>
+											</div>
+										</div>
+									</div>
+									
+									<div class="list-group-item list-group-item-action following-list-group twitch-border-bottom placeholder-glow">
+										<div class="d-flex align-items-center justify-content-between">
+											<div class="col-3 preview-section">
+												<div class="placeholder placeholder-stream-image">Placeholder Image</div>
+											</div>
+											<div class="col-9 pe-2 information-section">
+												<div class="text-truncate small placeholder-font-size">
+													<small class="placeholder">Placeholder</small>
+												</div>
+												<div class="small placeholder-font-size">
+													<small>
+														<span class="me-2 placeholder">Placeholder Place Place</span>
+													</small>
+												</div>
+												<div class="text-truncate small placeholder-font-size">
+													<small class="placeholder">This is a longer title for the Stream Section</small>
+												</div>
+											</div>
+										</div>
+									</div>
+									
+									<div class="list-group-item list-group-item-action following-list-group twitch-border-bottom placeholder-glow">
+										<div class="d-flex align-items-center justify-content-between">
+											<div class="col-3 preview-section">
+												<div class="placeholder placeholder-stream-image">Placeholder Image</div>
+											</div>
+											<div class="col-9 pe-2 information-section">
+												<div class="text-truncate small placeholder-font-size">
+													<small class="placeholder">Placeholder</small>
+												</div>
+												<div class="small placeholder-font-size">
+													<small>
+														<span class="me-2 placeholder">Placeholder Place Place</span>
+													</small>
+												</div>
+												<div class="text-truncate small placeholder-font-size">
+													<small class="placeholder">This is a title for the Stream Section</small>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div id="searchStreamResult_Wrapper" >
+									
+								</div>
+							</div>
+							<div id="searchCategoryResult_Tab" data-type="Category" class="tab-pane fade" role="tabpanel" aria-labelledby="searchCategoryResult_Button" tabindex="0">
+								<div id="searchCategoryResultPlaceholder_Wrapper" style="display: none;">
+									<div class="row m-2">
+										<div class="category-item text-center col-3 p-1 placeholder-glow">
+											<div class="align-items-center justify-content-between">
+												<div class="placeholder placeholder-category-image">Placeholder Image</div>
+												<div class="placeholder placeholder-category-text">Placeholder</div>
+											</div>
+										</div>
+										<div class="category-item text-center col-3 p-1 placeholder-glow">
+											<div class="align-items-center justify-content-between">
+												<div class="placeholder placeholder-category-image">Placeholder Image</div>
+												<div class="placeholder placeholder-category-text">Placeholder</div>
+											</div>
+										</div>
+										<div class="category-item text-center col-3 p-1 placeholder-glow">
+											<div class="align-items-center justify-content-between">
+												<div class="placeholder placeholder-category-image">Placeholder Image</div>
+												<div class="placeholder placeholder-category-text">Placeholder</div>
+											</div>
+										</div>
+										<div class="category-item text-center col-3 p-1 placeholder-glow">
+											<div class="align-items-center justify-content-between">
+												<div class="placeholder placeholder-category-image">Placeholder Image</div>
+												<div class="placeholder placeholder-category-text">Placeholder</div>
+											</div>
+										</div>
+										<div class="category-item text-center col-3 p-1 placeholder-glow">
+											<div class="align-items-center justify-content-between">
+												<div class="placeholder placeholder-category-image">Placeholder Image</div>
+												<div class="placeholder placeholder-category-text">Placeholder</div>
+											</div>
+										</div>
+										<div class="category-item text-center col-3 p-1 placeholder-glow">
+											<div class="align-items-center justify-content-between">
+												<div class="placeholder placeholder-category-image">Placeholder Image</div>
+												<div class="placeholder placeholder-category-text">Placeholder</div>
+											</div>
+										</div>
+										<div class="category-item text-center col-3 p-1 placeholder-glow">
+											<div class="align-items-center justify-content-between">
+												<div class="placeholder placeholder-category-image">Placeholder Image</div>
+												<div class="placeholder placeholder-category-text">Placeholder</div>
+											</div>
+										</div>
+										<div class="category-item text-center col-3 p-1 placeholder-glow">
+											<div class="align-items-center justify-content-between">
+												<div class="placeholder placeholder-category-image">Placeholder Image</div>
+												<div class="placeholder placeholder-category-text">Placeholder</div>
+											</div>
+										</div>
+										<div class="category-item text-center col-3 p-1 placeholder-glow">
+											<div class="align-items-center justify-content-between">
+												<div class="placeholder placeholder-category-image">Placeholder Image</div>
+												<div class="placeholder placeholder-category-text">Placeholder</div>
+											</div>
+										</div>
+										<div class="category-item text-center col-3 p-1 placeholder-glow">
+											<div class="align-items-center justify-content-between">
+												<div class="placeholder placeholder-category-image">Placeholder Image</div>
+												<div class="placeholder placeholder-category-text">Placeholder</div>
+											</div>
+										</div>
+										<div class="category-item text-center col-3 p-1 placeholder-glow">
+											<div class="align-items-center justify-content-between">
+												<div class="placeholder placeholder-category-image">Placeholder Image</div>
+												<div class="placeholder placeholder-category-text">Placeholder</div>
+											</div>
+										</div>
+										<div class="category-item text-center col-3 p-1 placeholder-glow">
+											<div class="align-items-center justify-content-between">
+												<div class="placeholder placeholder-category-image">Placeholder Image</div>
+												<div class="placeholder placeholder-category-text">Placeholder</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div id="searchCategoryResult_Wrapper" >
+								
 								</div>
 							</div>
 						</div>

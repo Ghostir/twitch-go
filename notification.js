@@ -7,26 +7,26 @@ chrome.alarms.create('followingNotification', {
 
 chrome.alarms.onAlarm.addListener(async (alarm) => {
     if (alarm.name === "followingNotification") {
-        chrome.storage.sync.get('accessToken', async function (result) {
+        chrome.storage.sync.get('accessToken', async function (tokenResult) {
             const validationInformationFetchPromise = await fetch(`${ghostirCore}/Twitch/GetValidationInformation`);
             const validationInformationData = await validationInformationFetchPromise.json();
             
             const fetchPromise = await fetch('https://api.twitch.tv/helix/users', {
                 headers: {
-                    'Authorization': 'Bearer ' + result.accessToken,
+                    'Authorization': 'Bearer ' + tokenResult.accessToken,
                     'Client-Id': validationInformationData.TwitchId
                 }
             });
 
             if (fetchPromise.status === 200) {
-                chrome.storage.sync.get('notifyList', async function (result) {
+                chrome.storage.sync.get('notifyList', async function (notifyResult) {
                     let notifyList = [];
-                    if(result.notifyList !== undefined) {
-                        notifyList = result.notifyList.split(',');
+                    if(notifyResult.notifyList !== undefined) {
+                        notifyList = notifyResult.notifyList.split(',');
                     }
                     
                     const returnedData = await fetchPromise.json();
-                    const notificationFollowingFetchPromise = await fetch(`${ghostirCore}/Twitch/NotificationFollowing?authToken=${result.accessToken}&notifyList=${notifyList.join(',')}&parameterList={"userId":"${returnedData.data[0].id}"}`);
+                    const notificationFollowingFetchPromise = await fetch(`${ghostirCore}/Twitch/NotificationFollowing?authToken=${tokenResult.accessToken}&notifyList=${notifyList.join(',')}&parameterList={"userId":"${returnedData.data[0].id}"}`);
                     const notificationFollowingData = await notificationFollowingFetchPromise.text();
 
                     if (notificationFollowingData !== "") {

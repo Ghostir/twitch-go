@@ -22,26 +22,26 @@ body, .application-size {
   height: 400px;
 }
 
-.ghostir-side-nav .nav-link {
+.ghostir-side-navigation .nav-link {
   border-radius: 0 !important;
 }
 
-.ghostir-side-nav {
+.ghostir-side-navigation {
   width: 42px !important;
 }
 
-.ghostir-side-nav .nav-link.active, .ghostir-side-nav .show>.nav-link {
+.ghostir-side-navigation .nav-link.active, .ghostir-side-navigation .show>.nav-link {
   color: #fff !important;
   background-color: #772ce8 !important;
 }
 
-.ghostir-side-nav .nav-link {
+.ghostir-side-navigation .nav-link {
   width: 42px !important;
   padding: 0.5rem 0 !important;
   color: #772ce8 !important;
 }
 
-.ghostir-side-nav .nav-link:focus, .ghostir-side-nav .nav-link:hover {
+.ghostir-side-navigation .nav-link:focus, .ghostir-side-navigation .nav-link:hover {
   color: #ffffff !important;
   background-color: #5d1cbf !important;
 }
@@ -266,7 +266,7 @@ body, .application-size {
 
 .pagination-wrapper {
   position: sticky;
-  top: 0px;
+  top: 0;
   z-index: 1050;
   background-color: #1e1e1ec2;
   text-align: right;
@@ -283,7 +283,12 @@ body, .application-size {
 }
 
 .ghostir-search-navigation {
-  height: 50px;
+  width: 452px;
+  position: sticky;
+  top: 0;
+  background-color: #1e1e1ee6;
+  height: 57px;
+  z-index: 999;
 }
 
 .ghostir-search-navigation .divider {
@@ -319,10 +324,7 @@ box-shadow: 0 0 0 0.25rem rgb(145 71 255 / 31%) !important;
 
 .twitch-button {
   font-weight: 600 !important;
-  padding-left: 5px !important;
-  padding-right: 5px !important;
-  padding-bottom: 2px !important;
-  padding-top: 2px !important;
+  padding: 2px 5px !important;
   background-color: #9147ff !important;
   color: #fff !important;
   border: 0 !important;
@@ -386,4 +388,66 @@ box-shadow: 0 0 0 0.25rem rgb(145 71 255 / 31%) !important;
 
 .placeholder-font-size {
   font-size:11px;
+}
+
+/* Loading Spinner */
+.loading-logo {
+  width: 100px;
+  height: 100px;
+}
+
+.ghostir-loading {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+.ghostir-loading div {
+  position: absolute;
+  top: 33px;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: #fff;
+  animation-timing-function: cubic-bezier(0, 1, 1, 0);
+}
+.ghostir-loading div:nth-child(1) {
+  left: 8px;
+  animation: ghostir-loading1 0.6s infinite;
+}
+.ghostir-loading div:nth-child(2) {
+  left: 8px;
+  animation: ghostir-loading2 0.6s infinite;
+}
+.ghostir-loading div:nth-child(3) {
+  left: 32px;
+  animation: ghostir-loading2 0.6s infinite;
+}
+.ghostir-loading div:nth-child(4) {
+  left: 56px;
+  animation: ghostir-loading3 0.6s infinite;
+}
+@keyframes ghostir-loading1 {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes ghostir-loading3 {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0);
+  }
+}
+@keyframes ghostir-loading2 {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(24px, 0);
+  }
 }
