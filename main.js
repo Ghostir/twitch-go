@@ -1,4 +1,5 @@
 const usingFirefox = typeof window.browser !== 'undefined';
+const browserType = usingFirefox ? 'Firefox' : 'Chrome';
 const browser = usingFirefox ? window.browser : window.chrome;
 
 let userId = null;
@@ -9,8 +10,10 @@ let twitchEndpoint = null;
 let userSignedIn = false;
 let validationInterval = null;
 
+//let ghostirCore = 'https://core.ghostir.net'
 let ghostirCore = 'https://localhost:7094'
 
+let notificationFavoritePosition = 'Left';
 let favoriteList = [];
 let notifyList = [];
 
@@ -44,7 +47,7 @@ async function validationInformation() {
 	try {
 		await $.ajax({
 			type: "GET",
-			url: `${ghostirCore}/Twitch/GetValidationInformation?browserType=Chrome`,
+			url: `${ghostirCore}/Twitch/GetValidationInformation?browserType=${browserType}`,
 			success: async function(response){
 				const returnedData = JSON.parse(response);
 				twitchEndpoint = returnedData.TwitchEndpoint;
@@ -213,7 +216,7 @@ async function mainFunction() {
 
 async function initializeSettings() {
 	return new Promise((resolve) => {
-		chrome.storage.sync.get(['darkMode', 'favoriteList', 'notifyList', 'followedStreamReturnAmount', 'topGamesReturnAmount', 'topStreamsReturnAmount'], function (result) {
+		browser.storage.sync.get(['darkMode', 'notificationFavoritePosition', 'favoriteList', 'notifyList', 'followedStreamReturnAmount', 'topGamesReturnAmount', 'topStreamsReturnAmount'], function (result) {
 			const darkModeCheckbox = $('#darkMode_Checkbox');
 			let darkMode = darkModeCheckbox.is(":checked");
 			if(result.darkMode !== undefined) {
@@ -226,6 +229,11 @@ async function initializeSettings() {
 			} else {
 				darkModeCheckbox.prop('checked', false);
 				$('#styleTheme').attr('href','./css/themes/light.css');
+			}
+
+			if(result.notificationFavoritePosition !== undefined) {
+				notificationFavoritePosition = result.notificationFavoritePosition;
+				$('#notificationFavoritePosition_Select').val(notificationFavoritePosition);
 			}
 			
 			if(result.favoriteList !== undefined) {
@@ -260,7 +268,7 @@ async function initializeSettingsChange() {
 	const darkModeCheckbox = $('#darkMode_Checkbox');
 	darkModeCheckbox.on('change', () => {
 		const darkMode = $('#darkMode_Checkbox').is(":checked");
-		chrome.storage.sync.set({ 'darkMode': darkMode });
+		browser.storage.sync.set({ 'darkMode': darkMode });
 		if(darkMode) {
 			$('#styleTheme').attr('href','./css/themes/dark.css');
 		} else {
@@ -268,19 +276,24 @@ async function initializeSettingsChange() {
 		}
 	});
 
+	$('#notificationFavoritePosition_Select').on('change', () => {
+		const notificationFavoritePosition = $('#notificationFavoritePosition_Select').val();
+		browser.storage.sync.set({ 'notificationFavoritePosition': notificationFavoritePosition });
+	});
+
 	$('#followedStreamReturnAmount_Input').on('change', () => {
 		const followedStreamReturnAmount = $('#followedStreamReturnAmount_Input').val();
-		chrome.storage.sync.set({ 'followedStreamReturnAmount': followedStreamReturnAmount });
+		browser.storage.sync.set({ 'followedStreamReturnAmount': followedStreamReturnAmount });
 	});
 
 	$('#topGamesReturnAmount_Input').on('change', () => {
 		const topGamesReturnAmount = $('#topGamesReturnAmount_Input').val();
-		chrome.storage.sync.set({ 'topGamesReturnAmount': topGamesReturnAmount });
+		browser.storage.sync.set({ 'topGamesReturnAmount': topGamesReturnAmount });
 	});
 
 	$('#topStreamsReturnAmount_Input').on('change', () => {
 		const topStreamsReturnAmount = $('#topStreamsReturnAmount_Input').val();
-		chrome.storage.sync.set({ 'topStreamsReturnAmount': topStreamsReturnAmount });
+		browser.storage.sync.set({ 'topStreamsReturnAmount': topStreamsReturnAmount });
 	});
 }
 
@@ -308,7 +321,7 @@ async function getFollowingList() {
 
 	return $.ajax({
 		type: "GET",
-		url: `${ghostirCore}/Twitch/GetFollowedStreamList?authToken=${accessToken}&browserType=Chrome&returnAmount=${followedStreamReturnAmount}&favoriteList=${favoriteList.join(',')}&notifyList=${notifyList.join(',')}&parameterList={"userId":"${userId}"}`,
+		url: `${ghostirCore}/Twitch/GetFollowingStreamList?authToken=${accessToken}&browserType=${browserType}&notificationFavoritePosition=${notificationFavoritePosition}&returnAmount=${followedStreamReturnAmount}&favoriteList=${favoriteList.join(',')}&notifyList=${notifyList.join(',')}&userId=${userId}`,
 		success: async function(response){
 			const returnedData = JSON.parse(response);
 
@@ -323,7 +336,7 @@ async function getFollowingList() {
 				const loadMoreWrapper = $('#followingListLoadMore_Wrapper');
 				
 				loadMoreButton.click(async () => {
-					const fetchPromise = await fetch(`${ghostirCore}/Twitch/GetFollowedStreamList?authToken=${accessToken}&browserType=Chrome&returnAmount=${followedStreamReturnAmount}&favoriteList=${favoriteList.join(',')}&parameterList={"userId":"${userId}", "cursor":"${cursor}"}`);
+					const fetchPromise = await fetch(`${ghostirCore}/Twitch/GetFollowingStreamList?authToken=${accessToken}&browserType=${browserType}&notificationFavoritePosition=${notificationFavoritePosition}&returnAmount=${followedStreamReturnAmount}&favoriteList=${favoriteList.join(',')}&userId=${userId}&cursor=${cursor}`);
 					const returnedData = await fetchPromise.json();
 
 					if(returnedData.Count > 0) {
@@ -360,12 +373,12 @@ async function initFollowingListButton() {
 		if (favoriteList.length > 0 && streamId !== undefined) {
 			favoriteList.push(streamId);
 			const favoriteListFormatted = favoriteList.join(',');
-			await chrome.storage.sync.set({ 'favoriteList': favoriteListFormatted });
+			await browser.storage.sync.set({ 'favoriteList': favoriteListFormatted });
 		} else {
 			const favoriteStreamList = [];
 			favoriteStreamList.push(streamId);
 			favoriteList = favoriteStreamList.join(',');
-			await chrome.storage.sync.set({ 'favoriteList': favoriteList });
+			await browser.storage.sync.set({ 'favoriteList': favoriteList });
 		}
 	});
 
@@ -375,7 +388,7 @@ async function initFollowingListButton() {
 		$(event.currentTarget).addClass('favorite-stream');
 
 		favoriteList.remove(streamId);
-		await chrome.storage.sync.set({ 'favoriteList': favoriteList.join(',') });
+		await browser.storage.sync.set({ 'favoriteList': favoriteList.join(',') });
 	});
 
 	$(document.body).on('click', '.notification-option-stream', async (event) => {
@@ -387,12 +400,12 @@ async function initFollowingListButton() {
 		if (notifyList.length > 0 && streamId !== undefined) {
 			notifyList.push(streamId);
 			const notifyListFormatted = notifyList.join(',');
-			await chrome.storage.sync.set({ 'notifyList': notifyListFormatted });
+			await browser.storage.sync.set({ 'notifyList': notifyListFormatted });
 		} else {
 			const notifyStreamList = [];
 			notifyStreamList.push(streamId);
 			notifyList = notifyStreamList.join(',');
-			await chrome.storage.sync.set({ 'notifyList': notifyList });
+			await browser.storage.sync.set({ 'notifyList': notifyList });
 		}
 	});
 
@@ -403,7 +416,7 @@ async function initFollowingListButton() {
 		$(event.currentTarget).addClass('notification-option-stream');
 
 		notifyList.remove(streamId);
-		await chrome.storage.sync.set({ 'notifyList': notifyList.join(',') });
+		await browser.storage.sync.set({ 'notifyList': notifyList.join(',') });
 	});
 }
 
@@ -413,7 +426,7 @@ async function getTopGameList() {
 	const placeHolderWrapper = $("#topGameListPlaceholder_Wrapper");
 	const topGameList = $("#topGameList_Wrapper");
 	
-	const fetchPromise = await fetch(`${ghostirCore}/Twitch/GetTopGameList?authToken=${accessToken}&browserType=Chrome&returnAmount=${topStreamsReturnAmount}`);
+	const fetchPromise = await fetch(`${ghostirCore}/Twitch/GetTopGameList?authToken=${accessToken}&browserType=${browserType}&returnAmount=${topStreamsReturnAmount}`);
 	const returnedData = await fetchPromise.json();
 
 	topGameList.html(returnedData.ReturnHtml);
@@ -427,7 +440,7 @@ async function getTopGameList() {
 		const loadMoreWrapper = $('#topGameListLoadMore_Wrapper');
 
 		loadMoreButton.click(async () => {
-			const fetchPromise = await fetch(`${ghostirCore}/Twitch/GetTopGameList?authToken=${accessToken}&browserType=Chrome&returnAmount=${topStreamsReturnAmount}&cursor=${cursor}`);
+			const fetchPromise = await fetch(`${ghostirCore}/Twitch/GetTopGameList?authToken=${accessToken}&browserType=${browserType}&returnAmount=${topStreamsReturnAmount}&cursor=${cursor}`);
 			const returnedData = await fetchPromise.json();
 
 			if(returnedData.Count > 0) {
@@ -453,7 +466,7 @@ async function initTopGameListButton() {
 	$(document.body).on('click', '.gameButton', async (event) => {
 		let gameId = $(event.currentTarget).data('gameid');
 
-		const fetchPromise = await fetch(`${ghostirCore}/Twitch/GetTopGameStreamList?authToken=${accessToken}&browserType=Chrome&notifyList=${notifyList.join(',')}&gameId=${gameId}`);
+		const fetchPromise = await fetch(`${ghostirCore}/Twitch/GetTopGameStreamList?authToken=${accessToken}&browserType=${browserType}&notificationFavoritePosition=${notificationFavoritePosition}&notifyList=${notifyList.join(',')}&gameId=${gameId}`);
 		const returnedData = await fetchPromise.json();
 
 		topGameStreamList.html(returnedData.ReturnHtml);
@@ -465,7 +478,7 @@ async function initTopGameListButton() {
 			const loadMoreWrapper = $('#topGameStreamListLoadMore_Wrapper');
 
 			loadMoreButton.click(async () => {
-				const fetchPromise = await fetch(`${ghostirCore}/Twitch/GetTopGameStreamList?authToken=${accessToken}&browserType=Chrome&notifyList=${notifyList.join(',')}&gameId=${gameId}&cursor=${cursor}`);
+				const fetchPromise = await fetch(`${ghostirCore}/Twitch/GetTopGameStreamList?authToken=${accessToken}&browserType=${browserType}&notificationFavoritePosition=${notificationFavoritePosition}&notifyList=${notifyList.join(',')}&gameId=${gameId}&cursor=${cursor}`);
 				const returnedData = await fetchPromise.json();
 
 				if(returnedData.Count > 0) {
@@ -504,7 +517,7 @@ async function getTopStreamList() {
 
 	const placeHolderWrapper = $("#topStreamListPlaceholder_Wrapper");
 	const topStreamList = $("#topStreamList_Wrapper");
-	const fetchPromise = await fetch(`${ghostirCore}/Twitch/GetTopStreamList?authToken=${accessToken}&browserType=Chrome&returnAmount=${topStreamsReturnAmount}&notifyList=${notifyList.join(',')}`);
+	const fetchPromise = await fetch(`${ghostirCore}/Twitch/GetTopStreamList?authToken=${accessToken}&browserType=${browserType}&notificationFavoritePosition=${notificationFavoritePosition}&returnAmount=${topStreamsReturnAmount}&notifyList=${notifyList.join(',')}`);
 	const returnedData = await fetchPromise.json();
 
 	topStreamList.html(returnedData.ReturnHtml);
@@ -518,7 +531,7 @@ async function getTopStreamList() {
 		const loadMoreWrapper = $('#topStreamListLoadMore_Wrapper');
 
 		loadMoreButton.click(async () => {
-			const fetchPromise = await fetch(`${ghostirCore}/Twitch/GetTopStreamList?authToken=${accessToken}&browserType=Chrome&returnAmount=${topStreamsReturnAmount}&notifyList=${notifyList.join(',')}&cursor=${cursor}`);
+			const fetchPromise = await fetch(`${ghostirCore}/Twitch/GetTopStreamList?authToken=${accessToken}&browserType=${browserType}&notificationFavoritePosition=${notificationFavoritePosition}&returnAmount=${topStreamsReturnAmount}&notifyList=${notifyList.join(',')}&cursor=${cursor}`);
 			const returnedData = await fetchPromise.json();
 
 			if(returnedData.Count > 0) {
@@ -557,7 +570,7 @@ async function getSearchList() {
 					searchStreamResultPlaceholder.show();
 
 					let filter = searchInput.val().toUpperCase();
-					const fetchPromise = await fetch(`${ghostirCore}/Twitch/GetSearchList?authToken=${accessToken}&browserType=Chrome&searchType=${paneCode}&parameterList={"search":"${filter}"}`);
+					const fetchPromise = await fetch(`${ghostirCore}/Twitch/GetSearchList?authToken=${accessToken}&browserType=${browserType}&searchType=${paneCode}&parameterList={"search":"${filter}"}`);
 					const returnedData = await fetchPromise.json();
 					searchStreamResult.html(returnedData.ReturnHtml);
 					searchStreamResult.show();
@@ -572,7 +585,7 @@ async function getSearchList() {
 					searchCategoryResultPlaceholder.show();
 
 					let filter = searchInput.val().toUpperCase();
-					const fetchPromise = await fetch(`${ghostirCore}/Twitch/GetSearchList?authToken=${accessToken}&browserType=Chrome&searchType=${paneCode}&parameterList={"search":"${filter}"}`);
+					const fetchPromise = await fetch(`${ghostirCore}/Twitch/GetSearchList?authToken=${accessToken}&browserType=${browserType}&searchType=${paneCode}&parameterList={"search":"${filter}"}`);
 					const returnedData = await fetchPromise.json();
 					searchCategoryResult.html(returnedData.ReturnHtml);
 					searchCategoryResult.show();
@@ -609,7 +622,7 @@ async function getSearchList() {
 							searchStreamResult.hide();
 							searchStreamResultPlaceholder.show();
 							
-							const fetchPromise = await fetch(`${ghostirCore}/Twitch/GetSearchList?authToken=${accessToken}&browserType=Chrome&searchType=${paneCode}&parameterList={"search":"${filter}"}`);
+							const fetchPromise = await fetch(`${ghostirCore}/Twitch/GetSearchList?authToken=${accessToken}&browserType=${browserType}&searchType=${paneCode}&parameterList={"search":"${filter}"}`);
 							const returnedData = await fetchPromise.json();
 							searchStreamResult.html(returnedData.ReturnHtml);
 							searchStreamResult.show();
@@ -623,7 +636,7 @@ async function getSearchList() {
 							searchCategoryResult.hide();
 							searchCategoryResultPlaceholder.show();
 							
-							const fetchPromise = await fetch(`${ghostirCore}/Twitch/GetSearchList?authToken=${accessToken}&browserType=Chrome&searchType=${paneCode}&parameterList={"search":"${filter}"}`);
+							const fetchPromise = await fetch(`${ghostirCore}/Twitch/GetSearchList?authToken=${accessToken}&browserType=${browserType}&searchType=${paneCode}&parameterList={"search":"${filter}"}`);
 							const returnedData = await fetchPromise.json();
 							searchCategoryResult.html(returnedData.ReturnHtml);
 							searchCategoryResult.show();
@@ -685,6 +698,7 @@ async function initRefresh() {
 				await getFollowingList();
 				break;
 			case 'TopGames':
+				$('#backGames').hide();
 				$("#topGameListPlaceholder_Wrapper").show();
 				$("#topGameList_Wrapper").hide();
 				await getTopGameList();

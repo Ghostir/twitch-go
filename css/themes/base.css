@@ -149,7 +149,7 @@ body, .application-size {
   color: #dc3545 !important;
 }
 
-.following-number-label {
+.small-label {
   font-size: 13px;
 }
 
@@ -177,18 +177,22 @@ body, .application-size {
   line-height: 2 !important;
 }
 
-.favorite-stream { 
+.following-action-button.left {
   position: absolute;
   top: 5px;
-  left: 65px;
+  left: 40px;
+}
+
+.following-action-button.right {
+  position: absolute;
+  top: 2px;
+  left: 390px;
+}
+
+.favorite-stream {
   background-color: #00000070;
   padding: 3px;
   border-radius: 5px;
-}
-
-.favorite-stream.search {
-  top: 5px;
-  left: 27px;
 }
 
 .favorite-stream:hover {
@@ -198,9 +202,6 @@ body, .application-size {
 }
 
 .favorited-stream {
-  position: absolute;
-  top: 5px;
-  left: 65px;
   background-color: #00000070;
   padding: 3px;
   border-radius: 5px;
@@ -209,23 +210,11 @@ body, .application-size {
   cursor: pointer;
 }
 
-.favorited-stream.search {
-  top: 5px;
-  left: 27px;
-}
-
 .notification-option-stream {
-  position: absolute;
-  top: 5px;
-  left: 40px;
   background-color: #00000070;
   padding: 3px;
+  margin-right: 5px;
   border-radius: 5px;
-}
-
-.notification-option-stream.search {
-  top: 5px;
-  left: 5px;
 }
 
 .notification-option-stream:hover {
@@ -235,20 +224,13 @@ body, .application-size {
 }
 
 .notification-selected-stream {
-  position: absolute;
-  top: 5px;
-  left: 40px;
   background-color: #00000070;
   padding: 3px;
+  margin-right: 5px;
   border-radius: 5px;
   font-weight: 700;
   color: #9f60ff;
   cursor: pointer;
-}
-
-.notification-selected-stream.search {
-  top: 5px;
-  left: 5px;
 }
 
 .search-placeholder {

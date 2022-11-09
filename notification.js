@@ -1,16 +1,21 @@
+const usingFirefox = typeof window.browser !== 'undefined';
+const browserType = usingFirefox ? 'Firefox' : 'Chrome';
+const browser = usingFirefox ? window.browser : window.chrome;
+
+//let ghostirCore = 'https://core.ghostir.net'
 let ghostirCore = 'https://localhost:7094'
 
-chrome.alarms.create('followingNotification', {
+browser.alarms.create('followingNotification', {
     when: Date.now(),
     periodInMinutes: 1
 });
 
-chrome.alarms.onAlarm.addListener(async (alarm) => {
+browser.alarms.onAlarm.addListener(async (alarm) => {
     if (alarm.name === "followingNotification") {
-        chrome.storage.sync.get('accessToken', async function (tokenResult) {
-            const validationInformationFetchPromise = await fetch(`${ghostirCore}/Twitch/GetValidationInformation`);
+        browser.storage.sync.get('accessToken', async function (tokenResult) {
+            const validationInformationFetchPromise = await fetch(`${ghostirCore}/Twitch/GetValidationInformation?browserType=${browserType}`);
             const validationInformationData = await validationInformationFetchPromise.json();
-            
+
             const fetchPromise = await fetch('https://api.twitch.tv/helix/users', {
                 headers: {
                     'Authorization': 'Bearer ' + tokenResult.accessToken,
@@ -19,19 +24,19 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
             });
 
             if (fetchPromise.status === 200) {
-                chrome.storage.sync.get('notifyList', async function (notifyResult) {
+                browser.storage.sync.get('notifyList', async function (notifyResult) {
                     let notifyList = [];
                     if(notifyResult.notifyList !== undefined) {
                         notifyList = notifyResult.notifyList.split(',');
                     }
-                    
+
                     const returnedData = await fetchPromise.json();
-                    const notificationFollowingFetchPromise = await fetch(`${ghostirCore}/Twitch/NotificationFollowing?authToken=${tokenResult.accessToken}&notifyList=${notifyList.join(',')}&parameterList={"userId":"${returnedData.data[0].id}"}`);
+                    const notificationFollowingFetchPromise = await fetch(`${ghostirCore}/Twitch/NotificationFollowing?authToken=${tokenResult.accessToken}&browserType=${browserType}&notifyList=${notifyList.join(',')}&parameterList={"userId":"${returnedData.data[0].id}"}`);
                     const notificationFollowingData = await notificationFollowingFetchPromise.text();
 
                     if (notificationFollowingData !== "") {
-                        chrome.notifications.clear("followingNotification_Alert");
-                        chrome.notifications.create('followingNotification_Alert', {
+                        browser.notifications.clear("followingNotification_Alert");
+                        browser.notifications.create('followingNotification_Alert', {
                             type: 'basic',
                             iconUrl: 'img/logo.png',
                             title: 'Just went Live',

@@ -822,32 +822,30 @@
 					<div id="settings" class="tab-pane fade p-3" role="tabpanel" aria-labelledby="settings-tab">
 						<div class="row">
 							<div class="col-4">
-								<label class="form-check-label fw-bold following-number-label" for="darkMode_Checkbox">Dark Mode</label>
+								<label class="form-check-label fw-bold small-label" for="darkMode_Checkbox">Dark Mode</label>
 								<div class="form-check form-switch fs-4">
 									<input class="form-check-input" type="checkbox" id="darkMode_Checkbox" checked>
 								</div>
 							</div>
-							<div class="col-4">
-								
+							<div class="col-8">
+								<label class="form-check-label fw-bold small-label" for="notificationFavoritePosition_Select">Notification/Favorite Button Position</label>
+								<select id="notificationFavoritePosition_Select" class="form-select" aria-label="Position of the Notification/Favorite Buttons">
+									<option selected value="Left">Left</option>
+									<option value="Right">Right</option>
+								</select>
 							</div>
 						</div>
 						
 						<div class="card mt-3">
 							<div class="card-body">
 								<h5 class="card-title">Notifications</h5>
-								<small>Choose which Stream you would like Notifications for.</small>
+								<small>You can choose which streamer(s) you'd like to receive notifications for by clicking the <i class="fa-regular fa-bell"></i> Icon.</small>
 								<div class="row">
 									<div class="col-12">
-										<label class="form-check-label fw-bold following-number-label" for="followingNotifications_Checkbox">Notifications</label>
+										<label class="form-check-label fw-bold small-label" for="followingNotifications_Checkbox">Receive Notification(s)</label>
 										<div class="form-check form-switch fs-4">
 											<input class="form-check-input" type="checkbox" id="followingNotifications_Checkbox" checked>
 										</div>
-									</div>
-									<div class="col-12" style="display: none;">
-										<label class="form-check-label fw-bold following-number-label" for="selectedFollowingNotification_Select">Streams</label>
-										<select id="selectedFollowingNotification_Select" class="form-select">
-											<option selected>Select Stream(s)</option>
-										</select>
 									</div>
 								</div>
 							</div>
@@ -859,15 +857,15 @@
 								<small><strong class="color-twitch">Twitch</strong> only allows for a maximum of 100 Results.</small>
 								<div class="row">
 									<div class="col-4">
-										<label class="fw-bold mt-3 following-number-label" for="followedStreamReturnAmount_Input">Followed Streams</label>
+										<label class="fw-bold mt-3 small-label" for="followedStreamReturnAmount_Input">Followed Streams</label>
 										<input class="form-control" type="number" id="followedStreamReturnAmount_Input" value="100">
 									</div>
 									<div class="col-4">
-										<label class="fw-bold mt-3 following-number-label" for="topGamesReturnAmount_Input">Top Categories</label>
+										<label class="fw-bold mt-3 small-label" for="topGamesReturnAmount_Input">Top Categories</label>
 										<input class="form-control" type="number" id="topGamesReturnAmount_Input" value="100">
 									</div>
 									<div class="col-4">
-										<label class="fw-bold mt-3 following-number-label" for="topStreamsReturnAmount_Input">Top Streams</label>
+										<label class="fw-bold mt-3 small-label" for="topStreamsReturnAmount_Input">Top Streams</label>
 										<input class="form-control" type="number" id="topStreamsReturnAmount_Input" value="100">
 									</div>
 								</div>
