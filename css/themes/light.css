@@ -1,45 +1,80 @@
+body {
+    color: black !important;
+}
+
 .bg-ghostir {
-    background-color: #f8f9fa !important;
+    background-color: #f6f7f9 !important;
 }
 
-.bg-ghostir .text-muted-light {
-    color: #343435d7 !important;
+.twitch-go-sidebar .sidebar-button {
+    background-color: #f1f1f1 !important;
 }
 
-.tab-content {
-    background-color: rgba(0, 0, 0, .1) !important;
+.twitch-go-navbar {
+    background-color: #fefefe !important;
+    box-shadow: rgb(0 0 0 / 15%) -3px 1px 2.6px !important;
 }
 
-.list-group-item {
-    background-color: transparent !important;
+.twitch-go-content {
+    background-color: #fefefe !important;
+}
+
+.stream-item-information {
     color: black !important;
 }
 
-label, .tab-pane, .twitch-input {
+.twitch-go-category-container .category-item {
     color: black !important;
 }
 
-.btn-twitch {
-    font-weight: 600 !important;
-    background-color: #9147ff !important;
-    color: #fff !important;
-    font-size: 1.3rem !important;
-    border: 0 !important;
+.category-item .category-name {
+    font-weight: 600;
 }
 
-.btn-twitch:hover {
-    background-color: #772ce8 !important;
+.twitch-go-navigation {
+    background-color: #fefefe !important;
 }
 
-.btn-twitch:focus {
-    box-shadow: 0 0 0 0.25rem rgb(145 71 255 / 31%) !important;
+.twitch-go-search-placeholder {
+    color: black !important;
 }
 
-.color-twitch {
-    color: #9147ff !important;
+.placeholder {
+    background-color: #000000 !important;
 }
 
-.search-viewer-count {
-    font-size: small;
-    text-align: center;
+input[type='search'] {
+    color: black !important;
+}
+
+input[type='number'] {
+    color: black !important;
+}
+
+.badge {
+    color: black !important;
+}
+
+.stream-action-container.right .notification {
+    background-color: #772ce86e !important;
+}
+
+.stream-action-container.left .notification {
+    background-color: #772ce86e !important;
+}
+
+.stream-action-container.right .favorite {
+    background-color: #d39e0185;
+}
+
+.stream-action-container.left .favorite {
+    background-color: #d39e0185;
+}
+
+.avatar-container {
+    color: black !important;
+}
+
+.avatar-container small {
+    color: #fff;
 }

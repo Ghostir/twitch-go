@@ -1,0 +1,242 @@
+/* Input Additions */
+.twitch-go-icon-prepend {
+    display: flex;
+    width: 50%;
+}
+
+.twitch-go-icon-prepend i {
+    position: absolute;
+    align-self: center;
+    margin-left: 10px;
+    color: grey;
+}
+
+.twitch-go-input-group {
+    display: flex;
+    gap: 5px;
+}
+
+/* Input Label */
+.twitch-go-input-label {
+    line-height: 1;
+    font-weight: 700;
+    font-size: 15px;
+    display: flex;
+    margin-bottom: 5px;
+}
+
+.twitch-go-input-sub-label {
+    font-size: 12px;
+    font-style: italic;
+    line-height: 1.2;
+    color: #918e8e;
+    margin-bottom: 5px;
+}
+
+/* Input */
+input[type='search'] {
+    display: block;
+    width: 100%;
+    padding: 0.375rem 0.75rem 0.375rem 30px;
+    font-size: 1rem;
+    line-height: 1.5;
+    background-clip: padding-box;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: 0.375rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    background-color: #9147ff0f !important;
+    border: 3px solid #212529a8 !important;
+    color: white !important;
+    font-weight: 600 !important;
+    margin: 0;
+    font-family: inherit;
+}
+
+input[type='search']:focus {
+    outline: 0;
+    box-shadow: 0 0 0 0.1rem rgb(145 71 255 / 31%) !important;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+input[type='number'] {
+    display: block;
+    width: 100%;
+    padding: 0.375rem 0.75rem 0.375rem 0.375rem;
+    font-size: 1rem;
+    text-align: center;
+    line-height: 1.5;
+    background-clip: padding-box;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: 0.375rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    background-color: #9147ff0f !important;
+    border: 3px solid #212529a8 !important;
+    color: white !important;
+    font-weight: 600 !important;
+    margin: 0;
+    font-family: inherit;
+}
+
+input[type='number']:focus {
+    outline: 0;
+    box-shadow: 0 0 0 0.1rem rgb(145 71 255 / 31%) !important;
+}
+
+@supports (-webkit-appearance: none) or (-moz-appearance: none) {
+    input[type='checkbox'] {
+        --active: #5a28a5;
+        --border-color: #bfbfbf;
+        --background-color: white;
+        --inner-color: #bfbfbf;
+        --inner-position: 0;
+        
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        height: 21px;
+        width: 38px;
+        border-radius: 10px;
+        outline: none;
+        display: inline-block;
+        vertical-align: top;
+        position: relative;
+        margin: 0;
+        cursor: pointer;
+        border: 1px solid var(--realtime-border-color, var(--border-color));
+        background: var(--realtime-background-color, var(--background-color));
+        box-shadow: rgb(0 0 0 / 15%) 1.95px 1.95px 2.6px;
+    }
+    
+    input[type='checkbox']:after {
+        content: '';
+        display: block;
+        position: absolute;
+        left: 2px;
+        top: 2px;
+        border-radius: 9px;
+        width: 15px;
+        height: 15px;
+        background: var(--realtime-inner-color, var(--inner-color));
+        transform: translateX(var(--realtime-inner-position, var(--inner-position)));
+        transition: transform 0.3s cubic-bezier(0.2, 0.85, 0.32, 1.2), opacity 0.2s;
+    }
+    
+    input[type='checkbox']:checked {
+        --realtime-background-color: #5a28a5;
+        --realtime-border-color: #6f38c1;
+        --realtime-inner-color: #fff;
+        --realtime-inner-position: 17px;
+    }
+    
+    input[type='checkbox']:checked:after {
+        border: 1px solid #b584ff;
+    }
+
+    input[type='checkbox']:focus {
+        outline: 0;
+        box-shadow: 0 0 0 0.1rem rgb(145 71 255 / 31%) !important;
+    }
+
+    input[type='checkbox']:disabled {
+        --realtime-background-color: #f6f8ff;
+        cursor: not-allowed;
+        opacity: 0.9;
+    }
+
+    input[type='checkbox']:disabled:checked {
+        --realtime-background-color: #a263ff;
+        --realtime-border-color: #772ce8;
+    }
+
+    input[type='checkbox']:disabled + label {
+        cursor: not-allowed;
+    }
+    
+    input[type='checkbox'] + label {
+        font-size: 14px;
+        line-height: 21px;
+        display: inline-block;
+        vertical-align: top;
+        cursor: pointer;
+        margin-left: 4px;
+    }
+
+    input[type='checkbox']:disabled:not(:checked):after {
+        opacity: 0.6;
+    }
+
+    /* Vertical (Switch) Checkbox Input */
+    .twitch-go-vertical-input-container {
+        position: relative;
+        display: flex;
+        flex-flow: column wrap;
+        width: 100%;
+        height: 106px;
+    }
+
+    .twitch-go-vertical-input-container .input-area {
+        width: 25px;
+        height:100%;
+    }
+
+    .twitch-go-vertical-input-container .example-area {
+        width: 400px;
+        height:50%;
+    }
+
+    .twitch-go-vertical-input-container .stream-action-example-container {
+        height: 100%;
+    }
+
+    .twitch-go-vertical-input-container .stream-item {
+        padding: 0 !important;
+        height: 100%;
+    }
+
+    input[type='checkbox'].twitch-go-vertical-input {
+        height: 106px;
+        width: 21px;
+        background-color: #5a28a5;
+        border-color: #6f38c1;
+    }
+
+    input[type='checkbox'].twitch-go-vertical-input:after {
+        background: #fff;
+        content: 'L';
+        color: #6f38c1;
+        text-align: center;
+        border-radius: 50%;
+        border: 1px solid #9f60ff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 12px;
+        font-weight: 700;
+        transition: transform 0.3s cubic-bezier(0.2, 0.1, 0.32, 1.2), opacity 0.2s;
+        box-shadow: rgb(0 0 0 / 15%) 1.95px 1.95px 2.6px;
+    }
+
+    input[type='checkbox'].twitch-go-vertical-input:checked:after {
+        transform: translateY(84px);
+        background: #fff;
+        content: 'R';
+        color: #6f38c1;
+        text-align: center;
+        font-size: 10px;
+        font-weight: 700;
+    }
+}

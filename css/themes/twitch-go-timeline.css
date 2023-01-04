@@ -1,0 +1,88 @@
+.timeline {
+    padding: 15px;
+}
+
+.badge {
+    display: inline-block;
+    padding: 0.35em 0.65em;
+    font-size: .75em;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 0.25rem;
+}
+
+.timeline .row {
+    display: flex;
+    position: relative;
+}
+
+.row .icon {
+    width: 30px;
+    margin-right: 10px;
+    z-index: 0;
+}
+
+.row .content {
+    width: calc(100% - 30px);
+    margin-bottom: 20px;
+}
+
+.row .content .badge {
+    margin-bottom: 10px;
+}
+
+.content .description {
+    padding-right: 15px;
+}
+
+.content .description h5 {
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+
+.timeline .row:nth-last-child(1) .row .content {
+    border: none;
+    padding-bottom: 0;
+    margin-bottom: 10px;
+}
+
+.timeline .row:nth-last-child(1):before {
+    height: 0;
+}
+
+.timeline .row:before {
+    content: "";
+    position: absolute;
+    width: 1px;
+    height: 100%;
+    left: 15px;
+    background: #d5d5d5;
+}
+
+.timeline .timeline-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 30px;
+    width: 30px;
+    border-radius: 30px;
+    color: #03a9f4;
+    background: #fff;
+    border: 2px solid #03a9f4;
+}
+.timeline .timeline-icon.success {
+    color: #4caf50;
+    border-color: #4caf50;
+}
+.timeline .timeline-icon.warning {
+    color: #ff9800;
+    border-color: #ff9800;
+}
+.timeline .timeline-icon.danger {
+    color: #f44336;
+    border-color: #f44336;
+}

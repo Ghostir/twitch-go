@@ -4,907 +4,839 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>Twitch GO</title>
-		<link href="./css/bootstrap.min.css" rel="stylesheet">
 		<link href="./css/fontawesome.css" rel="stylesheet">
 		<link href="./css/tippy-light.css" rel="stylesheet">
 		<link href="./css/loading-skeleton.scss" rel="stylesheet">
 		<link href="./css/themes/base.css" rel="stylesheet">
-		<link id="styleTheme" href="./css/themes/dark.css" rel="stylesheet">
+		<link href="./css/themes/twitch-go-input.css" rel="stylesheet">
+		<link href="./css/themes/twitch-go-timeline.css" rel="stylesheet">
+		<link id="styleTheme" href="" rel="stylesheet">
 	</head>
 	
 	<body class="bg-ghostir">
-		<div id="defaultWrapper" class="application-size">
-			<div class="center-screen h-100">
-				<div class="row">
-					<div class="col-12">
-						<img class="loading-logo" src="img/logo.png" alt="Ghostir Logo">
-					</div>
-					<div class="col-12">
-						<div class="ghostir-loading">
-							<div></div>
-							<div></div>
-							<div></div>
-							<div></div>
-						</div>
-					</div>
+		<div id="defaultWrapper" class="twitch-go-container">
+			<div class="loading-container">
+				<img class="loading-logo" src="img/logo.png" alt="Ghostir Logo">
+				<div class="loading-dots">
+					<div></div>
+					<div></div>
+					<div></div>
+					<div></div>
 				</div>
 			</div>
 		</div>
 		
-		<div id="underMaintenanceWrapper" class="application-size" style="display: none;">
+		<div id="underMaintenanceWrapper" class="twitch-go-container" style="display: none;">
 			<div class="under-maintenance-container">
-				<section class="py-5 px-3">
-					<div class="row">
-						<div class="col-7">
-							<h3 class="color-twitch mb-0">We are</h3>
-							<h2 class="color-twitch"><strong>Under Maintenance</strong></h2>
-							<div class="text-white small under-maintenance-text">We are currently rolling out Updates to the Extension, this shouldn't take too long.</div>
-						</div>
-						<div class="col-5">
-							<img class="under-maintenance-logo" src="img/logo.png" alt="Ghostir Logo">
-						</div>
-					</div>
-				</section>
-			</div>
-			<div class="under-maintenance-help">
-				<div class="col-12 text-center">
-					<small class="text-white text-muted-light">If you're seeing this message for more than 10 minutes, please contact me directly through email <a href="mailto:Sandro9191@Gmail.com" target="_blank">here</a></small>.
+				<div class="left">
+					<h3 class="twitch-color">We are</h3>
+					<h2 class="twitch-color"><strong>Under Maintenance</strong></h2>
+					<div class="small under-maintenance-text">We are currently rolling out Updates to the Extension, this shouldn't take too long.</div>
+					<small class="text-muted">If you're seeing this message for more than 10 minutes, please contact me directly through email <a class="twitch-color decoration-none" href="mailto:Sandro9191@Gmail.com" target="_blank">here</a></small>.
+				</div>
+				<div class="right">
+					<img class="under-maintenance-logo" src="img/logo.png" alt="Ghostir Logo">
 				</div>
 			</div>
 		</div>
 		
-		<div id="loginWrapper" class="application-size" style="display: none;">
+		<div id="loginWrapper" class="twitch-go-container" style="display: none;">
 			<div class="authentication-container">
-				<section class="py-5 px-3">
-					<div class="row">
-						<div class="col-7">
-							<div class="color-twitch mb-0 authentication-title"><strong>Twitch <span class="text-white">GO</span></strong></div>
-							<div class="text-white small">Authentication is Securely handled entirely by <strong class="color-twitch">Twitch</strong>, this keeps your Information Secure with no risk of it being exposed.</div>
-							<a id="signIn" class="btn btn-twitch mt-2 w-100">
-								<i id="signIn_Icon" class="fa fa-check-circle"></i>
-								Authenticate
-							</a>
-						</div>
-						<div class="col-5">
-							<img class="authentication-logo" src="img/logo.png" alt="Ghostir Logo">
-						</div>
+				<div>
+					<div class="twitch-color authentication-title">
+						<img class="authentication-logo" src="img/logo.png" alt="Ghostir Logo">
+						<strong>
+							Twitch <span class="text-white">GO</span>
+						</strong>
 					</div>
-				</section>
-			</div>
-			<div class="authentication-help px-3">
-				<div id="authError_Wrapper" class="authentication-error">
-				
+					<div class="small">
+						Authentication is Securely handled entirely by
+						<strong class="twitch-color">Twitch</strong>, this keeps your Information Secure with no risk of it being exposed.
+					</div>
+					<a id="signIn" class="authentication-button">
+						<i id="signIn_Icon" class="fa fa-check-circle"></i>
+						Authenticate
+					</a>
 				</div>
-				<div class="col-12">
-					<small class="text-white text-muted-light">Sometimes issues with Authentication can be solved by resetting the Authentication, do that by clicking <a id="resetAuthToken" class="color-twitch" href="#">here</a>. If the Issue persists, don't hesistate to contact me <a href="mailto:Sandro9191@Gmail.com" target="_blank">here</a></small>.
+				<div>
+					<div id="authError_Wrapper" class="authentication-error">
+						
+					</div>
+					<div class="authentication-info">
+						<small class="text-muted">
+							Sometimes issues with Authentication can be solved by resetting the Authentication, do that by clicking
+							<a id="resetAuthToken" class="twitch-color" href="#">here</a>.
+							If the Issue persists, don't hesistate to contact me
+							<a class="twitch-color" href="mailto:Sandro9191@Gmail.com" target="_blank">here</a>.
+						</small>
+					</div>
 				</div>
 			</div>
 		</div>
 		
-		<div id="applicationWrapper" class="application-size" style="display: none;">
-			<nav class="navbar navbar-expand-lg application-header bg-ghostir p-1">
-				<div class="container-fluid ps-2 p-1">
-					<div class="d-flex">
-						<span class="navbar-brand p-0 me-2 ghostir-logo">
-						  <img src="./img/obj-128x128.png" alt="" width="24" height="24" class="d-inline-block">
-						</span>
-						<input id="searchTab" class="form-control twitch-input me-2 w-auto p-1" placeholder="Search Tab">
-					</div>
-					<div class="d-flex">
-						<button id="backGames" class="btn btn-primary twitch-button me-2" style="display: none;"><i
-								class="fa fa-arrow-left"></i> Back
+		<div id="applicationWrapper" class="twitch-go-container" style="display: none;">
+			<div id="navigation_Wrapper" class="twitch-go-sidebar">
+				<div>
+					<span class="sidebar-logo">
+					  <img class="sidebar-image" src="./img/logo.png" alt="Ghostir">
+					</span>
+					<div class="sidebar-item">
+						<button id="followingList_Tab" class="sidebar-button toolTip active"
+								data-tippy-content="Followed Streams" data-section-code="FollowingStreams"
+								data-target="#followingList" type="button">
+							<i class="fa fa-heart"></i>
 						</button>
-						<button id="refresh" class="btn btn-primary twitch-button me-2"><i class="fa-solid fa-arrows-rotate"></i></button>
-						<button id="signOut" class="btn btn-primary twitch-button"><i class="fa-sharp fa-solid fa-right-from-bracket"></i> Sign Out</button>
+					</div>
+					<div class="sidebar-item">
+						<button id="topGames_Tab" class="sidebar-button toolTip"
+								data-tippy-content="Top Games" data-section-code="TopGames"
+								data-target="#topGames" type="button">
+							<i class="fa fa-trophy"></i>
+						</button>
+					</div>
+					<div class="sidebar-item">
+						<button id="topStreams_Tab" class="sidebar-button toolTip"
+								data-tippy-content="Top Streams" data-section-code="TopStreams"
+								data-target="#topStreams" type="button">
+							<i class="fa fa-star"></i>
+						</button>
+					</div>
+					<div class="sidebar-item">
+						<button id="searchList_Tab" class="sidebar-button toolTip"
+								data-tippy-content="Search" data-section-code="Search"
+								data-target="#searchList" type="button">
+							<i class="fa fa-search"></i>
+						</button>
+					</div>
+					<div class="sidebar-item">
+						<button id="settings_Tab" class="sidebar-button toolTip"
+								data-tippy-content="Settings" data-section-code="Settings"
+								data-target="#settings" type="button">
+							<i class="fa fa-cog"></i>
+						</button>
 					</div>
 				</div>
-			</nav>
-			<div class="d-flex application-body">
-				<div class="nav flex-column nav-pills ghostir-side-navigation h-100 bg-ghostir" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-					<button class="nav-link toolTip section-button active ghostir-side-navigation-item" 
-							id="followingList_Tab"
-							data-tippy-content="Followed Streams" data-bs-toggle="pill" data-section-code="FollowingStreams"
-							data-bs-target="#followingList" type="button" role="tab"
-							aria-controls="followingList" aria-selected="true">
-						<i class="fa fa-heart"></i>
-					</button>
-					<button class="nav-link toolTip section-button ghostir-side-navigation-item" 
-							id="topGames_Tab" 
-							data-tippy-content="Top Games" data-bs-toggle="pill" data-section-code="TopGames" 
-							data-bs-target="#topGames" type="button" role="tab"
-							aria-controls="topGames" aria-selected="false">
-						<i class="fa fa-trophy"></i>
-					</button>
-					<button class="nav-link toolTip section-button ghostir-side-navigation-item" 
-							id="topStreams_Tab"
-							data-tippy-content="Top Streams" data-bs-toggle="pill" data-section-code="TopStreams" 
-							data-bs-target="#topStreams" type="button" role="tab" 
-							aria-controls="topStreams" aria-selected="false">
-						<i class="fa fa-star"></i>
-					</button>
-					<button class="nav-link toolTip section-button ghostir-side-navigation-item"
-							id="searchList_Tab"
-							data-tippy-content="Search" data-bs-toggle="pill" data-section-code="Search" 
-							data-bs-target="#searchList" type="button" role="tab"
-							aria-controls="searchList" aria-selected="false">
-						<i class="fa fa-search"></i>
-					</button>
-					<button class="nav-link toolTip section-button ghostir-side-navigation-item"
-							id="settings_Tab"
-							data-tippy-content="Settings" data-bs-toggle="pill" data-section-code="Settings" 
-							data-bs-target="#settings" type="button" role="tab"
-							aria-controls="settings" aria-selected="false">
-						<i class="fa fa-cog"></i>
-					</button>
-					<button class="nav-link toolTip section-button ghostir-side-navigation-item" 
-							id="info_Tab" 
-							data-tippy-content="Info" data-bs-toggle="pill" data-section-code="Info"
-							data-bs-target="#info" type="button" role="tab"
-							aria-controls="info" aria-selected="false">
-						<i class="fa fa-info"></i>
-					</button>
+				<div>
+					<div class="sidebar-item">
+						<button id="changes_Tab" class="sidebar-button toolTip"
+								data-tippy-content="Changes" data-section-code="Changes"
+								data-target="#changes" type="button">
+							<i class="fa-solid fa-clock-rotate-left"></i>
+						</button>
+					</div>
+					<div class="sidebar-item">
+						<button id="info_Tab" class="sidebar-button toolTip"
+								data-tippy-content="Info" data-section-code="Info"
+								data-target="#info" type="button">
+							<i class="fa fa-info"></i>
+						</button>
+					</div>
 				</div>
-				<div class="tab-content" style="height: 100% !important; width: 100% !important; overflow: overlay;" id="v-pills-tabContent">
-					<div id="followingList" class="tab-pane fade show active" role="tabpanel" aria-labelledby="followingList-tab">
-						<div id="followingListPlaceholder_Wrapper">
-							<div class="list-group-item list-group-item-action following-list-group twitch-border-bottom placeholder-glow">
-								<div class="d-flex align-items-center justify-content-between">
-									<div class="col-3 preview-section">
-										<div class="placeholder placeholder-stream-image">Placeholder Image</div>
-									</div>
-									<div class="col-9 pe-2 information-section">
-										<div class="text-truncate small placeholder-font-size">
-											<small class="placeholder">Placeholder Name</small>
-										</div>
-										<div class="small placeholder-font-size">
-											<small>
-												<span class="me-2 placeholder">Placeholder Category</span>
-												<span class="placeholder viewer-color">
-												<i class="fa fa-user"></i> 
-												<strong>0000</strong>
-											</span>
-											</small>
-										</div>
-										<div class="text-truncate small placeholder-font-size">
-											<small class="placeholder">This is a Placeholder Title for the Stream</small>
-										</div>
-									</div>
-								</div>
-							</div>
-							
-							<div class="list-group-item list-group-item-action following-list-group twitch-border-bottom placeholder-glow">
-								<div class="d-flex align-items-center justify-content-between">
-									<div class="col-3 preview-section">
-										<div class="placeholder placeholder-stream-image">Placeholder Image</div>
-									</div>
-									<div class="col-9 pe-2 information-section">
-										<div class="text-truncate small placeholder-font-size">
-											<small class="placeholder">Placeholder</small>
-										</div>
-										<div class="small placeholder-font-size">
-											<small>
-												<span class="me-2 placeholder">Placeholder Place</span>
-												<span class="placeholder viewer-color">
-												<i class="fa fa-user"></i> 
-												<strong>000</strong>
-											</span>
-											</small>
-										</div>
-										<div class="text-truncate small placeholder-font-size">
-											<small class="placeholder">This is a smaller Title for a Stream</small>
-										</div>
-									</div>
-								</div>
-							</div>
-							
-							<div class="list-group-item list-group-item-action following-list-group twitch-border-bottom placeholder-glow">
-								<div class="d-flex align-items-center justify-content-between">
-									<div class="col-3 preview-section">
-										<div class="placeholder placeholder-stream-image">Placeholder Image</div>
-									</div>
-									<div class="col-9 pe-2 information-section">
-										<div class="text-truncate small placeholder-font-size">
-											<small class="placeholder">Placeholder</small>
-										</div>
-										<div class="small placeholder-font-size">
-											<small>
-												<span class="me-2 placeholder">Placeholder Place Place</span>
-												<span class="placeholder viewer-color">
-												<i class="fa fa-user"></i> 
-												<strong>00000</strong>
-											</span>
-											</small>
-										</div>
-										<div class="text-truncate small placeholder-font-size">
-											<small class="placeholder">This is a longer title for the Stream Section Placeholder</small>
-										</div>
-									</div>
-								</div>
-							</div>
-							
-							<div class="list-group-item list-group-item-action following-list-group twitch-border-bottom placeholder-glow">
-								<div class="d-flex align-items-center justify-content-between">
-									<div class="col-3 preview-section">
-										<div class="placeholder placeholder-stream-image">Placeholder Image</div>
-									</div>
-									<div class="col-9 pe-2 information-section">
-										<div class="text-truncate small placeholder-font-size">
-											<small class="placeholder">Placeholder</small>
-										</div>
-										<div class="small placeholder-font-size">
-											<small>
-												<span class="me-2 placeholder">Placeholder Place</span>
-												<span class="placeholder viewer-color">
-												<i class="fa fa-user"></i> 
-												<strong>0000</strong>
-											</span>
-											</small>
-										</div>
-										<div class="text-truncate small placeholder-font-size">
-											<small class="placeholder">This is a how a longer Placeholder looks when the Title of the Stream is long</small>
-										</div>
-									</div>
-								</div>
-							</div>
-							
-							<div class="list-group-item list-group-item-action following-list-group twitch-border-bottom placeholder-glow">
-								<div class="d-flex align-items-center justify-content-between">
-									<div class="col-3 preview-section">
-										<div class="placeholder placeholder-stream-image">Placeholder Image</div>
-									</div>
-									<div class="col-9 pe-2 information-section">
-										<div class="text-truncate small placeholder-font-size">
-											<small class="placeholder">Placeholder</small>
-										</div>
-										<div class="small placeholder-font-size">
-											<small>
-												<span class="me-2 placeholder">Placeholder Place Place</span>
-												<span class="placeholder viewer-color">
-												<i class="fa fa-user"></i> 
-												<strong>00000</strong>
-											</span>
-											</small>
-										</div>
-										<div class="text-truncate small placeholder-font-size">
-											<small class="placeholder">This is a longer title for the Stream Section</small>
-										</div>
-									</div>
-								</div>
-							</div>
-							
-							<div class="list-group-item list-group-item-action following-list-group twitch-border-bottom placeholder-glow">
-								<div class="d-flex align-items-center justify-content-between">
-									<div class="col-3 preview-section">
-										<div class="placeholder placeholder-stream-image">Placeholder Image</div>
-									</div>
-									<div class="col-9 pe-2 information-section">
-										<div class="text-truncate small placeholder-font-size">
-											<small class="placeholder">Placeholder</small>
-										</div>
-										<div class="small placeholder-font-size">
-											<small>
-												<span class="me-2 placeholder">Placeholder Place Place</span>
-												<span class="placeholder viewer-color">
-												<i class="fa fa-user"></i> 
-												<strong>0000</strong>
-											</span>
-											</small>
-										</div>
-										<div class="text-truncate small placeholder-font-size">
-											<small class="placeholder">This is a title for the Stream Section</small>
-										</div>
-									</div>
-								</div>
-							</div>
-							
-							<div class="list-group-item list-group-item-action following-list-group twitch-border-bottom placeholder-glow">
-								<div class="d-flex align-items-center justify-content-between">
-									<div class="col-3 preview-section">
-										<div class="placeholder placeholder-stream-image">Placeholder Image</div>
-									</div>
-									<div class="col-9 pe-2 information-section">
-										<div class="text-truncate small placeholder-font-size">
-											<small class="placeholder">Placeholder</small>
-										</div>
-										<div class="small placeholder-font-size">
-											<small>
-												<span class="me-2 placeholder">Placeholder Place Place</span>
-												<span class="placeholder viewer-color">
-												<i class="fa fa-user"></i> 
-												<strong>00000</strong>
-											</span>
-											</small>
-										</div>
-										<div class="text-truncate small placeholder-font-size">
-											<small class="placeholder">This is a longer title for the Stream Section Placeholder</small>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div id="followingList_Wrapper" class="tab-body" style="display: none;">
-							
-						</div>
+			</div>
+			<div id="content_Wrapper" class="twitch-go-content">
+				<nav class="twitch-go-navbar">
+					<div class="twitch-go-icon-prepend">
+						<i class="fa-solid fa-magnifying-glass"></i>
+						<label for="searchTab"></label>
+						<input id="searchTab" class="twitch-go-input search" type="search" autocomplete="off" placeholder="Search Tab">
 					</div>
-					<div id="topGames" class="tab-pane fade" role="tabpanel" aria-labelledby="topGames-tab">
-						<div id="topGameListPlaceholder_Wrapper">
-							<div class="row m-2">
-								<div class="category-item text-center col-3 p-1 placeholder-glow">
-									<div class="align-items-center justify-content-between">
-										<div class="placeholder placeholder-category-image">Placeholder Image</div>
-										<div class="placeholder placeholder-category-text">Placeholder</div>
-									</div>
-								</div>
-								<div class="category-item text-center col-3 p-1 placeholder-glow">
-									<div class="align-items-center justify-content-between">
-										<div class="placeholder placeholder-category-image">Placeholder Image</div>
-										<div class="placeholder placeholder-category-text">Placeholder</div>
-									</div>
-								</div>
-								<div class="category-item text-center col-3 p-1 placeholder-glow">
-									<div class="align-items-center justify-content-between">
-										<div class="placeholder placeholder-category-image">Placeholder Image</div>
-										<div class="placeholder placeholder-category-text">Placeholder</div>
-									</div>
-								</div>
-								<div class="category-item text-center col-3 p-1 placeholder-glow">
-									<div class="align-items-center justify-content-between">
-										<div class="placeholder placeholder-category-image">Placeholder Image</div>
-										<div class="placeholder placeholder-category-text">Placeholder</div>
-									</div>
-								</div>
-								<div class="category-item text-center col-3 p-1 placeholder-glow">
-									<div class="align-items-center justify-content-between">
-										<div class="placeholder placeholder-category-image">Placeholder Image</div>
-										<div class="placeholder placeholder-category-text">Placeholder</div>
-									</div>
-								</div>
-								<div class="category-item text-center col-3 p-1 placeholder-glow">
-									<div class="align-items-center justify-content-between">
-										<div class="placeholder placeholder-category-image">Placeholder Image</div>
-										<div class="placeholder placeholder-category-text">Placeholder</div>
-									</div>
-								</div>
-								<div class="category-item text-center col-3 p-1 placeholder-glow">
-									<div class="align-items-center justify-content-between">
-										<div class="placeholder placeholder-category-image">Placeholder Image</div>
-										<div class="placeholder placeholder-category-text">Placeholder</div>
-									</div>
-								</div>
-								<div class="category-item text-center col-3 p-1 placeholder-glow">
-									<div class="align-items-center justify-content-between">
-										<div class="placeholder placeholder-category-image">Placeholder Image</div>
-										<div class="placeholder placeholder-category-text">Placeholder</div>
-									</div>
-								</div>
-								<div class="category-item text-center col-3 p-1 placeholder-glow">
-									<div class="align-items-center justify-content-between">
-										<div class="placeholder placeholder-category-image">Placeholder Image</div>
-										<div class="placeholder placeholder-category-text">Placeholder</div>
-									</div>
-								</div>
-								<div class="category-item text-center col-3 p-1 placeholder-glow">
-									<div class="align-items-center justify-content-between">
-										<div class="placeholder placeholder-category-image">Placeholder Image</div>
-										<div class="placeholder placeholder-category-text">Placeholder</div>
-									</div>
-								</div>
-								<div class="category-item text-center col-3 p-1 placeholder-glow">
-									<div class="align-items-center justify-content-between">
-										<div class="placeholder placeholder-category-image">Placeholder Image</div>
-										<div class="placeholder placeholder-category-text">Placeholder</div>
-									</div>
-								</div>
-								<div class="category-item text-center col-3 p-1 placeholder-glow">
-									<div class="align-items-center justify-content-between">
-										<div class="placeholder placeholder-category-image">Placeholder Image</div>
-										<div class="placeholder placeholder-category-text">Placeholder</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div id="topGameList_Wrapper" class="tab-body" style="display: none;">
-							
-						</div>
-						<div id="topGameStreamList_Wrapper" class="tab-body" style="display: none;">
-							
-						</div>
+					<div class="display-flex">
+						<button id="backGames" class="twitch-go-button back" style="display: none;"><i class="fa fa-arrow-left"></i> Back</button>
+						<button id="refresh" class="twitch-go-button refresh"><i class="fa-solid fa-arrows-rotate"></i></button>
+						<button id="signOut" class="twitch-go-button"><i class="fa-sharp fa-solid fa-right-from-bracket"></i> Sign Out</button>
 					</div>
-					<div id="topStreams" class="tab-pane fade" role="tabpanel" aria-labelledby="topStreams-tab">
-						<div id="topStreamListPlaceholder_Wrapper">
-							<div class="list-group-item list-group-item-action following-list-group twitch-border-bottom placeholder-glow">
-								<div class="d-flex align-items-center justify-content-between">
-									<div class="col-3 preview-section">
-										<div class="placeholder placeholder-stream-image">Placeholder Image</div>
+				</nav>
+				<div id="followingList" class="content-tab active">
+					<div id="followingListPlaceholder_Wrapper">
+						<div class="twitch-go-stream-container">
+							<div class="stream-item">
+								<div class="stream-item-preview">
+									<div class="stream-preview placeholder"></div>
+								</div>
+								<div class="stream-item-information">
+									<div class="placeholder streamer"></div>
+									<div class="display-flex">
+										<span class="placeholder category"></span>
+										<span class="placeholder viewer-count"></span>
 									</div>
-									<div class="col-9 pe-2 information-section">
-										<div class="text-truncate small placeholder-font-size">
-											<small class="placeholder">Placeholder Name</small>
-										</div>
-										<div class="small placeholder-font-size">
-											<small>
-												<span class="me-2 placeholder">Placeholder Category</span>
-												<span class="placeholder viewer-color">
-												<i class="fa fa-user"></i> 
-												<strong>0000</strong>
-											</span>
-											</small>
-										</div>
-										<div class="text-truncate small placeholder-font-size">
-											<small class="placeholder">This is a Placeholder Title for the Stream</small>
-										</div>
-									</div>
+									<span class="placeholder title"></span>
 								</div>
 							</div>
-							
-							<div class="list-group-item list-group-item-action following-list-group twitch-border-bottom placeholder-glow">
-								<div class="d-flex align-items-center justify-content-between">
-									<div class="col-3 preview-section">
-										<div class="placeholder placeholder-stream-image">Placeholder Image</div>
+							<div class="stream-item">
+								<div class="stream-item-preview">
+									<div class="stream-preview placeholder"></div>
+								</div>
+								<div class="stream-item-information">
+									<div class="placeholder streamer"></div>
+									<div class="display-flex">
+										<span class="placeholder category"></span>
+										<span class="placeholder viewer-count"></span>
 									</div>
-									<div class="col-9 pe-2 information-section">
-										<div class="text-truncate small placeholder-font-size">
-											<small class="placeholder">Placeholder</small>
-										</div>
-										<div class="small placeholder-font-size">
-											<small>
-												<span class="me-2 placeholder">Placeholder Place</span>
-												<span class="placeholder viewer-color">
-												<i class="fa fa-user"></i> 
-												<strong>000</strong>
-											</span>
-											</small>
-										</div>
-										<div class="text-truncate small placeholder-font-size">
-											<small class="placeholder">This is a smaller Title for a Stream</small>
-										</div>
-									</div>
+									<span class="placeholder title"></span>
 								</div>
 							</div>
-							
-							<div class="list-group-item list-group-item-action following-list-group twitch-border-bottom placeholder-glow">
-								<div class="d-flex align-items-center justify-content-between">
-									<div class="col-3 preview-section">
-										<div class="placeholder placeholder-stream-image">Placeholder Image</div>
+							<div class="stream-item">
+								<div class="stream-item-preview">
+									<div class="stream-preview placeholder"></div>
+								</div>
+								<div class="stream-item-information">
+									<div class="placeholder streamer"></div>
+									<div class="display-flex">
+										<span class="placeholder category"></span>
+										<span class="placeholder viewer-count"></span>
 									</div>
-									<div class="col-9 pe-2 information-section">
-										<div class="text-truncate small placeholder-font-size">
-											<small class="placeholder">Placeholder</small>
-										</div>
-										<div class="small placeholder-font-size">
-											<small>
-												<span class="me-2 placeholder">Placeholder Place Place</span>
-												<span class="placeholder viewer-color">
-												<i class="fa fa-user"></i> 
-												<strong>00000</strong>
-											</span>
-											</small>
-										</div>
-										<div class="text-truncate small placeholder-font-size">
-											<small class="placeholder">This is a longer title for the Stream Section Placeholder</small>
-										</div>
-									</div>
+									<span class="placeholder title"></span>
 								</div>
 							</div>
-							
-							<div class="list-group-item list-group-item-action following-list-group twitch-border-bottom placeholder-glow">
-								<div class="d-flex align-items-center justify-content-between">
-									<div class="col-3 preview-section">
-										<div class="placeholder placeholder-stream-image">Placeholder Image</div>
+							<div class="stream-item">
+								<div class="stream-item-preview">
+									<div class="stream-preview placeholder"></div>
+								</div>
+								<div class="stream-item-information">
+									<div class="placeholder streamer"></div>
+									<div class="display-flex">
+										<span class="placeholder category"></span>
+										<span class="placeholder viewer-count"></span>
 									</div>
-									<div class="col-9 pe-2 information-section">
-										<div class="text-truncate small placeholder-font-size">
-											<small class="placeholder">Placeholder</small>
-										</div>
-										<div class="small placeholder-font-size">
-											<small>
-												<span class="me-2 placeholder">Placeholder Place</span>
-												<span class="placeholder viewer-color">
-												<i class="fa fa-user"></i> 
-												<strong>0000</strong>
-											</span>
-											</small>
-										</div>
-										<div class="text-truncate small placeholder-font-size">
-											<small class="placeholder">This is a how a longer Placeholder looks when the Title of the Stream is long</small>
-										</div>
-									</div>
+									<span class="placeholder title"></span>
 								</div>
 							</div>
-							
-							<div class="list-group-item list-group-item-action following-list-group twitch-border-bottom placeholder-glow">
-								<div class="d-flex align-items-center justify-content-between">
-									<div class="col-3 preview-section">
-										<div class="placeholder placeholder-stream-image">Placeholder Image</div>
+							<div class="stream-item">
+								<div class="stream-item-preview">
+									<div class="stream-preview placeholder"></div>
+								</div>
+								<div class="stream-item-information">
+									<div class="placeholder streamer"></div>
+									<div class="display-flex">
+										<span class="placeholder category"></span>
+										<span class="placeholder viewer-count"></span>
 									</div>
-									<div class="col-9 pe-2 information-section">
-										<div class="text-truncate small placeholder-font-size">
-											<small class="placeholder">Placeholder</small>
-										</div>
-										<div class="small placeholder-font-size">
-											<small>
-												<span class="me-2 placeholder">Placeholder Place Place</span>
-												<span class="placeholder viewer-color">
-												<i class="fa fa-user"></i> 
-												<strong>00000</strong>
-											</span>
-											</small>
-										</div>
-										<div class="text-truncate small placeholder-font-size">
-											<small class="placeholder">This is a longer title for the Stream Section</small>
-										</div>
-									</div>
+									<span class="placeholder title"></span>
 								</div>
 							</div>
-							
-							<div class="list-group-item list-group-item-action following-list-group twitch-border-bottom placeholder-glow">
-								<div class="d-flex align-items-center justify-content-between">
-									<div class="col-3 preview-section">
-										<div class="placeholder placeholder-stream-image">Placeholder Image</div>
+							<div class="stream-item">
+								<div class="stream-item-preview">
+									<div class="stream-preview placeholder"></div>
+								</div>
+								<div class="stream-item-information">
+									<div class="placeholder streamer"></div>
+									<div class="display-flex">
+										<span class="placeholder category"></span>
+										<span class="placeholder viewer-count"></span>
 									</div>
-									<div class="col-9 pe-2 information-section">
-										<div class="text-truncate small placeholder-font-size">
-											<small class="placeholder">Placeholder</small>
-										</div>
-										<div class="small placeholder-font-size">
-											<small>
-												<span class="me-2 placeholder">Placeholder Place Place</span>
-												<span class="placeholder viewer-color">
-												<i class="fa fa-user"></i> 
-												<strong>0000</strong>
-											</span>
-											</small>
-										</div>
-										<div class="text-truncate small placeholder-font-size">
-											<small class="placeholder">This is a title for the Stream Section</small>
-										</div>
-									</div>
+									<span class="placeholder title"></span>
 								</div>
 							</div>
-							
-							<div class="list-group-item list-group-item-action following-list-group twitch-border-bottom placeholder-glow">
-								<div class="d-flex align-items-center justify-content-between">
-									<div class="col-3 preview-section">
-										<div class="placeholder placeholder-stream-image">Placeholder Image</div>
-									</div>
-									<div class="col-9 pe-2 information-section">
-										<div class="text-truncate small placeholder-font-size">
-											<small class="placeholder">Placeholder</small>
-										</div>
-										<div class="small placeholder-font-size">
-											<small>
-												<span class="me-2 placeholder">Placeholder Place Place</span>
-												<span class="placeholder viewer-color">
-												<i class="fa fa-user"></i> 
-												<strong>00000</strong>
-											</span>
-											</small>
-										</div>
-										<div class="text-truncate small placeholder-font-size">
-											<small class="placeholder">This is a longer title for the Stream Section Placeholder</small>
-										</div>
-									</div>
+							<div class="stream-item">
+								<div class="stream-item-preview">
+									<div class="stream-preview placeholder"></div>
 								</div>
-							</div>
-						</div>
-						<div id="topStreamList_Wrapper" class="tab-body" style="display: none;">
-							
-						</div>
-					</div>
-					<div id="searchList" class="tab-pane fade" role="tabpanel" aria-labelledby="searchList-tab">
-						<div class="ghostir-search-navigation">
-							<ul class="nav nav-pills nav-fill h-100 p-1" id="search_Navigation" role="tablist">
-								<li class="nav-item" role="presentation">
-									<button class="nav-link left active ghostir-search-navigation-item" id="searchStreamResult_Button" data-bs-toggle="tab" data-bs-target="#searchStreamResult_Tab" type="button" role="tab" aria-controls="searchStreamResult_Wrapper" aria-selected="true">Stream</button>
-								</li>
-								<li class="nav-item divider"></li>
-								<li class="nav-item" role="presentation">
-									<button class="nav-link right ghostir-search-navigation-item" id="searchCategoryResult_Button" data-bs-toggle="tab" data-bs-target="#searchCategoryResult_Tab" type="button" role="tab" aria-controls="searchCategoryResult_Wrapper" aria-selected="false">Game</button>
-								</li>
-							</ul>
-						</div>
-						<div class="tab-content" id="searchResult_Wrapper">
-							<div id="searchStreamResult_Tab" data-type="Stream" class="tab-pane fade show active" role="tabpanel" aria-labelledby="searchStreamResult_Button" tabindex="0">
-								<div id="searchStreamResultPlaceholder_Wrapper" style="display: none;">
-									<div class="list-group-item list-group-item-action following-list-group twitch-border-bottom placeholder-glow">
-										<div class="d-flex align-items-center justify-content-between">
-											<div class="col-3 preview-section">
-												<div class="placeholder placeholder-stream-image">Placeholder Image</div>
-											</div>
-											<div class="col-9 pe-2 information-section">
-												<div class="text-truncate small placeholder-font-size">
-													<small class="placeholder">Placeholder Name</small>
-												</div>
-												<div class="small placeholder-font-size">
-													<small>
-														<span class="me-2 placeholder">Placeholder Category</span>
-													</small>
-												</div>
-												<div class="text-truncate small placeholder-font-size">
-													<small class="placeholder">This is a Placeholder Title for the Stream</small>
-												</div>
-											</div>
-										</div>
+								<div class="stream-item-information">
+									<div class="placeholder streamer"></div>
+									<div class="display-flex">
+										<span class="placeholder category"></span>
+										<span class="placeholder viewer-count"></span>
 									</div>
-									
-									<div class="list-group-item list-group-item-action following-list-group twitch-border-bottom placeholder-glow">
-										<div class="d-flex align-items-center justify-content-between">
-											<div class="col-3 preview-section">
-												<div class="placeholder placeholder-stream-image">Placeholder Image</div>
-											</div>
-											<div class="col-9 pe-2 information-section">
-												<div class="text-truncate small placeholder-font-size">
-													<small class="placeholder">Placeholder</small>
-												</div>
-												<div class="small placeholder-font-size">
-													<small>
-														<span class="me-2 placeholder">Placeholder Place</span>
-													</small>
-												</div>
-												<div class="text-truncate small placeholder-font-size">
-													<small class="placeholder">This is a smaller Title for a Stream</small>
-												</div>
-											</div>
-										</div>
-									</div>
-									
-									<div class="list-group-item list-group-item-action following-list-group twitch-border-bottom placeholder-glow">
-										<div class="d-flex align-items-center justify-content-between">
-											<div class="col-3 preview-section">
-												<div class="placeholder placeholder-stream-image">Placeholder Image</div>
-											</div>
-											<div class="col-9 pe-2 information-section">
-												<div class="text-truncate small placeholder-font-size">
-													<small class="placeholder">Placeholder</small>
-												</div>
-												<div class="small placeholder-font-size">
-													<small>
-														<span class="me-2 placeholder">Placeholder Place Place</span>
-													</small>
-												</div>
-												<div class="text-truncate small placeholder-font-size">
-													<small class="placeholder">This is a longer title for the Stream Section Placeholder</small>
-												</div>
-											</div>
-										</div>
-									</div>
-									
-									<div class="list-group-item list-group-item-action following-list-group twitch-border-bottom placeholder-glow">
-										<div class="d-flex align-items-center justify-content-between">
-											<div class="col-3 preview-section">
-												<div class="placeholder placeholder-stream-image">Placeholder Image</div>
-											</div>
-											<div class="col-9 pe-2 information-section">
-												<div class="text-truncate small placeholder-font-size">
-													<small class="placeholder">Placeholder</small>
-												</div>
-												<div class="small placeholder-font-size">
-													<small>
-														<span class="me-2 placeholder">Placeholder Place</span>
-													</small>
-												</div>
-												<div class="text-truncate small placeholder-font-size">
-													<small class="placeholder">This is a how a longer Placeholder looks when the Title of the Stream is long</small>
-												</div>
-											</div>
-										</div>
-									</div>
-									
-									<div class="list-group-item list-group-item-action following-list-group twitch-border-bottom placeholder-glow">
-										<div class="d-flex align-items-center justify-content-between">
-											<div class="col-3 preview-section">
-												<div class="placeholder placeholder-stream-image">Placeholder Image</div>
-											</div>
-											<div class="col-9 pe-2 information-section">
-												<div class="text-truncate small placeholder-font-size">
-													<small class="placeholder">Placeholder</small>
-												</div>
-												<div class="small placeholder-font-size">
-													<small>
-														<span class="me-2 placeholder">Placeholder Place Place</span>
-													</small>
-												</div>
-												<div class="text-truncate small placeholder-font-size">
-													<small class="placeholder">This is a longer title for the Stream Section</small>
-												</div>
-											</div>
-										</div>
-									</div>
-									
-									<div class="list-group-item list-group-item-action following-list-group twitch-border-bottom placeholder-glow">
-										<div class="d-flex align-items-center justify-content-between">
-											<div class="col-3 preview-section">
-												<div class="placeholder placeholder-stream-image">Placeholder Image</div>
-											</div>
-											<div class="col-9 pe-2 information-section">
-												<div class="text-truncate small placeholder-font-size">
-													<small class="placeholder">Placeholder</small>
-												</div>
-												<div class="small placeholder-font-size">
-													<small>
-														<span class="me-2 placeholder">Placeholder Place Place</span>
-													</small>
-												</div>
-												<div class="text-truncate small placeholder-font-size">
-													<small class="placeholder">This is a title for the Stream Section</small>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div id="searchStreamResult_Wrapper" >
-									
-								</div>
-							</div>
-							<div id="searchCategoryResult_Tab" data-type="Category" class="tab-pane fade" role="tabpanel" aria-labelledby="searchCategoryResult_Button" tabindex="0">
-								<div id="searchCategoryResultPlaceholder_Wrapper" style="display: none;">
-									<div class="row m-2">
-										<div class="category-item text-center col-3 p-1 placeholder-glow">
-											<div class="align-items-center justify-content-between">
-												<div class="placeholder placeholder-category-image">Placeholder Image</div>
-												<div class="placeholder placeholder-category-text">Placeholder</div>
-											</div>
-										</div>
-										<div class="category-item text-center col-3 p-1 placeholder-glow">
-											<div class="align-items-center justify-content-between">
-												<div class="placeholder placeholder-category-image">Placeholder Image</div>
-												<div class="placeholder placeholder-category-text">Placeholder</div>
-											</div>
-										</div>
-										<div class="category-item text-center col-3 p-1 placeholder-glow">
-											<div class="align-items-center justify-content-between">
-												<div class="placeholder placeholder-category-image">Placeholder Image</div>
-												<div class="placeholder placeholder-category-text">Placeholder</div>
-											</div>
-										</div>
-										<div class="category-item text-center col-3 p-1 placeholder-glow">
-											<div class="align-items-center justify-content-between">
-												<div class="placeholder placeholder-category-image">Placeholder Image</div>
-												<div class="placeholder placeholder-category-text">Placeholder</div>
-											</div>
-										</div>
-										<div class="category-item text-center col-3 p-1 placeholder-glow">
-											<div class="align-items-center justify-content-between">
-												<div class="placeholder placeholder-category-image">Placeholder Image</div>
-												<div class="placeholder placeholder-category-text">Placeholder</div>
-											</div>
-										</div>
-										<div class="category-item text-center col-3 p-1 placeholder-glow">
-											<div class="align-items-center justify-content-between">
-												<div class="placeholder placeholder-category-image">Placeholder Image</div>
-												<div class="placeholder placeholder-category-text">Placeholder</div>
-											</div>
-										</div>
-										<div class="category-item text-center col-3 p-1 placeholder-glow">
-											<div class="align-items-center justify-content-between">
-												<div class="placeholder placeholder-category-image">Placeholder Image</div>
-												<div class="placeholder placeholder-category-text">Placeholder</div>
-											</div>
-										</div>
-										<div class="category-item text-center col-3 p-1 placeholder-glow">
-											<div class="align-items-center justify-content-between">
-												<div class="placeholder placeholder-category-image">Placeholder Image</div>
-												<div class="placeholder placeholder-category-text">Placeholder</div>
-											</div>
-										</div>
-										<div class="category-item text-center col-3 p-1 placeholder-glow">
-											<div class="align-items-center justify-content-between">
-												<div class="placeholder placeholder-category-image">Placeholder Image</div>
-												<div class="placeholder placeholder-category-text">Placeholder</div>
-											</div>
-										</div>
-										<div class="category-item text-center col-3 p-1 placeholder-glow">
-											<div class="align-items-center justify-content-between">
-												<div class="placeholder placeholder-category-image">Placeholder Image</div>
-												<div class="placeholder placeholder-category-text">Placeholder</div>
-											</div>
-										</div>
-										<div class="category-item text-center col-3 p-1 placeholder-glow">
-											<div class="align-items-center justify-content-between">
-												<div class="placeholder placeholder-category-image">Placeholder Image</div>
-												<div class="placeholder placeholder-category-text">Placeholder</div>
-											</div>
-										</div>
-										<div class="category-item text-center col-3 p-1 placeholder-glow">
-											<div class="align-items-center justify-content-between">
-												<div class="placeholder placeholder-category-image">Placeholder Image</div>
-												<div class="placeholder placeholder-category-text">Placeholder</div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div id="searchCategoryResult_Wrapper" >
-								
+									<span class="placeholder title"></span>
 								</div>
 							</div>
 						</div>
 					</div>
-					<div id="settings" class="tab-pane fade p-3" role="tabpanel" aria-labelledby="settings-tab">
+					<div id="followingList_Wrapper" style="display: none;"></div>
+				</div>
+				<div id="topGames" class="content-tab">
+					<div id="topGameListPlaceholder_Wrapper">
+						<div class="twitch-go-category-container">
+							<div class="category-item">
+								<div class="placeholder category-preview"></div>
+								<div class="placeholder category-name"></div>
+							</div>
+							<div class="category-item">
+								<div class="placeholder category-preview"></div>
+								<div class="placeholder category-name"></div>
+							</div>
+							<div class="category-item">
+								<div class="placeholder category-preview"></div>
+								<div class="placeholder category-name"></div>
+							</div>
+							<div class="category-item">
+								<div class="placeholder category-preview"></div>
+								<div class="placeholder category-name"></div>
+							</div>
+							<div class="category-item">
+								<div class="placeholder category-preview"></div>
+								<div class="placeholder category-name"></div>
+							</div>
+							<div class="category-item">
+								<div class="placeholder category-preview"></div>
+								<div class="placeholder category-name"></div>
+							</div>
+							<div class="category-item">
+								<div class="placeholder category-preview"></div>
+								<div class="placeholder category-name"></div>
+							</div>
+							<div class="category-item">
+								<div class="placeholder category-preview"></div>
+								<div class="placeholder category-name"></div>
+							</div>
+							<div class="category-item">
+								<div class="placeholder category-preview"></div>
+								<div class="placeholder category-name"></div>
+							</div>
+							<div class="category-item">
+								<div class="placeholder category-preview"></div>
+								<div class="placeholder category-name"></div>
+							</div>
+							<div class="category-item">
+								<div class="placeholder category-preview"></div>
+								<div class="placeholder category-name"></div>
+							</div>
+							<div class="category-item">
+								<div class="placeholder category-preview"></div>
+								<div class="placeholder category-name"></div>
+							</div>
+						</div>
+					</div>
+					<div id="topGameList_Wrapper" style="display: none;">
+					
+					</div>
+					<div id="topGameStreamList_Wrapper" style="display: none;">
+					
+					</div>
+				</div>
+				<div id="topStreams" class="content-tab">
+					<div id="topStreamListPlaceholder_Wrapper">
+						<div class="twitch-go-stream-container">
+							<div class="stream-item">
+								<div class="stream-item-preview">
+									<div class="stream-preview placeholder"></div>
+								</div>
+								<div class="stream-item-information">
+									<div class="placeholder streamer"></div>
+									<div class="display-flex">
+										<span class="placeholder category"></span>
+										<span class="placeholder viewer-count"></span>
+									</div>
+									<span class="placeholder title"></span>
+								</div>
+							</div>
+							<div class="stream-item">
+								<div class="stream-item-preview">
+									<div class="stream-preview placeholder"></div>
+								</div>
+								<div class="stream-item-information">
+									<div class="placeholder streamer"></div>
+									<div class="display-flex">
+										<span class="placeholder category"></span>
+										<span class="placeholder viewer-count"></span>
+									</div>
+									<span class="placeholder title"></span>
+								</div>
+							</div>
+							<div class="stream-item">
+								<div class="stream-item-preview">
+									<div class="stream-preview placeholder"></div>
+								</div>
+								<div class="stream-item-information">
+									<div class="placeholder streamer"></div>
+									<div class="display-flex">
+										<span class="placeholder category"></span>
+										<span class="placeholder viewer-count"></span>
+									</div>
+									<span class="placeholder title"></span>
+								</div>
+							</div>
+							<div class="stream-item">
+								<div class="stream-item-preview">
+									<div class="stream-preview placeholder"></div>
+								</div>
+								<div class="stream-item-information">
+									<div class="placeholder streamer"></div>
+									<div class="display-flex">
+										<span class="placeholder category"></span>
+										<span class="placeholder viewer-count"></span>
+									</div>
+									<span class="placeholder title"></span>
+								</div>
+							</div>
+							<div class="stream-item">
+								<div class="stream-item-preview">
+									<div class="stream-preview placeholder"></div>
+								</div>
+								<div class="stream-item-information">
+									<div class="placeholder streamer"></div>
+									<div class="display-flex">
+										<span class="placeholder category"></span>
+										<span class="placeholder viewer-count"></span>
+									</div>
+									<span class="placeholder title"></span>
+								</div>
+							</div>
+							<div class="stream-item">
+								<div class="stream-item-preview">
+									<div class="stream-preview placeholder"></div>
+								</div>
+								<div class="stream-item-information">
+									<div class="placeholder streamer"></div>
+									<div class="display-flex">
+										<span class="placeholder category"></span>
+										<span class="placeholder viewer-count"></span>
+									</div>
+									<span class="placeholder title"></span>
+								</div>
+							</div>
+							<div class="stream-item">
+								<div class="stream-item-preview">
+									<div class="stream-preview placeholder"></div>
+								</div>
+								<div class="stream-item-information">
+									<div class="placeholder streamer"></div>
+									<div class="display-flex">
+										<span class="placeholder category"></span>
+										<span class="placeholder viewer-count"></span>
+									</div>
+									<span class="placeholder title"></span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="topStreamList_Wrapper" class="tab-body" style="display: none;">
+					
+					</div>
+				</div>
+				<div id="searchList" class="content-tab search">
+					<div class="twitch-go-navigation">
+						<ul id="search_Navigation" class="twitch-go-navigation-list">
+							<li class="navigation-list-item">
+								<button id="searchStreamResult_Button" class="navigation-list-button active" data-target="#searchStreamResult_Tab" type="button">
+									Stream
+								</button>
+							</li>
+							<li class="navigation-list-item divider"></li>
+							<li class="navigation-list-item">
+								<button id="searchCategoryResult_Button" class="navigation-list-button" data-target="#searchCategoryResult_Tab" type="button">
+									Game
+								</button>
+							</li>
+						</ul>
+					</div>
+					<div id="searchStreamResult_Tab" data-type="Stream" class="navigation-tab active">
+						<div id="searchStreamResultPlaceholder_Wrapper" style="display: none;">
+							<div class="twitch-go-stream-container">
+								<div class="stream-item">
+									<div class="stream-item-preview">
+										<div class="stream-preview placeholder"></div>
+									</div>
+									<div class="stream-item-information">
+										<div class="placeholder streamer"></div>
+										<div class="display-flex">
+											<span class="placeholder category"></span>
+											<span class="placeholder viewer-count"></span>
+										</div>
+										<span class="placeholder title"></span>
+									</div>
+								</div>
+								<div class="stream-item">
+									<div class="stream-item-preview">
+										<div class="stream-preview placeholder"></div>
+									</div>
+									<div class="stream-item-information">
+										<div class="placeholder streamer"></div>
+										<div class="display-flex">
+											<span class="placeholder category"></span>
+											<span class="placeholder viewer-count"></span>
+										</div>
+										<span class="placeholder title"></span>
+									</div>
+								</div>
+								<div class="stream-item">
+									<div class="stream-item-preview">
+										<div class="stream-preview placeholder"></div>
+									</div>
+									<div class="stream-item-information">
+										<div class="placeholder streamer"></div>
+										<div class="display-flex">
+											<span class="placeholder category"></span>
+											<span class="placeholder viewer-count"></span>
+										</div>
+										<span class="placeholder title"></span>
+									</div>
+								</div>
+								<div class="stream-item">
+									<div class="stream-item-preview">
+										<div class="stream-preview placeholder"></div>
+									</div>
+									<div class="stream-item-information">
+										<div class="placeholder streamer"></div>
+										<div class="display-flex">
+											<span class="placeholder category"></span>
+											<span class="placeholder viewer-count"></span>
+										</div>
+										<span class="placeholder title"></span>
+									</div>
+								</div>
+								<div class="stream-item">
+									<div class="stream-item-preview">
+										<div class="stream-preview placeholder"></div>
+									</div>
+									<div class="stream-item-information">
+										<div class="placeholder streamer"></div>
+										<div class="display-flex">
+											<span class="placeholder category"></span>
+											<span class="placeholder viewer-count"></span>
+										</div>
+										<span class="placeholder title"></span>
+									</div>
+								</div>
+								<div class="stream-item">
+									<div class="stream-item-preview">
+										<div class="stream-preview placeholder"></div>
+									</div>
+									<div class="stream-item-information">
+										<div class="placeholder streamer"></div>
+										<div class="display-flex">
+											<span class="placeholder category"></span>
+											<span class="placeholder viewer-count"></span>
+										</div>
+										<span class="placeholder title"></span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div id="searchStreamResult_Wrapper">
+							
+						</div>
+					</div>
+					<div id="searchCategoryResult_Tab" data-type="Category" class="navigation-tab">
+						<div id="searchCategoryResultPlaceholder_Wrapper" style="display: none;">
+							<div class="twitch-go-category-container">
+								<div class="category-item">
+									<div class="placeholder category-preview"></div>
+									<div class="placeholder category-name"></div>
+								</div>
+								<div class="category-item">
+									<div class="placeholder category-preview"></div>
+									<div class="placeholder category-name"></div>
+								</div>
+								<div class="category-item">
+									<div class="placeholder category-preview"></div>
+									<div class="placeholder category-name"></div>
+								</div>
+								<div class="category-item">
+									<div class="placeholder category-preview"></div>
+									<div class="placeholder category-name"></div>
+								</div>
+								<div class="category-item">
+									<div class="placeholder category-preview"></div>
+									<div class="placeholder category-name"></div>
+								</div>
+								<div class="category-item">
+									<div class="placeholder category-preview"></div>
+									<div class="placeholder category-name"></div>
+								</div>
+								<div class="category-item">
+									<div class="placeholder category-preview"></div>
+									<div class="placeholder category-name"></div>
+								</div>
+								<div class="category-item">
+									<div class="placeholder category-preview"></div>
+									<div class="placeholder category-name"></div>
+								</div>
+								<div class="category-item">
+									<div class="placeholder category-preview"></div>
+									<div class="placeholder category-name"></div>
+								</div>
+								<div class="category-item">
+									<div class="placeholder category-preview"></div>
+									<div class="placeholder category-name"></div>
+								</div>
+								<div class="category-item">
+									<div class="placeholder category-preview"></div>
+									<div class="placeholder category-name"></div>
+								</div>
+								<div class="category-item">
+									<div class="placeholder category-preview"></div>
+									<div class="placeholder category-name"></div>
+								</div>
+							</div>
+						</div>
+						<div id="searchCategoryResult_Wrapper">
+						
+						</div>
+						<div id="searchCategoryStreamList_Wrapper" style="display: none;">
+						
+						</div>
+					</div>
+				</div>
+				<div id="settings" class="content-tab">
+					<div class="twitch-go-settings-container">
+						<div class="setting">
+							<label class="twitch-go-input-label" for="darkMode_Checkbox">Dark Mode</label>
+							<div class="twitch-go-input-sub-label">Switch between the Dark and Light Themes.</div>
+							<input type="checkbox" id="darkMode_Checkbox" checked>
+						</div>
+					</div>
+					<div class="twitch-go-settings-container">
+						<div class="setting">
+							<label class="twitch-go-input-label" for="autoTheaterMode_Checkbox">Auto Theater Mode</label>
+							<div class="twitch-go-input-sub-label">Automatically sets the Twitch Player to Theater Mode (Will not conflict with BetterTTV or other extensions doing the same).</div>
+							<input type="checkbox" id="autoTheaterMode_Checkbox">
+						</div>
+					</div>
+					<div class="twitch-go-settings-container">
+						<div class="setting">
+							<label class="twitch-go-input-label" for="notificationFavoritePosition_Select">Notification/Favorite Button Position</label>
+							<div class="twitch-go-input-sub-label">Choose between the Action Buttons showing on the Left or Right side.</div>
+							<div class="twitch-go-vertical-input-container">
+								<div class="input-area">
+									<input id="notificationFavoritePosition_Select" class="twitch-go-vertical-input" type="checkbox">
+								</div>
+								<div class="example-area">
+									<div class="stream-action-example-container">
+										<div class="twitch-go-stream-container">
+											<div class="stream-item">
+												<div class="stream-item-preview">
+													<div class="stream-preview placeholder"></div>
+													<div class="stream-action-container left">
+														<i class="fa-regular fa-bell example-notification"></i>
+														<i class="fa-regular fa-star example-favorite"></i>
+													</div>
+												</div>
+												<div class="stream-item-information">
+													<div class="placeholder streamer"></div>
+													<div class="display-flex">
+														<span class="placeholder category"></span>
+														<span class="placeholder viewer-count"></span>
+													</div>
+													<span class="placeholder title"></span>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="stream-action-example-container">
+										<div class="twitch-go-stream-container">
+											<div class="stream-item">
+												<div class="stream-item-preview">
+													<div class="stream-preview placeholder"></div>
+													<div class="stream-action-container right">
+														<i class="fa-regular fa-bell example-notification"></i>
+														<i class="fa-regular fa-star example-favorite"></i>
+													</div>
+												</div>
+												<div class="stream-item-information">
+													<div class="placeholder streamer"></div>
+													<div class="display-flex">
+														<span class="placeholder category"></span>
+														<span class="placeholder viewer-count"></span>
+													</div>
+													<span class="placeholder title"></span>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="twitch-go-settings-container">
+						<div class="setting">
+							<label class="twitch-go-input-label" for="notificationEnabled_Checkbox">Receive Notification(s)</label>
+							<div class="twitch-go-input-sub-label">You can choose which streamer(s) you'd like to receive notifications for by clicking the <i class="fa-regular fa-bell example-notification-button"></i> Icon.</div>
+							<input id="notificationEnabled_Checkbox" type="checkbox" checked>
+						</div>
+					</div>
+					<div class="twitch-go-settings-container">
+						<div class="setting">
+							<label class="twitch-go-input-label">Result Amount</label>
+							<div class="twitch-go-input-sub-label"><strong class="color-twitch">Twitch</strong> only allows for a maximum of 100 Results.</div>
+							<div class="twitch-go-input-group">
+								<div>
+									<label for="followedStreamReturnAmount_Input">Followed Streams</label>
+									<input type="number" id="followedStreamReturnAmount_Input" value="100">
+								</div>
+								<div>
+									<label for="topGamesReturnAmount_Input">Top Categories</label>
+									<input type="number" id="topGamesReturnAmount_Input" value="100">
+								</div>
+								<div>
+									<label for="topStreamsReturnAmount_Input">Top Streams</label>
+									<input type="number" id="topStreamsReturnAmount_Input" value="100">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="changes" class="content-tab">
+					<div class="timeline">
 						<div class="row">
-							<div class="col-4">
-								<label class="form-check-label fw-bold small-label" for="darkMode_Checkbox">Dark Mode</label>
-								<div class="form-check form-switch fs-4">
-									<input class="form-check-input" type="checkbox" id="darkMode_Checkbox" checked>
+							<div class="icon">
+								<div class="timeline-icon success">
+									<i class="fa-solid fa-check"></i>
 								</div>
 							</div>
-							<div class="col-8">
-								<label class="form-check-label fw-bold small-label" for="notificationFavoritePosition_Select">Notification/Favorite Button Position</label>
-								<select id="notificationFavoritePosition_Select" class="form-select" aria-label="Position of the Notification/Favorite Buttons">
-									<option selected value="Left">Left</option>
-									<option value="Right">Right</option>
-								</select>
-							</div>
-						</div>
-						
-						<div class="card mt-3">
-							<div class="card-body">
-								<h5 class="card-title">Notifications</h5>
-								<small>You can choose which streamer(s) you'd like to receive notifications for by clicking the <i class="fa-regular fa-bell"></i> Icon.</small>
-								<div class="row">
-									<div class="col-12">
-										<label class="form-check-label fw-bold small-label" for="followingNotifications_Checkbox">Receive Notification(s)</label>
-										<div class="form-check form-switch fs-4">
-											<input class="form-check-input" type="checkbox" id="followingNotifications_Checkbox" checked>
-										</div>
-									</div>
+							<div class="content">
+								<strong class="color-twitch">2.0.0</strong><span class="badge">December 29, 2022</span>
+								<div class="description">
+									<h5>Update</h5>
+									<ul>
+										<li>
+											Complete revamp of the Extension, moving from the use of Bootstrap to style.
+										</li>
+										<li>
+											
+										</li>
+									</ul>
+									<h5>Bug Fixes</h5>
+									<ul>
+										<li>
+											Fixing quiet a bit of bugs (most minor), within the Search, also improving the Search and wording within these Sections.
+										</li>
+									</ul>
 								</div>
 							</div>
 						</div>
-						
-						<div class="card mt-3">
-							<div class="card-body">
-								<h5 class="card-title">Result Amount</h5>
-								<small><strong class="color-twitch">Twitch</strong> only allows for a maximum of 100 Results.</small>
-								<div class="row">
-									<div class="col-4">
-										<label class="fw-bold mt-3 small-label" for="followedStreamReturnAmount_Input">Followed Streams</label>
-										<input class="form-control" type="number" id="followedStreamReturnAmount_Input" value="100">
-									</div>
-									<div class="col-4">
-										<label class="fw-bold mt-3 small-label" for="topGamesReturnAmount_Input">Top Categories</label>
-										<input class="form-control" type="number" id="topGamesReturnAmount_Input" value="100">
-									</div>
-									<div class="col-4">
-										<label class="fw-bold mt-3 small-label" for="topStreamsReturnAmount_Input">Top Streams</label>
-										<input class="form-control" type="number" id="topStreamsReturnAmount_Input" value="100">
-									</div>
+						<div class="row">
+							<div class="icon">
+								<div class="timeline-icon success">
+									<i class="fa-solid fa-check"></i>
+								</div>
+							</div>
+							<div class="content">
+								<strong class="color-twitch">1.3.6</strong><span class="badge">November 13, 2022</span>
+								<div class="description">
+									<h5>Update / Bug Fixes</h5>
+									<ul>
+										<li>
+											Changing the Auto Theater Mode Setting to be Off by default (I know that some Users already use the BTTV Auto Theater Mode, which is why I also had a check, so that there is no interference).
+										</li>
+										<li>
+											Updating the Notification code a bit, checking for Errors, if there is an error with the API it doesn't send a Notification to the User with that Error.
+										</li>
+									</ul>
 								</div>
 							</div>
 						</div>
-						
-						<div class="card mt-3">
-							<div class="card-body">
-								<label class="card-title fw-bold" for="ghostGuard_Checkbox">Ghost Guard</label>
-								<h6 class="card-subtitle mb-2 text-muted">
-									<i>
-										<small>Currently Under Development, will include regular Adblocking. We are currently looking for a solution to the Bottom Ads added by Twitch.</small>
-									</i>
-								</h6>
-								<div class="form-check form-switch fs-4">
-									<input id="ghostGuard_Checkbox" class="form-check-input" disabled type="checkbox">
+						<div class="row">
+							<div class="icon">
+								<div class="timeline-icon success">
+									<i class="fa-solid fa-check"></i>
 								</div>
-								
-								<label class="form-check-label fw-bold mt-2" for="excludedStreams_Select">Excluded Streams</label>
-								<select id="excludedStreams_Select" class="form-select" disabled aria-label="Ghost Guard Excluded Streams">
-									<option selected>Select Stream(s)</option>
-								</select>
+							</div>
+							<div class="content">
+								<strong class="color-twitch">1.3.5</strong><span class="badge">November 8, 2022</span>
+								<div class="description">
+									<h5>New Features</h5>
+									<ul>
+										<li>
+											<strong>Auto Theater Mode</strong> allows the User to Enable/Disable the Auto Theater Mode from the Settings (when a stream is loaded, it will automatically go into theater mode).
+										</li>
+										<li>
+											<strong>Refresh Button</strong> allows the User to refresh the information loaded for their current section (such as Following List, Top Games or Top Streams).
+										</li>
+										<li>
+											<strong>Following Action Button Positioning</strong> Addition of a Dropdown within the Settings, allowing the User to select what side they'd like the Following List action buttons on.
+										</li>
+									</ul>
+									<h5>Update / Bug Fixes</h5>
+									<ul>
+										<li>
+											Fixing issue with the Notification not working due to it point to the wrong API, there was also an issue with the way the Chrome/Mozilla Browser API was being called.
+										</li>
+										<li>
+											Moved the HTML from being returned by the API to it being present within the Extension.
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="icon">
+								<div class="timeline-icon success">
+									<i class="fa fa-check"></i>
+								</div>
+							</div>
+							<div class="content">
+								<strong class="color-twitch">1.3.4</strong><span class="badge">November 4, 2022</span>
+								<div class="description">
+									<ul>
+										<li>
+											An overhaul of many sections of the Extension, basically ironing out all of the Methods and API Calls, this is for better efficiency and loading times.
+										</li>
+										<li>
+											Added an Extension loading indicator when the Extension is opened.
+										</li>
+										<li>
+											The Loading for More Results was a bit clunky, changed it to a button to allow the User to request more results (The user is also able to specify how many results per page).
+										</li>
+										<li>
+											Added a functioning Refresh button that refreshes the List, based on the Tab you're in.
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="icon">
+								<div class="timeline-icon success">
+									<i class="fa fa-check"></i>
+								</div>
+							</div>
+							<div class="content">
+								<strong class="color-twitch">1.3.3</strong><span class="badge">October 24, 2022</span>
+								<div class="description">
+									<ul>
+										<li>
+											Addition of a 'Favorite' button, this will allow you to have a following list but also favorite a streamer in particular, allowing you to see them at the top of your following list.
+										</li>
+										<li>
+											Bug Fixes to the API and the Extension.
+										</li>
+										<li>
+											Moved the HTML from being returned by the API to it being present within the Extension.
+										</li>
+										<li>
+											Added a functioning Refresh button that refreshes the List, based on the Tab you're in.
+										</li>
+									</ul>
+								</div>
 							</div>
 						</div>
 					</div>
-					<div id="info" class="tab-pane fade" role="tabpanel" aria-labelledby="info-tab">
-						<div class="d-flex w-100 h-100 flex-column justify-content-center">
-							<div class="container col-xxl-8 px-4 py-5">
-								<div class="row flex-lg-row-reverse align-items-center g-5">
-									<div class="col-lg-6 text-center">
-										<img width="250" src="img/TwitchGo.png" alt=""/>
-										<div class="small text-muted-light mt-3 mb-3">
-											I'm a Software Developer with over 7 Years of Experience in different
-											programming languages and positions. Donations are always appreciated, 
-											they will more than likely go towards the Site hosting fees.
-										</div>
-										<a class="btn btn-primary twitch-button w-100" target="_blank" href="https://www.paypal.com/donate/?business=8TZ6YGMJNHP3Y&no_recurring=1&item_name=Donation+in+support+of+the+Twitch+Go+Application.&currency_code=USD"><i class="fa fa-heart fa-sm"></i> Donate</a>
-									</div>
+				</div>
+				<div id="info" class="content-tab">
+					<div class="twitch-go-information-container">
+						<div class="information-header">
+							<img class="logo" src="img/logo.png" alt="Ghostir Logo">
+							<div>
+								<div class="header color-twitch">
+									<strong>Twitch GO</strong>
 								</div>
+								<div class="sub-header">
+									<strong>Using the Twitch Helix API</strong>
+								</div>
+							</div>
+						</div>
+						
+						<div class="information-body">
+							<div class="avatar-container">
+								<img class="avatar" src="img/profile/ghostir.jpg" alt="Ghostir">
+								<strong>Ghostir</strong>
+								<small>Developer/Creator</small>
+							</div>
+							
+							<div class="avatar-container">
+								<img class="avatar" src="img/profile/yungwiz.jpg" alt="Yungwiz">
+								<strong>Yungwiz</strong>
+								<small>Content Lead</small>
+							</div>
+						</div>
+						<div class="information-footer">
+							<small>A quick and easy way to access several of the Twitch Services, such as your Following, Top Games and Top Streams.</small>
+							<div class="donate-container">
+								<a class="twitch-go-button" target="_blank" href="https://www.paypal.com/donate/?business=8TZ6YGMJNHP3Y&no_recurring=1&item_name=Donation+in+support+of+the+Twitch+Go+Application.&currency_code=USD">
+									<i class="fa fa-heart fa-sm"></i>
+									Donate
+								</a>
 							</div>
 						</div>
 					</div>
