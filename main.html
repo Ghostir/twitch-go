@@ -4,19 +4,18 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>Twitch GO</title>
-		<link href="./css/fontawesome.css" rel="stylesheet">
+		<link href="./css/tabler.css" rel="stylesheet">
 		<link href="./css/tippy-light.css" rel="stylesheet">
 		<link href="./css/loading-skeleton.scss" rel="stylesheet">
 		<link href="./css/themes/base.css" rel="stylesheet">
 		<link href="./css/themes/twitch-go-input.css" rel="stylesheet">
-		<link href="./css/themes/twitch-go-timeline.css" rel="stylesheet">
 		<link id="styleTheme" href="" rel="stylesheet">
 	</head>
 	
 	<body class="bg-ghostir">
 		<div id="defaultWrapper" class="twitch-go-container">
 			<div class="loading-container">
-				<img class="loading-logo" src="img/logo.png" alt="Ghostir Logo">
+				<img class="loading-logo" src="img/logo.svg" alt="Ghostir Logo">
 				<div class="loading-dots">
 					<div></div>
 					<div></div>
@@ -28,34 +27,38 @@
 		
 		<div id="underMaintenanceWrapper" class="twitch-go-container" style="display: none;">
 			<div class="under-maintenance-container">
-				<div class="left">
+				<div>
 					<h3 class="twitch-color">We are</h3>
 					<h2 class="twitch-color"><strong>Under Maintenance</strong></h2>
 					<div class="small under-maintenance-text">We are currently rolling out Updates to the Extension, this shouldn't take too long.</div>
-					<small class="text-muted">If you're seeing this message for more than 10 minutes, please contact me directly through email <a class="twitch-color decoration-none" href="mailto:Sandro9191@Gmail.com" target="_blank">here</a></small>.
+					<small class="text-muted">If you're seeing this message for more than 10 minutes, Click 
+						<a class="twitch-color" href="https://ghostir.net/feedback/send" target="_blank">here</a> to contact me.
+					</small>
 				</div>
-				<div class="right">
-					<img class="under-maintenance-logo" src="img/logo.png" alt="Ghostir Logo">
-				</div>
+				<img class="under-maintenance-logo" src="img/logo.svg" alt="Ghostir Logo">
 			</div>
 		</div>
 		
 		<div id="loginWrapper" class="twitch-go-container" style="display: none;">
 			<div class="authentication-container">
-				<div>
-					<div class="twitch-color authentication-title">
-						<img class="authentication-logo" src="img/logo.png" alt="Ghostir Logo">
-						<strong>
-							Twitch <span class="text-white">GO</span>
-						</strong>
+				<div class="twitch-go-information-container">
+					<div class="information-header" style="margin-bottom: 10px;">
+						<img class="logo" src="img/logo.svg" alt="Ghostir Logo" width="100">
+						<div>
+							<div class="twitch-go-title header color-twitch">
+								Twitch <strong>GO</strong>
+							</div>
+							<div class="sub-header">
+								<strong>by <a href="https://ghostir.net" target="_blank">Ghostir</a></strong>
+							</div>
+						</div>
 					</div>
-					<div class="small">
-						Authentication is Securely handled entirely by
-						<strong class="twitch-color">Twitch</strong>, this keeps your Information Secure with no risk of it being exposed.
+					<div class="twitch-go-login-subtitle">
+						A quick and easy way to access several of the Twitch Services, such as your Following, Top Games and Top Streams.
 					</div>
 					<a id="signIn" class="authentication-button">
-						<i id="signIn_Icon" class="fa fa-check-circle"></i>
-						Authenticate
+						<i class="ti ti-brand-twitch"></i>
+						Login using Twitch
 					</a>
 				</div>
 				<div>
@@ -64,10 +67,8 @@
 					</div>
 					<div class="authentication-info">
 						<small class="text-muted">
-							Sometimes issues with Authentication can be solved by resetting the Authentication, do that by clicking
-							<a id="resetAuthToken" class="twitch-color" href="#">here</a>.
-							If the Issue persists, don't hesistate to contact me
-							<a class="twitch-color" href="mailto:Sandro9191@Gmail.com" target="_blank">here</a>.
+							Have any Issues or Feedback? Click
+							<a class="twitch-color" href="https://github.com/ghostir/twitch-go/issues" target="_blank">here.</a>
 						</small>
 					</div>
 				</div>
@@ -76,74 +77,71 @@
 		
 		<div id="applicationWrapper" class="twitch-go-container" style="display: none;">
 			<div id="navigation_Wrapper" class="twitch-go-sidebar">
-				<div>
-					<span class="sidebar-logo">
-					  <img class="sidebar-image" src="./img/logo.png" alt="Ghostir">
+				<span class="sidebar-logo">
+					  <img class="sidebar-image" src="./img/logo.svg" alt="Ghostir">
 					</span>
+				<div>
 					<div class="sidebar-item">
 						<button id="followingList_Tab" class="sidebar-button toolTip active"
 								data-tippy-content="Followed Streams" data-section-code="FollowingStreams"
 								data-target="#followingList" type="button">
-							<i class="fa fa-heart"></i>
-						</button>
-					</div>
-					<div class="sidebar-item">
-						<button id="topGames_Tab" class="sidebar-button toolTip"
-								data-tippy-content="Top Games" data-section-code="TopGames"
-								data-target="#topGames" type="button">
-							<i class="fa fa-trophy"></i>
+							<i class="ti ti-heart"></i>
 						</button>
 					</div>
 					<div class="sidebar-item">
 						<button id="topStreams_Tab" class="sidebar-button toolTip"
 								data-tippy-content="Top Streams" data-section-code="TopStreams"
 								data-target="#topStreams" type="button">
-							<i class="fa fa-star"></i>
+							<i class="ti ti-track"></i>
+						</button>
+					</div>
+					<div class="sidebar-item">
+						<button id="topGames_Tab" class="sidebar-button toolTip"
+								data-tippy-content="Top Games" data-section-code="TopGames"
+								data-target="#topGames" type="button">
+							<i class="ti ti-device-gamepad"></i>
 						</button>
 					</div>
 					<div class="sidebar-item">
 						<button id="searchList_Tab" class="sidebar-button toolTip"
 								data-tippy-content="Search" data-section-code="Search"
 								data-target="#searchList" type="button">
-							<i class="fa fa-search"></i>
+							<i class="ti ti-search"></i>
 						</button>
 					</div>
 					<div class="sidebar-item">
 						<button id="settings_Tab" class="sidebar-button toolTip"
 								data-tippy-content="Settings" data-section-code="Settings"
 								data-target="#settings" type="button">
-							<i class="fa fa-cog"></i>
+							<i class="ti ti-settings"></i>
 						</button>
 					</div>
 				</div>
 				<div>
+<!--					<div class="sidebar-item">-->
+<!--						<button id="sponsor_Tab" class="sidebar-button toolTip" style="color: #ffc107 !important"-->
+<!--								data-tippy-content="Sponsor" data-section-code="Sponsor"-->
+<!--								data-target="#sponsor" type="button">-->
+<!--							<i class="fa-solid fa-dollar"></i>-->
+<!--						</button>-->
+<!--					</div>-->
 					<div class="sidebar-item">
-						<button id="changes_Tab" class="sidebar-button toolTip"
-								data-tippy-content="Changes" data-section-code="Changes"
-								data-target="#changes" type="button">
-							<i class="fa-solid fa-clock-rotate-left"></i>
-						</button>
-					</div>
-					<div class="sidebar-item">
-						<button id="info_Tab" class="sidebar-button toolTip"
-								data-tippy-content="Info" data-section-code="Info"
-								data-target="#info" type="button">
-							<i class="fa fa-info"></i>
-						</button>
+						<img id="info_Tab" class="sidebar-button profile" src="img/logo.svg" data-target="#info" alt="User"/>
 					</div>
 				</div>
 			</div>
 			<div id="content_Wrapper" class="twitch-go-content">
 				<nav class="twitch-go-navbar">
 					<div class="twitch-go-icon-prepend">
-						<i class="fa-solid fa-magnifying-glass"></i>
+						<i class="ti ti-search prepend"></i>
 						<label for="searchTab"></label>
-						<input id="searchTab" class="twitch-go-input search" type="search" autocomplete="off" placeholder="Search Tab">
-					</div>
-					<div class="display-flex">
-						<button id="backGames" class="twitch-go-button back" style="display: none;"><i class="fa fa-arrow-left"></i> Back</button>
-						<button id="refresh" class="twitch-go-button refresh"><i class="fa-solid fa-arrows-rotate"></i></button>
-						<button id="signOut" class="twitch-go-button"><i class="fa-sharp fa-solid fa-right-from-bracket"></i> Sign Out</button>
+						<input id="searchTab" class="twitch-go-input search" type="search" autocomplete="off" placeholder="Search" allowClear="false">
+						<div id="refresh" class="twitch-go-input-append">
+							<i class="ti ti-rotate"></i>
+						</div>
+						<div id="backGames" class="twitch-go-input-append" style="right: 60px; display: none;">
+							<i class="fa-solid fa-arrow-left"></i>
+						</div>
 					</div>
 				</nav>
 				<div id="followingList" class="content-tab active">
@@ -247,6 +245,38 @@
 				<div id="topGames" class="content-tab">
 					<div id="topGameListPlaceholder_Wrapper">
 						<div class="twitch-go-category-container">
+							<div class="category-item">
+								<div class="placeholder category-preview"></div>
+								<div class="placeholder category-name"></div>
+							</div>
+							<div class="category-item">
+								<div class="placeholder category-preview"></div>
+								<div class="placeholder category-name"></div>
+							</div>
+							<div class="category-item">
+								<div class="placeholder category-preview"></div>
+								<div class="placeholder category-name"></div>
+							</div>
+							<div class="category-item">
+								<div class="placeholder category-preview"></div>
+								<div class="placeholder category-name"></div>
+							</div>
+							<div class="category-item">
+								<div class="placeholder category-preview"></div>
+								<div class="placeholder category-name"></div>
+							</div>
+							<div class="category-item">
+								<div class="placeholder category-preview"></div>
+								<div class="placeholder category-name"></div>
+							</div>
+							<div class="category-item">
+								<div class="placeholder category-preview"></div>
+								<div class="placeholder category-name"></div>
+							</div>
+							<div class="category-item">
+								<div class="placeholder category-preview"></div>
+								<div class="placeholder category-name"></div>
+							</div>
 							<div class="category-item">
 								<div class="placeholder category-preview"></div>
 								<div class="placeholder category-name"></div>
@@ -568,7 +598,7 @@
 						</div>
 					</div>
 				</div>
-				<div id="settings" class="content-tab">
+				<div id="settings" class="content-tab settings">
 					<div class="twitch-go-settings-container">
 						<div class="setting">
 							<label class="twitch-go-input-label" for="darkMode_Checkbox">Dark Mode</label>
@@ -581,6 +611,18 @@
 							<label class="twitch-go-input-label" for="autoTheaterMode_Checkbox">Auto Theater Mode</label>
 							<div class="twitch-go-input-sub-label">Automatically sets the Twitch Player to Theater Mode (Will not conflict with BetterTTV or other extensions doing the same).</div>
 							<input type="checkbox" id="autoTheaterMode_Checkbox">
+						</div>
+					</div>
+					<div class="twitch-go-settings-container">
+						<div class="setting">
+							<label class="twitch-go-input-label" for="showOfflineFollowing_Checkbox">
+								Show Offline Following
+							</label>
+							<div class="twitch-go-input-sub-label">
+								Within the Following Tab, you will be able to see Offline Channels you Follow, this will allow you to Set Favorite/Notification without having to wait for them to go Live.
+								<i class="fa fa-info-circle" title="Special thanks to Roko for the Suggestion"></i>
+							</div>
+							<input type="checkbox" id="showOfflineFollowing_Checkbox">
 						</div>
 					</div>
 					<div class="twitch-go-settings-container">
@@ -598,8 +640,8 @@
 												<div class="stream-item-preview">
 													<div class="stream-preview placeholder"></div>
 													<div class="stream-action-container left">
-														<i class="fa-regular fa-bell example-notification"></i>
-														<i class="fa-regular fa-star example-favorite"></i>
+														<i class="ti ti-bell example-notification"></i>
+														<i class="ti ti-star example-favorite"></i>
 													</div>
 												</div>
 												<div class="stream-item-information">
@@ -619,8 +661,8 @@
 												<div class="stream-item-preview">
 													<div class="stream-preview placeholder"></div>
 													<div class="stream-action-container right">
-														<i class="fa-regular fa-bell example-notification"></i>
-														<i class="fa-regular fa-star example-favorite"></i>
+														<i class="ti ti-bell example-notification"></i>
+														<i class="ti ti-star example-favorite"></i>
 													</div>
 												</div>
 												<div class="stream-item-information">
@@ -641,7 +683,7 @@
 					<div class="twitch-go-settings-container">
 						<div class="setting">
 							<label class="twitch-go-input-label" for="notificationEnabled_Checkbox">Receive Notification(s)</label>
-							<div class="twitch-go-input-sub-label">You can choose which streamer(s) you'd like to receive notifications for by clicking the <i class="fa-regular fa-bell example-notification-button"></i> Icon.</div>
+							<div class="twitch-go-input-sub-label">You can choose which streamer(s) you'd like to receive notifications for by clicking the <i class="ti ti-bell example-notification-button"></i> Icon.</div>
 							<input id="notificationEnabled_Checkbox" type="checkbox" checked>
 						</div>
 					</div>
@@ -666,177 +708,32 @@
 						</div>
 					</div>
 				</div>
-				<div id="changes" class="content-tab">
-					<div class="timeline">
-						<div class="row">
-							<div class="icon">
-								<div class="timeline-icon success">
-									<i class="fa-solid fa-check"></i>
-								</div>
-							</div>
-							<div class="content">
-								<strong class="color-twitch">2.0.0</strong><span class="badge">December 29, 2022</span>
-								<div class="description">
-									<h5>Update</h5>
-									<ul>
-										<li>
-											Complete revamp of the Extension, moving from the use of Bootstrap to style.
-										</li>
-										<li>
-											
-										</li>
-									</ul>
-									<h5>Bug Fixes</h5>
-									<ul>
-										<li>
-											Fixing quiet a bit of bugs (most minor), within the Search, also improving the Search and wording within these Sections.
-										</li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="icon">
-								<div class="timeline-icon success">
-									<i class="fa-solid fa-check"></i>
-								</div>
-							</div>
-							<div class="content">
-								<strong class="color-twitch">1.3.6</strong><span class="badge">November 13, 2022</span>
-								<div class="description">
-									<h5>Update / Bug Fixes</h5>
-									<ul>
-										<li>
-											Changing the Auto Theater Mode Setting to be Off by default (I know that some Users already use the BTTV Auto Theater Mode, which is why I also had a check, so that there is no interference).
-										</li>
-										<li>
-											Updating the Notification code a bit, checking for Errors, if there is an error with the API it doesn't send a Notification to the User with that Error.
-										</li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="icon">
-								<div class="timeline-icon success">
-									<i class="fa-solid fa-check"></i>
-								</div>
-							</div>
-							<div class="content">
-								<strong class="color-twitch">1.3.5</strong><span class="badge">November 8, 2022</span>
-								<div class="description">
-									<h5>New Features</h5>
-									<ul>
-										<li>
-											<strong>Auto Theater Mode</strong> allows the User to Enable/Disable the Auto Theater Mode from the Settings (when a stream is loaded, it will automatically go into theater mode).
-										</li>
-										<li>
-											<strong>Refresh Button</strong> allows the User to refresh the information loaded for their current section (such as Following List, Top Games or Top Streams).
-										</li>
-										<li>
-											<strong>Following Action Button Positioning</strong> Addition of a Dropdown within the Settings, allowing the User to select what side they'd like the Following List action buttons on.
-										</li>
-									</ul>
-									<h5>Update / Bug Fixes</h5>
-									<ul>
-										<li>
-											Fixing issue with the Notification not working due to it point to the wrong API, there was also an issue with the way the Chrome/Mozilla Browser API was being called.
-										</li>
-										<li>
-											Moved the HTML from being returned by the API to it being present within the Extension.
-										</li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="icon">
-								<div class="timeline-icon success">
-									<i class="fa fa-check"></i>
-								</div>
-							</div>
-							<div class="content">
-								<strong class="color-twitch">1.3.4</strong><span class="badge">November 4, 2022</span>
-								<div class="description">
-									<ul>
-										<li>
-											An overhaul of many sections of the Extension, basically ironing out all of the Methods and API Calls, this is for better efficiency and loading times.
-										</li>
-										<li>
-											Added an Extension loading indicator when the Extension is opened.
-										</li>
-										<li>
-											The Loading for More Results was a bit clunky, changed it to a button to allow the User to request more results (The user is also able to specify how many results per page).
-										</li>
-										<li>
-											Added a functioning Refresh button that refreshes the List, based on the Tab you're in.
-										</li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="icon">
-								<div class="timeline-icon success">
-									<i class="fa fa-check"></i>
-								</div>
-							</div>
-							<div class="content">
-								<strong class="color-twitch">1.3.3</strong><span class="badge">October 24, 2022</span>
-								<div class="description">
-									<ul>
-										<li>
-											Addition of a 'Favorite' button, this will allow you to have a following list but also favorite a streamer in particular, allowing you to see them at the top of your following list.
-										</li>
-										<li>
-											Bug Fixes to the API and the Extension.
-										</li>
-										<li>
-											Moved the HTML from being returned by the API to it being present within the Extension.
-										</li>
-										<li>
-											Added a functioning Refresh button that refreshes the List, based on the Tab you're in.
-										</li>
-									</ul>
-								</div>
-							</div>
-						</div>
+				<div id="sponsor" class="content-tab">
+					<div id="sponsorList_Wrapper">
+						
 					</div>
 				</div>
 				<div id="info" class="content-tab">
 					<div class="twitch-go-information-container">
 						<div class="information-header">
-							<img class="logo" src="img/logo.png" alt="Ghostir Logo">
+							<img class="logo" src="img/logo.svg" alt="Ghostir Logo">
 							<div>
 								<div class="header color-twitch">
 									<strong>Twitch GO</strong>
 								</div>
 								<div class="sub-header">
-									<strong>Using the Twitch Helix API</strong>
+									<strong>by <a href="https://ghostir.net" target="_blank">Ghostir</a></strong>
 								</div>
-							</div>
-						</div>
-						
-						<div class="information-body">
-							<div class="avatar-container">
-								<img class="avatar" src="img/profile/ghostir.jpg" alt="Ghostir">
-								<strong>Ghostir</strong>
-								<small>Developer/Creator</small>
-							</div>
-							
-							<div class="avatar-container">
-								<img class="avatar" src="img/profile/yungwiz.jpg" alt="Yungwiz">
-								<strong>Yungwiz</strong>
-								<small>Content Lead</small>
 							</div>
 						</div>
 						<div class="information-footer">
 							<small>A quick and easy way to access several of the Twitch Services, such as your Following, Top Games and Top Streams.</small>
 							<div class="donate-container">
-								<a class="twitch-go-button" target="_blank" href="https://www.paypal.com/donate/?business=8TZ6YGMJNHP3Y&no_recurring=1&item_name=Donation+in+support+of+the+Twitch+Go+Application.&currency_code=USD">
-									<i class="fa fa-heart fa-sm"></i>
-									Donate
+								<a class="donate-button" target="_blank" href="https://buymeacoffee.com/ghostir">
+									<i class="ti ti-coffee"></i>
+									Buy me Coffee
 								</a>
+								<button id="signOut" class="twitch-go-button"><i class="ti ti-logout"></i> Sign Out</button>
 							</div>
 						</div>
 					</div>

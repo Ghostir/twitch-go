@@ -1,6 +1,71 @@
 @font-face {
-    font-family: 'roundo-regular';
-    src: url('/css/webfonts/Roundo-Regular.ttf');
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 200 800;
+    font-display: swap;
+    src: url(/css/webfonts/manrope/xn7gYHE41ni1AdIRggqxSuXd.woff2) format('woff2');
+    unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+
+@font-face {
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 200 800;
+    font-display: swap;
+    src: url(/css/webfonts/manrope/xn7gYHE41ni1AdIRggOxSuXd.woff2) format('woff2');
+    unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+
+@font-face {
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 200 800;
+    font-display: swap;
+    src: url(/css/webfonts/manrope/xn7gYHE41ni1AdIRggSxSuXd.woff2) format('woff2');
+    unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+
+@font-face {
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 200 800;
+    font-display: swap;
+    src: url(/css/webfonts/manrope/xn7gYHE41ni1AdIRggixSuXd.woff2) format('woff2');
+    unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+
+@font-face {
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 200 800;
+    font-display: swap;
+    src: url(/css/webfonts/manrope/xn7gYHE41ni1AdIRggmxSuXd.woff2) format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 200 800;
+    font-display: swap;
+    src: url(/css/webfonts/manrope/xn7gYHE41ni1AdIRggexSg.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+    font-family: 'NTR';
+    font-style: normal;
+    font-weight: 400;
+    src: url(/css/webfonts/NTR/RLpzK5Xy0ZjSA2Jt1TA.woff2) format('woff2');
+    unicode-range: U+0951-0952, U+0964-0965, U+0C00-0C7F, U+1CDA, U+1CF2, U+200C-200D, U+25CC;
+}
+
+@font-face {
+    font-family: 'NTR';
+    font-style: normal;
+    font-weight: 400;
+    src: url(/css/webfonts/NTR/RLpzK5Xy0ZjSH2Jt.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
 *, ::after, ::before {
@@ -13,7 +78,7 @@
 
 body {
     margin: 0;
-    font-family: sans-serif;
+    font-family: 'Manrope', sans-serif;
     font-size: 1rem;
     font-weight: 400;
     line-height: 1.5;
@@ -22,9 +87,20 @@ body {
 
 button, input, optgroup, select, textarea {
     margin: 0;
-    font-family: inherit;
+    font-family: 'Manrope', sans-serif;
     font-size: inherit;
     line-height: inherit;
+}
+
+.twitch-go-title {
+    font-family: NTR, sans-serif;
+}
+
+.twitch-go-login-subtitle {
+    font-size: .875em;
+    text-align: center;
+    margin-top: 15px;
+    margin-bottom: 15px;
 }
 
 .small, small {
@@ -34,14 +110,14 @@ button, input, optgroup, select, textarea {
 body, .twitch-go-container {
     margin: 0;
     width: 500px;
-    height: 455px;
+    height: 545px;
     max-width: 500px;
     min-width: 500px;
     display: flex;
 }
 
 .bg-ghostir {
-    background-color: #212529!important;
+    background: radial-gradient(ellipse at bottom, #1B2735 0%, #171717 100%) no-repeat fixed;
 }
 
 .twitch-color {
@@ -49,20 +125,42 @@ body, .twitch-go-container {
 }
 
 .twitch-go-navbar {
-    background-color: #2a2e34;
     position: sticky;
     top: 0;
     display: flex;
     flex-wrap: nowrap;
     align-items: center;
     justify-content: space-between;
-    padding: 0.25rem 0.5rem 0.25rem 0.25rem;
+    padding: 0.25rem 0.5rem 0.25rem 0.8rem;
     height: 50px;
     margin-right: auto;
     margin-left: auto;
     width: 100%;
     box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
     z-index: 1;
+    background-color: #181a1c;
+}
+
+.donate-button:hover {
+    background-color: #c31a53 !important;
+}
+
+.donate-button {
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    vertical-align: middle;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    font-weight: 600 !important;
+    padding: 5px 15px !important;
+    background-color: #E91E63 !important;
+    color: #fff !important;
+    border: 0 !important;
+    border-radius: 3px;
 }
 
 .twitch-go-button {
@@ -76,7 +174,7 @@ body, .twitch-go-container {
     user-select: none;
     transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
     font-weight: 600 !important;
-    padding: 2px 5px !important;
+    padding: 5px 15px !important;
     background-color: #9147ff !important;
     color: #fff !important;
     border: 0 !important;
@@ -201,27 +299,9 @@ body, .twitch-go-container {
     padding: 10px;
 }
 
-.under-maintenance-container .left {
-    width: 80%;
-}
-
-.under-maintenance-container .left h3 {
-    margin-bottom: 0;
-}
-
-.under-maintenance-container .left h2 {
-    margin-top: 0;
-}
-
-.under-maintenance-container .right {
-    width: 20%;
-}
-
 .under-maintenance-logo {
-    height: 250px;
-    margin-left: -55px;
-    margin-top: -50px;
-    position: absolute;
+    margin-left: 10px;
+    width: 195px;
     opacity: .7;
 }
 
@@ -231,6 +311,16 @@ body, .twitch-go-container {
     padding: 10px;
     line-height: 1.2;
     border: 1px solid #9147ff4f;
+}
+
+.under-maintenance-container h3 {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.under-maintenance-container h2 {
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 /* End Under Maintenance Page */
@@ -258,24 +348,56 @@ body, .twitch-go-container {
 }
 
 .authentication-button {
-    display: inline-block;
-    text-align: center;
-    text-decoration: none;
-    vertical-align: middle;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    position: relative;
+    border: 3px solid transparent;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    padding: 12px 24px;
+    border-radius: 100px;
     cursor: pointer;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    user-select: none;
-    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-    border: 0 !important;
-    border-radius: 3px;
-    width: 100%;
-    padding: 10px !important;
-    margin-top: 5px;
-    font-weight: 600 !important;
-    background-color: #9147ff !important;
-    color: #fff !important;
-    font-size: 1.3rem !important;
+    color: white;
+    background: transparent;
+    font-weight: 600;
+    font-size: 20px;
+}
+
+.authentication-button:hover::before {
+    opacity: 1;
+}
+
+.authentication-button::before {
+    content: "";
+    position: absolute;
+    top: -3px;
+    left: -3px;
+    right: -3px;
+    bottom: -3px;
+    border-radius: inherit;
+    background: linear-gradient(120deg, #772ce8, #7873f5, #673AB7, #b393ed, #462a76, #796597);
+    mask: linear-gradient(#fff 0%, #fff 100%) content-box, linear-gradient(#fff 0%, #fff 100%);
+    mask-composite: exclude;
+    background-size: 300% 300%;
+    animation: borderAnim 4s ease infinite;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease-in-out;
+    will-change: opacity;
+    padding: 3px;
+}
+
+@keyframes borderAnim {
+    0% {
+        background-position: 0 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0 50%;
+    }
 }
 
 .authentication-help {
@@ -284,6 +406,7 @@ body, .twitch-go-container {
 
 .authentication-info {
     margin-top: 10px;
+    text-align: center;
 }
 
 .authentication-error {
@@ -292,6 +415,15 @@ body, .twitch-go-container {
 }
 
 /* End Authentication Page */
+
+.icon-rotate {
+    animation: rotate 2s linear infinite;
+}
+
+@keyframes rotate {
+    0%   { transform: rotate(0deg); }
+    100% { transform: rotate(-360deg); }
+}
 
 .twitch-go-sidebar {
     flex-wrap: wrap;
@@ -303,6 +435,7 @@ body, .twitch-go-container {
     height: 100%;
     flex-direction: column;
     justify-content: space-between;
+    background-color: #111418;
 }
 
 .twitch-go-sidebar .sidebar-logo {
@@ -327,37 +460,45 @@ body, .twitch-go-container {
 .twitch-go-sidebar .sidebar-button {
     width: 100%;
     height: 100%;
-    background-color: #272b2e;
-    border-radius: 5px;
+    background-color: #181d23;
+    border-radius: 50%;
     padding: 0.5rem 0;
-    color: #772ce8;
+    color: #fff;
     border: 2px solid transparent;
     cursor: pointer;
-    box-shadow: rgb(0 0 0 / 15%) 1.95px 1.95px 2.6px;
+    box-shadow: rgb(0 0 0 / 15%) 2px 2px 3px;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out;
+}
+
+.sidebar-button.profile {
+    border-radius: 50% !important;
+    width: 40px;
+    height: 40px;
+    padding: 0;
 }
 
 .twitch-go-sidebar .sidebar-button.active {
     color: #fff !important;
-    background-color: #772ce8 !important;
+    background-color: #772ce857 !important;
     cursor: default;
 }
 
 .twitch-go-sidebar .sidebar-button.active:hover {
     color: #fff !important;
     background-color: rgba(119, 44, 232, 0.25) !important;
-    border: 2px solid #772ce8;
+    border: 2px solid rgba(119, 44, 232, 0.51);
 }
 
 .twitch-go-sidebar .sidebar-button:focus, .twitch-go-sidebar .sidebar-button:hover {
     color: #ffffff !important;
-    background-color: #5d1cbf !important;
+    background-color: #772ce857 !important;
 }
 
 .twitch-go-content {
     height: 100% !important;
     width: 100% !important;
     overflow: overlay;
-    background-color: #2a2e34 !important;
+    /*background-color: #2a2e34 !important;*/
     z-index: 2;
 }
 
@@ -368,12 +509,19 @@ body, .twitch-go-container {
 
 .twitch-go-content .content-tab {
     padding-top: 5px;
-    padding-bottom: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
     display: none;
 }
 
 .twitch-go-content .content-tab.search {
     padding-top: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+.twitch-go-content .content-tab.settings {
+    overflow-x: hidden;
 }
 
 .twitch-go-stream-container {
@@ -383,14 +531,19 @@ body, .twitch-go-container {
 .twitch-go-stream-container .stream-item {
     background-color: transparent !important;
     color: white !important;
-    padding: 3px !important;
-    border-bottom: 1px solid #24282a !important;
+    padding: 10px 3px 10px 10px !important;
+    border-bottom: 0 !important;
     position: relative;
     text-decoration: none;
     width: 100%;
     align-items: center !important;
     justify-content: space-between !important;
-    display: flex !important;
+    display: flex;
+    border-radius: 10px;
+}
+
+.twitch-go-stream-container .stream-item:hover {
+    background-color: #80808017 !important;
 }
 
 .stream-item-preview {
@@ -400,6 +553,52 @@ body, .twitch-go-container {
     display: flex;
 }
 
+.donation-wrapper {
+    padding: 10px 3px 10px 10px !important;
+    border-radius: 10px;
+}
+
+.donation-wrapper:hover {
+    background-color: #80808017 !important;
+}
+
+.stream-item.donation {
+    border-radius: 10px;
+    height: 70px;
+}
+
+.stream-item-preview.donation {
+    width: 11% !important;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    text-decoration: none;
+}
+
+.stream-item-information.donation {
+    height: 35px;
+}
+
+.stream-item-information.donation .category {
+    max-width: 300px;
+}
+
+.donation-dismiss {
+    display: flex;
+    width: 11% !important;
+    font-size: 30px;
+    color: #51565b;
+    text-decoration: none;
+    justify-content: center;
+}
+
+.donation-heart {
+    font-size: 30px;
+    color: #E91E63;
+}
+
 .stream-item-preview.search {
     width: 14% !important;
 }
@@ -407,6 +606,11 @@ body, .twitch-go-container {
 .stream-item-preview img {
     border-radius: 5px;
     box-shadow: rgb(0 0 0 / 15%) 1.95px 1.95px 2.6px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stream-item:hover .stream-item-preview img {
+    transform: scale(1.05);
 }
 
 .stream-action-container.left {
@@ -417,29 +621,24 @@ body, .twitch-go-container {
 
 .stream-action-container.right {
     position: absolute;
-    top: 2px;
-    left: 390px;
+    top: 5px;
+    left: 378px;
 }
 
 .stream-action-container.left .notification {
-    background-color: #0000007d !important;
-    border: 1px solid #772ce88c;
     padding: 3px;
     margin-right: 5px;
     border-radius: 5px;
 }
 
 .stream-action-container.right .notification {
-    background-color: #772ce83d;
-    border: 1px solid #772ce852;
     padding: 3px;
     margin-right: 5px;
     border-radius: 5px;
 }
 
 .stream-action-container .notification:hover {
-    font-weight: 700;
-    color: #9f60ff;
+    color: #9f60ff !important;
     cursor: pointer;
 }
 
@@ -448,7 +647,8 @@ body, .twitch-go-container {
     margin-right: 5px;
     border-radius: 5px;
     font-weight: 700;
-    color: #9f60ff;
+    color: #9f60ff !important;
+    background-color: #772ce83d;
     cursor: pointer;
 }
 
@@ -457,7 +657,7 @@ body, .twitch-go-container {
     height: fit-content;
     border-radius: 5px;
     font-weight: 400;
-    font-size: 14px;
+    font-size: 10px;
     color: white;
     cursor: pointer;
     background-color: #0000007d !important;
@@ -465,22 +665,17 @@ body, .twitch-go-container {
 }
 
 .stream-action-container.left .favorite {
-    background-color: #0000005e !important;
-    border: 1px solid #ffc1075c;
     padding: 3px;
     border-radius: 5px;
 }
 
 .stream-action-container.right .favorite {
-    background-color: #ffbf001f;
-    border: 1px solid #ffff001f;
     padding: 3px;
     border-radius: 5px;
 }
 
 .stream-action-container .favorite:hover {
-    font-weight: 700;
-    color: #ffc107;
+    color: #ffc107 !important;
     cursor: pointer;
 }
 
@@ -488,12 +683,13 @@ body, .twitch-go-container {
     padding: 3px;
     border-radius: 5px;
     font-weight: 700;
-    color: #ffc107;
+    color: #ffc107 !important;
+    background-color: #ffc1072e !important;
     cursor: pointer;
 }
 
 .stream-action-container .favorite.selected:hover, .stream-action-container .notification.selected:hover {
-    font-weight: 500;
+    font-weight: 700;
 }
 
 .stream-item-information {
@@ -553,7 +749,7 @@ body, .twitch-go-container {
 
 .stream-item-information .viewer-count .icon {
     margin-right: 5px;
-    font-size: 8px;
+    font-size: 10px;
 }
 
 .stream-item-information .title {
@@ -572,19 +768,17 @@ body, .twitch-go-container {
 .twitch-go-category-container {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between !important;
-    padding-left: 10px;
-    padding-right: 10px;
+    gap: 2px;
+    row-gap: 10px;
 }
 
 .twitch-go-category-container .category-item {
     background-color: transparent !important;
     color: white !important;
-    margin: 3px !important;
     position: relative;
     text-decoration: none;
-    align-items: center !important;
-    width: 85px;
+    text-align-last: center;
+    width: 86px;
     height: 127px;
 }
 
@@ -599,11 +793,11 @@ body, .twitch-go-container {
 }
 
 .category-item .category-preview {
+    display: inline-flex;
     width: 85px;
     height: 105px;
     border-radius: 5px;
-    border: 2px solid #772ce838;
-    box-shadow: rgb(0 0 0 / 55%) 0px 2px 8px 0px;
+    box-shadow: rgb(0 0 0 / 55%) 0 2px 8px 0;
 }
 
 .text-truncate {
@@ -623,17 +817,19 @@ body, .twitch-go-container {
 .twitch-go-navigation {
     position: sticky;
     top: 50px;
-    background-color: #2a2e34;
+    background-color: #181a1c;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
     height: 55px;
     z-index: 999;
 }
 
 .twitch-go-navigation .twitch-go-navigation-list {
-    padding: 0.25rem 0.5rem 0.25rem 0.25rem;
+    padding: 0;
     height: 100% !important;
     display: flex;
     flex-wrap: wrap;
     margin-bottom: 0;
+    margin-top: 0;
     list-style: none;
 }
 
@@ -657,21 +853,24 @@ body, .twitch-go-container {
     height: 100%;
     width: 100%;
     font-weight: 700;
-    color: #9147ff;
-    border-radius: 5px;
-    border: 2px solid transparent;
-    background-color: #772ce824;
-    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    color: #9e9e9e;
+    border-bottom: 2px solid transparent;
+    border-right: 0;
+    border-left: 0;
+    border-top: 0;
+    background-color: #181a1c;
 }
 
 .twitch-go-navigation-list .navigation-list-button:not(.active):hover {
-    border: 2px solid #9147ff;
     cursor: pointer;
 }
 
 .twitch-go-navigation-list .navigation-list-button.active {
-    background-color: #9147ff;
-    color: white !important;
+    color: #fff !important;
+    border-bottom: 2px solid #772ce8;
+    border-right: 0;
+    border-left: 0;
+    border-top: 0;
 }
 
 .navigation-tab {
@@ -687,6 +886,7 @@ body, .twitch-go-container {
     gap: 15px;
     padding-left: 10px;
     padding-right: 10px;
+    padding-bottom: 5px;
     margin-top: 15px;
 }
 
@@ -696,6 +896,10 @@ body, .twitch-go-container {
 
 .twitch-go-settings-container .setting {
     width: 100%;
+}
+
+.stream-action-example-container .twitch-go-stream-container .stream-item:hover {
+    background-color: transparent !important;
 }
 
 .stream-action-example-container {
@@ -749,9 +953,7 @@ body, .twitch-go-container {
 }
 
 .twitch-go-information-container .information-header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    text-align: center;
 }
 
 .information-header .logo {
@@ -761,13 +963,18 @@ body, .twitch-go-container {
 }
 
 .information-header .header {
-    font-size: 35px;
+    font-size: 45px;
     line-height: 1;
 }
 
 .information-header .sub-header {
-    font-size: 14px;
+    font-size: 15px;
     color: grey;
+}
+
+.information-header .sub-header a {
+    color: white;
+    text-decoration: none;
 }
 
 .twitch-go-information-container .information-body {
@@ -812,15 +1019,52 @@ body, .twitch-go-container {
     margin-top: 10px;
 }
 
+/* Start Sponsor Tab */
+
+.sponsor-item {
+    background-color: transparent !important;
+    color: white !important;
+    padding: 3px !important;
+    position: relative;
+    text-decoration: none;
+    width: 100%;
+    align-items: center !important;
+    justify-content: space-between !important;
+    display: flex;
+}
+
+.sponsor-item-image {
+    flex: 0 0 auto;
+    width: 155px !important;
+    height: 125px;
+    display: flex;
+    border-radius: 5px;
+    box-shadow: rgb(0 0 0 / 15%) 1.95px 1.95px 2.6px;
+}
+
+.sponsor-item-information {
+    flex: 0 0 auto;
+    width: 290px !important;
+    padding-left: 0.5rem!important;
+    padding-right: 0.5rem!important;
+    text-decoration: none;
+    color: white !important;
+    height: 125px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+/* End Sponsor Tab */
+
 /* Custom Placeholder */
+
 .placeholder {
     animation: placeholder-glow 2s ease-in-out infinite;
     border-radius: 5px;
-    display: inline-block;
-    min-height: 1em;
-    vertical-align: middle;
+    min-height: 1.5em;
     cursor: wait;
-    background-color: #c9c9c9;
+    background-color: #ffffff1c;
     opacity: .5;
 }
 
@@ -848,10 +1092,6 @@ body, .twitch-go-container {
     width: 100px;
 }
 
-.placeholder.category-name {
-    width: 85px;
-}
-
 .placeholder.viewer-count {
     height: 10px;
     max-height: 10px;
@@ -873,11 +1113,13 @@ body, .twitch-go-container {
         opacity:.2
     }
 }
+
 /* Custom Placeholder */
 
 /* Custom Scrollbar */
+
 ::-webkit-scrollbar {
-    width: 5px;
+    width: 2px;
 }
 
 ::-webkit-scrollbar-track {
@@ -885,281 +1127,12 @@ body, .twitch-go-container {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: rgba(163, 135, 208, 0.44);
+    background: rgb(145 71 255);
     border-radius: 2px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
     background: rgba(163, 135, 208, 0.63);
 }
+
 /* Custom Scrollbar */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*.center-screen {*/
-/*    text-align: center;*/
-/*    display: flex;*/
-/*    align-items: center;*/
-/*    justify-content: center;*/
-/*}*/
-
-/*.navbar {*/
-/*    border-bottom: 1px solid #9147ff6e;*/
-/*}*/
-
-/*.application-header {*/
-/*    height: 50px;*/
-/*}*/
-
-
-
-
-
-/*.ghostir-logo {*/
-/*    margin-left: -2px;*/
-/*}*/
-
-/*.tab-content {*/
-/*    width: 452px !important;*/
-/*}*/
-
-/*.viewer-color {*/
-/*    color: #f17a85 !important;*/
-/*}*/
-
-/*.twitch-border-bottom {*/
-/*    border-bottom: 1px solid #9147ff85 !important;*/
-/*}*/
-
-/*!*.category-item {*!*/
-/*!*    color: white !important;*!*/
-/*!*    text-decoration: none;*!*/
-/*!*    font-size: 15px;*!*/
-/*!*}*!*/
-
-/*.preview-section {*/
-/*    width: 22% !important;*/
-/*}*/
-
-/*.preview-section.search {*/
-/*    width: 13% !important;*/
-/*}*/
-
-/*.information-section {*/
-/*    width: 78% !important;*/
-/*    min-height: 50px;*/
-/*    max-height: 50px;*/
-/*    color: inherit;*/
-/*    text-decoration: none;*/
-/*}*/
-
-/*.information-section.search {*/
-/*    width: 87% !important;*/
-/*}*/
-
-/*.information-section .streamer {*/
-/*    margin-top: -2px;*/
-/*}*/
-
-/*.information-section .category {*/
-/*    font-size: 12px;*/
-/*}*/
-
-
-
-
-
-/*.small-label {*/
-/*    font-size: 13px;*/
-/*}*/
-
-
-/*.information-section:hover {*/
-/*    color: inherit;*/
-/*    text-decoration: none;*/
-/*}*/
-
-/*.following-list-group {*/
-/*    padding: 3px !important;*/
-/*}*/
-
-/*.line-height-1 {*/
-/*    line-height: 1 !important;*/
-/*}*/
-
-/*.line-height-2 {*/
-/*    line-height: 1.5 !important;*/
-/*}*/
-
-/*.line-height-3 {*/
-/*    line-height: 2 !important;*/
-/*}*/
-
-
-
-/*.favorite-stream {*/
-/*    background-color: #00000070;*/
-/*    padding: 3px;*/
-/*    border-radius: 5px;*/
-/*}*/
-
-/*.favorite-stream:hover {*/
-/*    font-weight: 700;*/
-/*    color: #ffc107;*/
-/*    cursor: pointer;*/
-/*}*/
-
-/*.favorited-stream {*/
-/*    background-color: #00000070;*/
-/*    padding: 3px;*/
-/*    border-radius: 5px;*/
-/*    font-weight: 700;*/
-/*    color: #ffc107;*/
-/*    cursor: pointer;*/
-/*}*/
-
-/*.notification-option-stream {*/
-/*    background-color: #00000070;*/
-/*    padding: 3px;*/
-/*    margin-right: 5px;*/
-/*    border-radius: 5px;*/
-/*}*/
-
-/*.notification-option-stream:hover {*/
-/*    font-weight: 700;*/
-/*    color: #9f60ff;*/
-/*    cursor: pointer;*/
-/*}*/
-
-/*.notification-selected-stream {*/
-/*    background-color: #00000070;*/
-/*    padding: 3px;*/
-/*    margin-right: 5px;*/
-/*    border-radius: 5px;*/
-/*    font-weight: 700;*/
-/*    color: #9f60ff;*/
-/*    cursor: pointer;*/
-/*}*/
-
-/*.search-placeholder {*/
-/*    position: absolute;*/
-/*    left: 170px;*/
-/*    top: 23px;*/
-/*    max-height: 10px;*/
-/*    background-color: currentcolor;*/
-/*    border-radius: 5px;*/
-/*    vertical-align: inherit !important;*/
-/*    opacity: .3;*/
-/*    min-width: 40px;*/
-/*    cursor: pointer;*/
-/*}*/
-
-/*.pagination-wrapper {*/
-/*    position: sticky;*/
-/*    top: 0;*/
-/*    z-index: 1050;*/
-/*    background-color: #1e1e1ec2;*/
-/*    text-align: right;*/
-/*    padding: 5px 10px 5px 5px;*/
-/*}*/
-
-
-
-
-
-
-
-/*.twitch-button {*/
-/*    font-weight: 600 !important;*/
-/*    padding: 2px 5px !important;*/
-/*    background-color: #9147ff !important;*/
-/*    color: #fff !important;*/
-/*    border: 0 !important;*/
-/*}*/
-
-/*.twitch-button:hover {*/
-/*    background-color: #772ce8 !important;*/
-/*}*/
-
-/*.twitch-button:focus {*/
-/*    box-shadow: 0 0 0 0.25rem rgb(145 71 255 / 31%) !important;*/
-/*}*/
-
-
-
-/*.placeholder {*/
-/*    border-radius: 5px;*/
-/*    vertical-align: inherit !important;*/
-/*    opacity: .3;*/
-/*}*/
-
-/*.placeholder-category-image {*/
-/*    height: 100px;*/
-/*    width: 85px;*/
-/*}*/
-
-/*.placeholder-category-text {*/
-/*    height: 20px;*/
-/*    width: 85px;*/
-/*    margin: 2px;*/
-/*}*/
-
-
-
-/*.line-height-100 {*/
-/*    line-height: 100%;*/
-/*}*/
-
-/*.twitch-go-header {*/
-/*    font-size: 50px;*/
-/*}*/
-
-/*.twitch-go-header.logo {*/
-/*    width: 100px;*/
-/*    height: 100px;*/
-/*    margin-right: 20px;*/
-/*}*/
-
-
-
-
-/*.placeholder-font-size {*/
-/*    font-size: 11px;*/
-/*}*/
-

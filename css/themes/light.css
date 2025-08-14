@@ -3,20 +3,39 @@ body {
 }
 
 .bg-ghostir {
-    background-color: #f6f7f9 !important;
+    background: #fefefe !important;
+}
+
+.twitch-go-sidebar {
+    background-color: #f4f7fb;
 }
 
 .twitch-go-sidebar .sidebar-button {
+    color: black !important;
+    box-shadow: none !important;
     background-color: #f1f1f1 !important;
+}
+
+.twitch-go-sidebar .sidebar-button.active {
+    background-color: #772ce894 !important;
+}
+
+.twitch-go-sidebar .sidebar-button.active:hover, .twitch-go-sidebar .sidebar-button:hover {
+    color: #772ce894 !important;
 }
 
 .twitch-go-navbar {
     background-color: #fefefe !important;
-    box-shadow: rgb(0 0 0 / 15%) -3px 1px 2.6px !important;
+    box-shadow: rgb(0 0 0 / 15%) -3px 1px 3px !important;
 }
 
-.twitch-go-content {
-    background-color: #fefefe !important;
+.twitch-go-input-append {
+    box-shadow: none;
+}
+
+.twitch-go-input-append:hover {
+    background-color: #772ce838;
+    color: #772ce8;
 }
 
 .stream-item-information {
@@ -27,20 +46,29 @@ body {
     color: black !important;
 }
 
-.category-item .category-name {
-    font-weight: 600;
-}
-
 .twitch-go-navigation {
     background-color: #fefefe !important;
+    box-shadow: none !important;
+}
+
+.twitch-go-navigation-list .navigation-list-button {
+    background-color: transparent !important;
+}
+
+.twitch-go-navigation-list .navigation-list-button.active {
+    color: #772ce8 !important;
 }
 
 .twitch-go-search-placeholder {
-    color: black !important;
+    color: #00000038 !important;
 }
 
 .placeholder {
-    background-color: #000000 !important;
+    background-color: #00000038 !important;
+}
+
+.twitch-go-navbar {
+    box-shadow: rgb(0 0 0 / 4%) -3px 1px 3px !important;
 }
 
 input[type='search'] {
@@ -55,20 +83,20 @@ input[type='number'] {
     color: black !important;
 }
 
-.stream-action-container.right .notification {
-    background-color: #772ce86e !important;
-}
-
 .stream-action-container.left .notification {
-    background-color: #772ce86e !important;
+    color: black;
 }
 
-.stream-action-container.right .favorite {
-    background-color: #d39e0185;
+.stream-action-container.right .notification {
+    color: black;
 }
 
 .stream-action-container.left .favorite {
-    background-color: #d39e0185;
+    color: black;
+}
+
+.stream-action-container.right .favorite {
+    color: black;
 }
 
 .avatar-container {
