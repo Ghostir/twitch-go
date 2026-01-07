@@ -498,7 +498,6 @@ body, .twitch-go-container {
     height: 100% !important;
     width: 100% !important;
     overflow: overlay;
-    /*background-color: #2a2e34 !important;*/
     z-index: 2;
 }
 
@@ -540,6 +539,22 @@ body, .twitch-go-container {
     justify-content: space-between !important;
     display: flex;
     border-radius: 10px;
+}
+
+.show-favorite-divider .favorited-divider {
+    display: flex;
+    height: 3px;
+    background-color: #772ce8;
+    margin: 2px 0;
+    border-radius: 10px;
+}
+
+.show-favorite-divider .favorited-divider {
+    display: none;
+}
+
+.show-favorite-divider .favorited-divider:last-of-type {
+    display: block;
 }
 
 .twitch-go-stream-container .stream-item:hover {
@@ -614,26 +629,34 @@ body, .twitch-go-container {
 }
 
 .stream-action-container.left {
+    display: flex;
+    gap: 5px;
     position: absolute;
-    top: 5px;
-    left: 38px;
+    top: 11px;
+    left: 43px;
+    padding: 2px 3px;
+    background-color: #191f27;
+    border-radius: 5px;
 }
 
 .stream-action-container.right {
+    display:flex;
+    gap: 5px;
     position: absolute;
     top: 5px;
-    left: 378px;
+    left: 374px;
+    padding: 5px;
+    background-color: #191f27;
+    border-radius: 5px;
 }
 
 .stream-action-container.left .notification {
     padding: 3px;
-    margin-right: 5px;
     border-radius: 5px;
 }
 
 .stream-action-container.right .notification {
     padding: 3px;
-    margin-right: 5px;
     border-radius: 5px;
 }
 
@@ -644,7 +667,6 @@ body, .twitch-go-container {
 
 .stream-action-container .notification.selected {
     padding: 3px;
-    margin-right: 5px;
     border-radius: 5px;
     font-weight: 700;
     color: #9f60ff !important;
@@ -935,15 +957,11 @@ body, .twitch-go-container {
 }
 
 .stream-action-example-container .example-notification {
-    background-color: #0000007d !important;
-    border: 1px solid #772ce88c;
     padding: 3px;
     border-radius: 5px;
 }
 
 .stream-action-example-container .example-favorite {
-    background-color: #0000005e !important;
-    border: 1px solid #ffc1075c;
     padding: 3px;
     border-radius: 5px;
 }

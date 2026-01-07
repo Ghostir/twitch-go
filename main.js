@@ -12,10 +12,11 @@ let userSignedIn = false;
 let validationInterval = null;
 
 // let ghostirCore = 'https://ghostir.net'
-let ghostirCore = 'https://localhost:7191'
+let ghostirCore = 'http://localhost:5191'
 
 let dismissedDonation = false;
 let showOfflineFollowing = false;
+let showFavoriteDivider = false;
 let notificationFavoritePosition = 'Left'; 
 let favoriteList = [];
 let notifyList = [];
@@ -239,7 +240,7 @@ async function mainFunction() {
 
 async function initializeSettings() {
 	return new Promise((resolve) => {
-		browser.storage.sync.get(['dismissedDonation', 'darkMode', 'autoTheaterMode', 'showOfflineFollowing', 'notificationEnabled', 'notificationFavoritePosition', 'favoriteList', 'notifyList', 'followedStreamReturnAmount', 'topGamesReturnAmount', 'topStreamsReturnAmount'], function (result) {
+		browser.storage.sync.get(['dismissedDonation', 'darkMode', 'autoTheaterMode', 'showOfflineFollowing', 'showFavoriteDivider', 'notificationEnabled', 'notificationFavoritePosition', 'favoriteList', 'notifyList', 'followedStreamReturnAmount', 'topGamesReturnAmount', 'topStreamsReturnAmount'], function (result) {
 			if(result.dismissedDonation !== undefined) {
 				dismissedDonation = result.dismissedDonation;
 			}
@@ -282,6 +283,23 @@ async function initializeSettings() {
 			} else {
 				showOfflineFollowingCheckbox.prop('checked', false);
 				showOfflineFollowing = false;
+			}
+
+			const showFavoriteDividerCheckbox = $('#showFavoriteDivider_Checkbox');
+			let showFavoriteDividerChecked = showFavoriteDividerCheckbox.is(":checked");
+			if(result.showFavoriteDivider !== undefined) {
+				showFavoriteDividerChecked = result.showFavoriteDivider;
+			}
+
+			if(showFavoriteDividerChecked) {
+				showFavoriteDividerCheckbox.prop('checked', true);
+				showFavoriteDivider = true;
+
+				$('#followingList').addClass('show-favorite-divider');
+			} else {
+				showFavoriteDividerCheckbox.prop('checked', false);
+
+				$('#followingList').removeClass('show-favorite-divider');
 			}
 
 			const notificationEnabledModeCheckbox = $('#notificationEnabled_Checkbox');
@@ -358,6 +376,17 @@ async function initializeSettingsChange() {
 	showOfflineFollowingCheckbox.on('change', () => {
 		const showOfflineFollowing = $('#showOfflineFollowing_Checkbox').is(":checked");
 		browser.storage.sync.set({ 'showOfflineFollowing': showOfflineFollowing });
+	});
+
+	const showFavoriteDividerCheckbox = $('#showFavoriteDivider_Checkbox');
+	showFavoriteDividerCheckbox.on('change', () => {
+		const showFavoriteDivider = $('#showFavoriteDivider_Checkbox').is(":checked");
+		browser.storage.sync.set({ 'showFavoriteDivider': showFavoriteDivider });
+		if(showFavoriteDivider) {
+			$('#followingList').addClass('show-favorite-divider');
+		} else {
+			$('#followingList').removeClass('show-favorite-divider');
+		}
 	});
 
 	const notificationEnabledModeCheckbox = $('#notificationEnabled_Checkbox');
@@ -446,8 +475,6 @@ async function getFollowingList() {
 			});
 
 			$('.donation-dismiss').on('click', () => {
-				console.log('test')
-
 				browser.storage.sync.set({ 'dismissedDonation': true });
 				$('.donation-wrapper').remove();
 			});
