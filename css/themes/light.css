@@ -3,7 +3,367 @@ body {
 }
 
 .bg-ghostir {
+    background: #f4f7fb !important;
+}
+
+/* Loading screen styles for light theme */
+.twitch-go-container {
+    background: #f4f7fb !important;
+}
+
+.loading-container {
+    background: #f4f7fb !important;
+}
+
+.loading-dots div {
+    background: #772ce8 !important;
+}
+
+.twitch-go-content {
     background: #fefefe !important;
+    border-top-left-radius: 12px;
+}
+
+.twitch-go-content .content-tab.active {
+    flex: 1;
+    display: block;
+    z-index: 2;
+}
+
+.twitch-go-content .content-tab {
+    height: 100%;
+    padding-top: 5px;
+    padding-left: 5px;
+    padding-right: 7px;
+    display: none;
+}
+
+.twitch-go-content .content-tab.settings {
+    overflow-x: hidden;
+}
+
+.twitch-go-stream-container {
+    width: 100%;
+}
+
+.twitch-go-stream-container .stream-item {
+    background-color: transparent !important;
+    color: black !important;
+    padding: 10px 3px 10px 10px !important;
+    border-bottom: 0 !important;
+    position: relative;
+    text-decoration: none;
+    align-items: center !important;
+    justify-content: start !important;
+    display: flex;
+    gap: 12px;
+    border-radius: 10px;
+}
+
+/* Favorite Divider - matches section border style */
+.favorited-divider {
+    display: none;
+    height: 2px;
+    background-color: #772ce8;
+    opacity: 0.4;
+    margin: 8px 8px;
+    border-radius: 5px;
+}
+
+.show-favorite-divider .favorited-divider {
+    display: block;
+}
+
+/* Channel Section Styles */
+.channel-section {
+    border-radius: 8px;
+    overflow: visible;
+    position: relative;
+    margin-bottom: 4px;
+    background-color: transparent;
+    border: none;
+    border-left: 2px solid transparent;
+    box-shadow: none;
+    transition: all 0.2s ease;
+}
+
+.channel-section:not(.collapsed) {
+    background-color: rgba(0, 0, 0, 0.02);
+    border-left-color: rgba(119, 44, 232, 0.3);
+}
+
+.channel-section.collapsed {
+    background-color: transparent;
+    border-left-color: transparent;
+}
+
+.channel-section:not(.collapsed) .channel-section-content .stream-item {
+    border-radius: 0;
+    transition: border-radius 0.2s ease;
+}
+
+.channel-section:not(.collapsed) .channel-section-content .stream-item:first-child {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.channel-section:not(.collapsed) .channel-section-content .stream-item:last-child {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+.channel-section:not(.collapsed) .channel-section-content .stream-item:not(:last-child) {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.channel-section:not(.collapsed) .channel-section-content .stream-item:last-child:hover {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+.channel-section:not(.collapsed) .channel-section-content .stream-item:first-child:hover {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.channel-section-header {
+    background-color: transparent;
+    color: rgba(0, 0, 0, 0.7);
+    padding: 8px 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    user-select: none;
+    border-radius: 8px;
+    transition: background-color 0.2s ease;
+}
+
+.channel-section-header:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: rgba(0, 0, 0, 0.9) !important;
+}
+
+.channel-section.collapsed .channel-section-header {
+    border-radius: 8px !important;
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.channel-section:not(.collapsed) .channel-section-header:hover {
+    background-color: rgba(0, 0, 0, 0.06) !important;
+    color: rgba(0, 0, 0, 0.95) !important;
+}
+
+.section-drag-handle {
+    background: none;
+    border: none;
+    color: rgba(0, 0, 0, 0.5);
+    cursor: grab;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: all 0.2s;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.section-drag-handle:active {
+    cursor: grabbing;
+}
+
+.section-drag-handle i {
+    font-size: 16px;
+}
+
+.section-collapse-btn {
+    background: none;
+    border: none;
+    color: rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: all 0.2s;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.section-collapse-btn:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: rgba(0, 0, 0, 0.8);
+}
+
+.section-count {
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.6);
+    background: rgba(0, 0, 0, 0.1);
+    padding: 2px 6px;
+    border-radius: 10px;
+    min-width: 20px;
+    text-align: center;
+    margin-left: 8px;
+}
+
+/* Section edit/delete buttons */
+.section-edit-btn,
+.section-delete-btn {
+    color: rgba(0, 0, 0, 0.5) !important;
+}
+
+.section-edit-btn:hover {
+    background-color: rgba(0, 0, 0, 0.08) !important;
+    color: rgba(0, 0, 0, 0.9) !important;
+}
+
+.section-delete-btn:hover {
+    background-color: rgba(255, 0, 0, 0.15) !important;
+    color: #d32f2f !important;
+}
+
+/* Section Modal Styles */
+.section-modal-overlay {
+    background-color: rgba(0, 0, 0, 0.5) !important;
+}
+
+.section-modal {
+    background-color: rgba(255, 255, 255, 0.98) !important;
+    border: 1px solid rgba(0, 0, 0, 0.15) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2) !important;
+}
+
+.section-modal-title {
+    color: rgba(0, 0, 0, 0.9) !important;
+}
+
+.section-modal-close {
+    color: rgba(0, 0, 0, 0.5) !important;
+}
+
+.section-modal-close:hover {
+    background-color: rgba(0, 0, 0, 0.1) !important;
+    color: rgba(0, 0, 0, 0.9) !important;
+}
+
+.section-modal-label {
+    color: rgba(0, 0, 0, 0.7) !important;
+}
+
+.section-modal-input {
+    background-color: rgba(0, 0, 0, 0.05) !important;
+    border: 1px solid rgba(0, 0, 0, 0.15) !important;
+    color: rgba(0, 0, 0, 0.9) !important;
+}
+
+.section-modal-input:focus {
+    border-color: #772ce8 !important;
+}
+
+.section-modal-input::placeholder {
+    color: rgba(0, 0, 0, 0.4) !important;
+}
+
+.section-modal-message {
+    color: rgba(0, 0, 0, 0.9) !important;
+}
+
+.section-modal-btn-cancel {
+    background-color: rgba(0, 0, 0, 0.1) !important;
+    color: rgba(0, 0, 0, 0.9) !important;
+}
+
+.section-modal-btn-cancel:hover {
+    background-color: rgba(0, 0, 0, 0.15) !important;
+    color: rgba(0, 0, 0, 0.95) !important;
+}
+
+.section-modal-btn-confirm {
+    background-color: rgba(119, 44, 232, 0.15) !important;
+    color: #772ce8 !important;
+}
+
+.section-modal-btn-confirm:hover {
+    background-color: rgba(119, 44, 232, 0.25) !important;
+    color: #772ce8 !important;
+}
+
+.section-modal-btn-danger {
+    background-color: rgba(233, 25, 22, 0.15) !important;
+    color: #e91916 !important;
+}
+
+.section-modal-btn-danger:hover {
+    background-color: rgba(233, 25, 22, 0.25) !important;
+    color: #e91916 !important;
+}
+
+/* Section Context Menu */
+.section-context-menu {
+    background-color: rgba(255, 255, 255, 0.98) !important;
+    border: 1px solid rgba(0, 0, 0, 0.15) !important;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(119, 44, 232, 0.1) !important;
+}
+
+.section-context-menu::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2) !important;
+}
+
+.section-context-menu::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.3) !important;
+}
+
+.context-menu-header {
+    color: rgba(0, 0, 0, 0.6) !important;
+    background: linear-gradient(180deg, rgba(119, 44, 232, 0.08) 0%, transparent 100%) !important;
+}
+
+.context-menu-item {
+    color: rgba(0, 0, 0, 0.9) !important;
+}
+
+.context-menu-item:hover {
+    background-color: rgba(0, 0, 0, 0.08) !important;
+    color: rgba(0, 0, 0, 0.95) !important;
+}
+
+.context-menu-item.active {
+    background-color: rgba(119, 44, 232, 0.15) !important;
+    color: #772ce8 !important;
+}
+
+.context-menu-item-count {
+    color: rgba(0, 0, 0, 0.6) !important;
+    background: rgba(0, 0, 0, 0.1) !important;
+}
+
+.context-menu-item.active .context-menu-item-count {
+    background: rgba(119, 44, 232, 0.2) !important;
+    color: #772ce8 !important;
+}
+
+.context-menu-divider {
+    background: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.15) 50%, transparent 100%) !important;
+}
+
+/* Section Dropdown Menu */
+.section-dropdown-menu {
+    background-color: rgba(255, 255, 255, 0.98) !important;
+    border: 1px solid rgba(0, 0, 0, 0.15) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2) !important;
+}
+
+.section-dropdown-menu-content::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2) !important;
+}
+
+.section-dropdown-menu-content::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.3) !important;
 }
 
 .twitch-go-sidebar {
@@ -25,8 +385,7 @@ body {
 }
 
 .twitch-go-navbar {
-    background-color: #fefefe !important;
-    box-shadow: rgb(0 0 0 / 15%) -3px 1px 3px !important;
+    background-color: #f4f7fb !important;
 }
 
 .twitch-go-input-append {
@@ -48,14 +407,39 @@ body {
 
 .twitch-go-navigation {
     background-color: #fefefe !important;
-    box-shadow: none !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
 }
 
 .twitch-go-navigation-list .navigation-list-button {
-    background-color: transparent !important;
+    background-color: rgba(0, 0, 0, 0.04) !important;
+    color: rgba(0, 0, 0, 0.7) !important;
+    border: 1px solid rgba(0, 0, 0, 0.12) !important;
+}
+
+.twitch-go-navigation-list .navigation-list-button:not(.active):hover {
+    color: rgba(0, 0, 0, 0.9) !important;
+    background-color: rgba(0, 0, 0, 0.06) !important;
+    border-color: rgba(0, 0, 0, 0.18) !important;
 }
 
 .twitch-go-navigation-list .navigation-list-button.active {
+    color: #772ce8 !important;
+    background-color: rgba(119, 44, 232, 0.12) !important;
+    border-color: rgba(119, 44, 232, 0.35) !important;
+    font-weight: 600 !important;
+}
+
+.twitch-go-navigation-list .navigation-list-button.active:hover {
+    background-color: rgba(119, 44, 232, 0.16) !important;
+    border-color: rgba(119, 44, 232, 0.45) !important;
+}
+
+.twitch-go-navigation-list .navigation-list-button.active i {
+    color: #772ce8 !important;
+}
+
+.twitch-go-navigation-list .navigation-list-button.active span {
     color: #772ce8 !important;
 }
 
@@ -65,10 +449,6 @@ body {
 
 .placeholder {
     background-color: #00000038 !important;
-}
-
-.twitch-go-navbar {
-    box-shadow: rgb(0 0 0 / 4%) -3px 1px 3px !important;
 }
 
 input[type='search'] {
@@ -99,10 +479,345 @@ input[type='number'] {
     color: black;
 }
 
+/* Stream settings button */
+.stream-settings-btn {
+    color: rgba(0, 0, 0, 0.7) !important;
+}
+
+.stream-settings-btn:hover {
+    color: #772ce8 !important;
+    background-color: rgba(119, 44, 232, 0.1);
+}
+
+/* Stream action container backgrounds */
+.stream-action-container.left {
+    background-color: rgba(255, 255, 255, 0.8) !important;
+    backdrop-filter: blur(10px);
+}
+
+.stream-action-container.right {
+    background-color: rgba(255, 255, 255, 0.8) !important;
+    backdrop-filter: blur(8px);
+}
+
 .avatar-container {
     color: black !important;
 }
 
 .avatar-container small {
     color: #fff;
+}
+
+/* Search tab styling */
+.twitch-go-content .content-tab.search {
+    padding-top: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+    display: none;
+}
+
+.twitch-go-content .content-tab.search.active {
+    display: flex;
+    flex-direction: column;
+}
+
+.twitch-go-stream-container.search {
+    padding-top: 5px;
+    padding-left: 5px;
+    padding-right: 7px;
+}
+
+.twitch-go-category-container.search {
+    padding-top: 5px;
+    padding-left: 5px;
+    padding-right: 7px;
+}
+
+/* Navigation tab styling */
+.navigation-tab {
+    display: none;
+    flex: 1;
+    min-height: 0;
+}
+
+.navigation-tab.active {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Search tab navigation styling */
+.twitch-go-content .content-tab.search .twitch-go-navigation {
+    background: #fefefe !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 1000 !important;
+    flex-shrink: 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
+}
+
+.twitch-go-navigation .twitch-go-navigation-list {
+    height: 100% !important;
+    display: flex;
+    flex-wrap: nowrap;
+    margin: 0;
+    padding: 4px;
+    list-style: none;
+    position: relative;
+    background-color: transparent;
+    border-radius: 12px;
+    gap: 4px;
+}
+
+.twitch-go-navigation-list .navigation-list-item {
+    flex: 1 1 auto;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+    min-width: 0;
+}
+
+/* Search tab navigation buttons - only override colors */
+.twitch-go-content .content-tab.search .twitch-go-navigation-list .navigation-list-button {
+    color: rgba(0, 0, 0, 0.6) !important;
+    background-color: rgba(255, 255, 255, 0.03) !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+.twitch-go-content .content-tab.search .twitch-go-navigation-list .navigation-list-button:not(.active):hover {
+    color: rgba(0, 0, 0, 0.9) !important;
+    background-color: rgba(0, 0, 0, 0.06) !important;
+    border-color: rgba(0, 0, 0, 0.15) !important;
+}
+
+.twitch-go-content .content-tab.search .twitch-go-navigation-list .navigation-list-button.active {
+    color: #772ce8 !important;
+    background-color: rgba(119, 44, 232, 0.15) !important;
+    border-color: rgba(119, 44, 232, 0.4) !important;
+}
+
+.twitch-go-content .content-tab.search .twitch-go-navigation-list .navigation-list-button.active:hover {
+    background-color: rgba(119, 44, 232, 0.2) !important;
+    border-color: rgba(119, 44, 232, 0.5) !important;
+}
+
+.twitch-go-content .content-tab.search .twitch-go-navigation-list .navigation-list-button.active i {
+    color: #772ce8 !important;
+}
+
+.twitch-go-content .content-tab.search .twitch-go-navigation-list .navigation-list-button.active span {
+    color: #772ce8 !important;
+}
+
+/* OverlayScrollbars Custom Styling - Light Theme */
+#content_Wrapper .os-scrollbar {
+    --os-size: 2px;
+    --os-padding-perpendicular: 0px;
+    --os-padding-axis: 8px;
+    --os-track-border-radius: 1px;
+    --os-track-bg: transparent;
+    --os-track-bg-hover: transparent;
+    --os-track-bg-active: transparent;
+    --os-track-border: none;
+    --os-track-border-hover: none;
+    --os-track-border-active: none;
+    --os-handle-bg: rgba(119, 44, 232, 0.4);
+    --os-handle-bg-hover: rgba(119, 44, 232, 0.6);
+    --os-handle-bg-active: rgba(119, 44, 232, 0.8);
+    --os-handle-border-radius: 1px;
+    --os-handle-border: none;
+    --os-handle-border-hover: none;
+    --os-handle-border-active: none;
+    --os-handle-min-size: 20px;
+    --os-handle-max-size: none;
+    --os-handle-perpendicular-size: 2px;
+    --os-handle-perpendicular-size-hover: 8px;
+    --os-handle-perpendicular-size-active: 8px;
+}
+
+#content_Wrapper .os-scrollbar-vertical {
+    right: 1px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    transition: width 0.2s ease;
+}
+
+#content_Wrapper .os-scrollbar-vertical:hover {
+    width: 8px !important;
+}
+
+#content_Wrapper .os-scrollbar-vertical:hover .os-scrollbar-track {
+    width: 8px !important;
+}
+
+#content_Wrapper .os-scrollbar-vertical .os-scrollbar-handle {
+    width: 2px;
+    transition: width 0.2s ease, background-color 0.2s ease;
+}
+
+#content_Wrapper .os-scrollbar-vertical:hover .os-scrollbar-handle {
+    width: 8px !important;
+}
+
+#content_Wrapper .os-scrollbar-horizontal {
+    bottom: 1px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    transition: height 0.2s ease;
+}
+
+#content_Wrapper .os-scrollbar-horizontal:hover {
+    height: 8px !important;
+}
+
+#content_Wrapper .os-scrollbar-horizontal:hover .os-scrollbar-track {
+    height: 8px !important;
+}
+
+#content_Wrapper .os-scrollbar-horizontal .os-scrollbar-handle {
+    height: 2px;
+    transition: height 0.2s ease, background-color 0.2s ease;
+}
+
+#content_Wrapper .os-scrollbar-horizontal:hover .os-scrollbar-handle {
+    height: 8px !important;
+}
+
+#content_Wrapper .os-scrollbar-handle {
+    background: var(--os-handle-bg) !important;
+    border-radius: var(--os-handle-border-radius) !important;
+    border: var(--os-handle-border) !important;
+    transition: background 0.2s ease, border 0.2s ease, width 0.2s ease, height 0.2s ease;
+}
+
+#content_Wrapper:hover .os-scrollbar-handle {
+    background: var(--os-handle-bg-hover) !important;
+    border: var(--os-handle-border-hover) !important;
+}
+
+#content_Wrapper .os-scrollbar-handle:active {
+    background: var(--os-handle-bg-active) !important;
+    border: var(--os-handle-border-active) !important;
+}
+
+#content_Wrapper .os-scrollbar-track {
+    background: transparent !important;
+    border-radius: var(--os-track-border-radius) !important;
+    border: var(--os-track-border) !important;
+    transition: background 0.2s ease, border 0.2s ease, width 0.2s ease, height 0.2s ease;
+}
+
+#content_Wrapper .os-scrollbar:hover .os-scrollbar-track {
+    background: transparent !important;
+    border: var(--os-track-border-hover) !important;
+}
+
+#content_Wrapper .os-scrollbar-track:active {
+    background: var(--os-track-bg-active) !important;
+    border: var(--os-track-border-active) !important;
+}
+
+/* Search clear button */
+#searchClear {
+    cursor: pointer;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+#searchClear:hover {
+    opacity: 0.8;
+    transform: scale(1.1);
+}
+
+/* Game header back button */
+.game-header-back-button {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 36px;
+    height: 36px;
+    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.1);
+    border: none;
+    color: #333;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 3;
+    backdrop-filter: blur(10px);
+}
+
+.game-header-back-button:hover {
+    background: rgba(0, 0, 0, 0.15);
+    transform: scale(1.05);
+}
+
+.game-header-back-button:active {
+    transform: scale(0.95);
+}
+
+.game-header-back-button i {
+    font-size: 16px;
+}
+
+/* Profile/Information Page Styling */
+.twitch-go-information-container {
+    padding: 24px;
+}
+
+.information-header-content {
+    background: rgba(0, 0, 0, 0.03) !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+}
+
+.information-header .logo {
+    filter: drop-shadow(0 4px 12px rgba(119, 44, 232, 0.2));
+}
+
+.information-header .sub-header {
+    color: rgba(0, 0, 0, 0.6) !important;
+}
+
+.information-header .sub-header a {
+    color: #772ce8 !important;
+}
+
+.information-header .sub-header a:hover {
+    color: #9147ff !important;
+}
+
+.twitch-go-information-container .information-footer {
+    background: rgba(0, 0, 0, 0.03) !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+}
+
+.information-description {
+    color: rgba(0, 0, 0, 0.7) !important;
+}
+
+.donate-button {
+    background: linear-gradient(135deg, #E91E63 0%, #c31a53 100%) !important;
+    box-shadow: 0 2px 8px rgba(233, 30, 99, 0.25) !important;
+}
+
+.donate-button:hover {
+    background: linear-gradient(135deg, #c31a53 0%, #E91E63 100%) !important;
+    box-shadow: 0 4px 16px rgba(233, 30, 99, 0.35) !important;
+}
+
+.sign-out-button {
+    background: rgba(0, 0, 0, 0.05) !important;
+    color: rgba(0, 0, 0, 0.9) !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+}
+
+.sign-out-button:hover {
+    background: rgba(0, 0, 0, 0.08) !important;
+    border-color: rgba(0, 0, 0, 0.15) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
 }

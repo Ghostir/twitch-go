@@ -2,8 +2,8 @@ const usingFirefox = typeof browser !== 'undefined';
 const browserType = usingFirefox ? 'Firefox' : 'Chrome';
 const currentBrowser = usingFirefox ? browser : chrome;
 
-// let ghostirCore = 'https://ghostir.net'
-let ghostirCore = 'https://localhost:7191'
+let ghostirCore = 'http://localhost:5191'
+
 currentBrowser.runtime.onMessage.addListener(() => {});
 currentBrowser.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
     if (changeInfo.status === 'complete') {
@@ -40,10 +40,11 @@ currentBrowser.alarms.onAlarm.addListener(async (alarm) => {
                     if (fetchPromise.status === 200) {
                         const returnedData = await fetchPromise.json();
                         
+                        // Handle stream notifications
                         currentBrowser.storage.sync.get('notifyList', async function (notifyResult) {
                             let notifyList = [];
                             if(notifyResult.notifyList !== undefined) {
-                                notifyList = notifyResult.notifyList.split(',');
+                                notifyList = notifyResult.notifyList.split(',').filter(id => id);
                             }
                             
                             const notificationFollowingFetchPromise = await fetch(`${ghostirCore}/Twitch/API/NotificationFollowing?authToken=${tokenResult.accessToken}&browserType=${browserType}&notifyList=${notifyList.join(',')}&userId=${returnedData.data[0].id}`);
@@ -58,6 +59,31 @@ currentBrowser.alarms.onAlarm.addListener(async (alarm) => {
                                     message: notificationFollowingData[0].subtitle,
                                     priority: 2
                                 });
+                            }
+                        });
+
+                        // Handle category notifications
+                        currentBrowser.storage.sync.get(['categoryNotifyList', 'categoryStreamerCache'], async function (categoryResult) {
+                            let categoryNotifyList = [];
+                            if(categoryResult.categoryNotifyList !== undefined) {
+                                categoryNotifyList = categoryResult.categoryNotifyList.split(',').filter(id => id);
+                            }
+
+                            if (categoryNotifyList.length > 0) {
+                                // Call NotificationCategory with the entire list of gameIds
+                                const notificationCategoryFetchPromise = await fetch(`${ghostirCore}/Twitch/API/NotificationCategory?authToken=${tokenResult.accessToken}&browserType=${browserType}&categoryNotifyList=${categoryNotifyList.join(',')}`);
+                                const notificationCategoryData = await notificationCategoryFetchPromise.json();
+                                
+                                if (notificationCategoryFetchPromise.status === 200 && notificationCategoryData !== "" && notificationCategoryData !== undefined && notificationCategoryData.length > 0) {
+                                    currentBrowser.notifications.clear("categoryNotification_Alert");
+                                    currentBrowser.notifications.create('categoryNotification_Alert', {
+                                        type: 'basic',
+                                        iconUrl: notificationCategoryData[0].avatar,
+                                        title: notificationCategoryData[0].title,
+                                        message: notificationCategoryData[0].subtitle,
+                                        priority: 2
+                                    });
+                                }
                             }
                         });
 
